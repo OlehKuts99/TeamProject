@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace StoreApp.Models
@@ -28,8 +29,8 @@ namespace StoreApp.Models
 
         public int Count { get; set; }
 
-        public ICollection Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
-        public ICollection Storages { get; set; }
+        public ICollection<Storage> Storages { get; set; }
     }
 }
