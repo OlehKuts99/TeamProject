@@ -1,4 +1,6 @@
-﻿namespace Store.Models
+﻿using System.Collections.Generic;
+
+namespace Store.Models
 {
     /// <summary>
     /// User model for create entity in database.
@@ -14,5 +16,7 @@
         public int Phone { get; set; }
 
         public string Email { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
 }

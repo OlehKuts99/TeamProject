@@ -23,6 +23,8 @@ namespace Store.Models
 
         public int ProducerId { get; set; }
 
+        public Producer Producer { get; set; }
+
         public decimal Price { get; set; }
 
         public string Type { get; set; }

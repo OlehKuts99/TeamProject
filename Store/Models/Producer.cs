@@ -1,4 +1,6 @@
-﻿namespace Store.Models
+﻿using System.Collections.Generic;
+
+namespace Store.Models
 {
     /// <summary>
     /// Producer model for create entity in database
@@ -15,5 +17,6 @@
 
         public string WebSite { get; set; }
 
+        public ICollection<Good> Products { get; set; }
     }
 }
