@@ -10,7 +10,7 @@ namespace Store.Models
     {
         public int Id { get; set; }
 
-        public ICollection<Good> Products { get; set; }
+        public ICollection<GoodOrder> Products { get; set; }
 
         public DateTime OrderDate { get; set; }
 

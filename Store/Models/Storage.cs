@@ -16,7 +16,7 @@ namespace Store.Models
 
         public string Street { get; set; }
 
-        public ICollection<Good> Products { get; set; }
+        public ICollection<GoodStorage> Products { get; set; }
 
     }
 }

@@ -31,8 +31,8 @@ namespace Store.Models
 
         public int Count { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<GoodOrder> Orders { get; set; }
 
-        public ICollection<Storage> Storages { get; set; }
+        public ICollection<GoodStorage> Storages { get; set; }
     }
 }
