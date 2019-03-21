@@ -5,7 +5,7 @@ namespace Store.Models
     /// <summary>
     /// User model for create entity in database.
     /// </summary>
-    public class User
+    public class Customer
     {
         public int Id { get; set; }
 
