@@ -1,0 +1,40 @@
+﻿@model Store.ViewModels.RegisterView
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<link rel="stylesheet" href="~/css/Registration.css" />
+
+<div id="login-div">
+    <h2>Register Form</h2>
+
+    <form method="post" asp-controller="Account" asp-action="Register">
+
+        <div>
+            <span asp-validation-for="FirstName"></span>
+            <input asp-for="FirstName" placeholder="First Name" class="half left">
+            <span asp-validation-for="SecondName"></span>
+            <input asp-for="SecondName" placeholder="Last Name" class="half right">
+        </div>
+        <div>
+            <span asp-validation-for="Phone"></span>
+            <input asp-for="Phone" placeholder="Phone" />
+        </div>
+        <div>
+            <span asp-validation-for="Email"></span>
+            <input asp-for="Email" placeholder="Email">
+        </div>
+        <div>
+            <span asp-validation-for="Password"></span>
+            <input asp-for="Password" placeholder="Password">
+        </div>
+        <div>
+            <span asp-validation-for="PasswordConfirm"></span>
+            <input asp-for="PasswordConfirm" placeholder="Confirm Password">
+        </div>
+        <div>
+            <input id="button1" type="submit" value="Register" />
+        </div>
+    </form>
+</div>

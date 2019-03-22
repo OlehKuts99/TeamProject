@@ -30,10 +30,7 @@ namespace Store.Controllers
         {
             return View();
         }
-        public IActionResult RegisterView()
-        {
-            return View();
-        }
+
         /// <summary>
         /// Post method that will be runned after pushing on the button in registration form. 
         /// </summary>
