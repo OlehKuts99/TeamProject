@@ -34,7 +34,7 @@ namespace Store.Controllers
         /// <summary>
         /// Post method that will be runned after pushing on the button in registration form. 
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Model to unit all form fields in one entity.</param>
         /// <returns>If operation is success it redirects to main page, otherwise it will return the same page.</returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegisterView model)
@@ -77,6 +77,53 @@ namespace Store.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Get method to show login form.
+        /// </summary>
+        /// <returns>Login view that contains login form.</returns>
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Method runs when user clicks on the submit button in Login view. 
+        /// </summary>
+        /// <param name="model">Model to unit all form fields in one entity.</param>
+        /// <returns>If operation is success it redirects to main page, otherwise it will return the same page.</returns>
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginView model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result =
+                    await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                if ( result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Wrong login or password!");
+                }
+            }
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Performs log out form site.
+        /// </summary>
+        /// <returns>Redirects to main page.</returns>
+        [HttpPost]
+        public async Task<IActionResult> LogOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
