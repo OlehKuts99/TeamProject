@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Store.Models.Customer>
+
+@{
+    ViewData["Title"] = "RegisterView";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #login-div{
+            position:absolute;
+            left:30%;
+            top:10%;
+            padding:25px 50px;
+            border: 2px solid #ccc;
+            border-collapse:collapse;
+
+        }
+        h2 {
+            left: 30%;
+            top: 20%;
+            text-align:center;
+            font-style:normal;
+            font-family:'Times New Roman', Times, serif;
+            font-size:35px;
+        }
+        input {
+            width: 400px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=text]{
+            width:198px;
+        }
+            
+        input[type=submit]:hover {
+           box-shadow: 0 5px 7px 0 rgba(0,0,0,0.24),0 7px 20px 0 rgba(0,0,0,0.19);
+        }
+        input[type=submit]:active {
+            background-color: lightgrey;
+            box-shadow: 0 1px #666;
+            transform: translateY(4px);
+        }
+        #button1 {
+            width: 140px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div id="login-div">
+        @using (Html.BeginForm(FormMethod.Post))
+        {
+            <h2>Register Form</h2>
+        
+            <form action="/action_page.php" id="form1">
+                <br>
+                <input type="text" name="firstname" placeholder="First Name" maxlength="20">
+                <input type="text" name="lastname" placeholder="Last Name" maxlength="20">
+                <br>
+                <input type="number" name="phone" placeholder="Phone" maxlength="13">
+                <br>
+                <input type="email" name="email" placeholder="Email">
+                <br>
+                <input type="password" name="password" placeholder="Password">
+                <br>
+                <input type="password" name="confirmpassword" placeholder="Confirm Password">
+                <br><br>
+                <input id="button1" type="submit"  value="Register"> 
+            </form>
+
+        }
+    </div>>    
+</body>>
+</html>>
