@@ -3,7 +3,7 @@
     position: absolute;
     left: 30%;
     top: 10%;
-    padding: 25px 50px;
+    padding: 2% 4%;
     border: 2px solid #ccc;
     border-collapse: collapse;
 }
@@ -13,18 +13,18 @@ h2 {
     top: 20%;
     text-align: center;
     font-style: normal;
-    font-size: 35px;
+    font-size: 2.5vw;
 }
 
-.half{
+.half {
     width: 49%;
 }
 
-.left{
+.left {
     float: left;
 }
 
-.right{
+.right {
     float: right;
 }
 
