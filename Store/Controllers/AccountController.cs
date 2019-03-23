@@ -11,13 +11,15 @@ namespace Store.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly AppDbContext appContext;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            AppDbContext appDbContext)
+            RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
             this.appContext = appDbContext;
         }
 
@@ -61,6 +63,12 @@ namespace Store.Controllers
 
                 if (addResult.Succeeded)
                 {
+                    if (await roleManager.FindByNameAsync("customer") == null)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole("customer"));
+                    }
+
+                    await userManager.AddToRoleAsync(user, "customer");
                     await signInManager.SignInAsync(user, false);
                     await appContext.Customers.AddAsync(customer);
                     await appContext.SaveChangesAsync();
