@@ -16,12 +16,12 @@ namespace Store.Controllers
         private readonly UnitOfWork unitOfWork;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager, UnitOfWork unitOfWork)
+            RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
-            this.unitOfWork = unitOfWork;
+            this.unitOfWork = new UnitOfWork(appDbContext);
         }
 
         /// <summary>
