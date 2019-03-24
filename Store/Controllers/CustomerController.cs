@@ -68,7 +68,6 @@ namespace Store.Controllers
                     }
 
                     await userManager.AddToRoleAsync(user, "customer");
-                    await signInManager.SignInAsync(user, false);
                     await unitOfWork.Customers.Create(customer);
                     await unitOfWork.SaveAsync();
 
