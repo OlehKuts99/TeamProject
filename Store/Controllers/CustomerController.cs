@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -89,6 +90,10 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Customer customer = await unitOfWork.Customers.Get(id);
+            ApplicationUser user = await userManager.FindByEmailAsync(customer.Email);
+
+            var userRoles = await userManager.GetRolesAsync(user);
+            var allRoles = roleManager.Roles.ToList();
 
             if (customer == null)
             {
@@ -101,14 +106,16 @@ namespace Store.Controllers
                 FirstName = customer.FirstName,
                 SecondName = customer.SecondName,
                 Phone = customer.Phone,
-                Email = customer.Email
+                Email = customer.Email,
+                AllRoles = allRoles,
+                UserRoles = userRoles
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditCustomerView model)
+        public async Task<IActionResult> Edit(EditCustomerView model, List<string> roles)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +128,15 @@ namespace Store.Controllers
                     user.UserName = model.FirstName + model.SecondName;
                     user.UpdateTime = DateTime.Now;
 
+                    var userRoles = await userManager.GetRolesAsync(user);
+                    var allRoles = roleManager.Roles.ToList();
+
+                    var addedRoles = roles.Except(userRoles);
+                    var removedRoles = userRoles.Except(roles);
+
+                    await userManager.AddToRolesAsync(user, addedRoles);
+                    await userManager.RemoveFromRolesAsync(user, removedRoles);
+                    
                     customer.FirstName = model.FirstName;
                     customer.SecondName = model.SecondName;
                     customer.Phone = model.Phone;
