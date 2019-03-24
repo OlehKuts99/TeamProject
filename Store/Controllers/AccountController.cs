@@ -127,7 +127,6 @@ namespace Store.Controllers
         /// Performs log out form site.
         /// </summary>
         /// <returns>Redirects to main page.</returns>
-        [HttpPost]
         public async Task<IActionResult> LogOut()
         {
             await signInManager.SignOutAsync();
