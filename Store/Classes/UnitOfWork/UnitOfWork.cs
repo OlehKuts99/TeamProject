@@ -12,6 +12,7 @@ namespace Store.Classes.UnitOfWork
         private GoodRepository goodRepository;
         private StorageRepository storageRepository;
         private OrderRepository _orderRepository;
+        private ProducerRepository producerRepository;
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -29,6 +30,17 @@ namespace Store.Classes.UnitOfWork
                 }
 
                 return customerRepository;
+            }
+        }
+        public ProducerRepository Producers
+        {
+            get
+            {
+                if(producerRepository == null)
+                {
+                    producerRepository = new ProducerRepository(applicationContext);
+                }
+                return producerRepository;
             }
         }
 
