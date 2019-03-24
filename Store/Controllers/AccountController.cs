@@ -47,7 +47,7 @@ namespace Store.Controllers
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
-                    UserName = string.Join(' ', model.FirstName, model.SecondName),
+                    UserName = model.FirstName + model.SecondName,
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now
                 };
@@ -108,10 +108,12 @@ namespace Store.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =
-                    await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
 
-                if ( result.Succeeded)
+                var result =
+                    await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+
+                if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
