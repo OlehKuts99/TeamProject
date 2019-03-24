@@ -17,7 +17,7 @@ namespace Store.Classes.UnitOfWork.Classes
 
         public async Task Create(Customer item)
         {
-            await this.applicationContext.AddAsync(item);
+            await this.applicationContext.Customers.AddAsync(item);
         }
 
         public async Task Delete(int id)
@@ -26,7 +26,7 @@ namespace Store.Classes.UnitOfWork.Classes
 
             if (customer != null)
             {
-                applicationContext.Remove(customer);
+                applicationContext.Customers.Remove(customer);
             }
         }
 

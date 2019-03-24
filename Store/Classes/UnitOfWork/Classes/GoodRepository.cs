@@ -17,16 +17,16 @@ namespace Store.Classes.UnitOfWork.Classes
 
         public async Task Create(Good item)
         {
-            await this.applicationContext.AddAsync(item);
+            await this.applicationContext.Goods.AddAsync(item);
         }
 
         public async Task Delete(int id)
         {
-            Customer customer = await applicationContext.Customers.FindAsync(id);
+            Good good = await applicationContext.Goods.FindAsync(id);
 
-            if (customer != null)
+            if (good != null)
             {
-                applicationContext.Remove(customer);
+                applicationContext.Goods.Remove(good);
             }
         }
 
