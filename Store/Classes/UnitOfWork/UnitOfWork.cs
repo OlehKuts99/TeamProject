@@ -10,6 +10,7 @@ namespace Store.Classes.UnitOfWork
         private readonly AppDbContext applicationContext;
         private CustomerRepository customerRepository;
         private GoodRepository goodRepository;
+        private StorageRepository storageRepository;
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -40,6 +41,19 @@ namespace Store.Classes.UnitOfWork
                 }
 
                 return goodRepository;
+            }
+        }
+
+        public StorageRepository Storages
+        {
+            get
+            {
+                if (storageRepository == null)
+                {
+                    storageRepository = new StorageRepository(this.applicationContext);
+                }
+
+                return storageRepository;
             }
         }
 
