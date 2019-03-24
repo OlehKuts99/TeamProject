@@ -9,6 +9,7 @@ namespace Store.Classes.UnitOfWork
     {
         private readonly AppDbContext applicationContext;
         private CustomerRepository customerRepository;
+        private GoodRepository goodRepository;
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -26,6 +27,19 @@ namespace Store.Classes.UnitOfWork
                 }
 
                 return customerRepository;
+            }
+        }
+
+        public GoodRepository Goods
+        {
+            get
+            {
+                if (goodRepository == null)
+                {
+                    goodRepository = new GoodRepository(this.applicationContext);
+                }
+
+                return goodRepository;
             }
         }
 
