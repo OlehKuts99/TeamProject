@@ -11,6 +11,7 @@ namespace Store.Classes.UnitOfWork
         private CustomerRepository customerRepository;
         private GoodRepository goodRepository;
         private StorageRepository storageRepository;
+        private OrderRepository _orderRepository;
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -54,6 +55,19 @@ namespace Store.Classes.UnitOfWork
                 }
 
                 return storageRepository;
+            }
+        }
+
+        public OrderRepository Orders
+        {
+            get
+            {
+                if (_orderRepository == null)
+                {
+                    _orderRepository = new OrderRepository(this.applicationContext);
+                }
+
+                return _orderRepository;
             }
         }
 
