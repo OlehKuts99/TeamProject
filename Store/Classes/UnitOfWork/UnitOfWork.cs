@@ -10,6 +10,7 @@ namespace Store.Classes.UnitOfWork
         private readonly AppDbContext applicationContext;
         private CustomerRepository customerRepository;
         private GoodRepository goodRepository;
+        private OrderRepository _orderRepository;
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -42,6 +43,20 @@ namespace Store.Classes.UnitOfWork
                 return goodRepository;
             }
         }
+
+        public OrderRepository Orders
+        {
+            get
+            {
+                if (_orderRepository == null)
+                {
+                    _orderRepository = new OrderRepository(this.applicationContext);
+                }
+
+                return _orderRepository;
+            }
+        }
+
 
         public async Task SaveAsync()
         {
