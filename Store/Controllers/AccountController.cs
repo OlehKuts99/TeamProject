@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
 
@@ -12,15 +13,15 @@ namespace Store.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly AppDbContext appContext;
+        private readonly UnitOfWork unitOfWork;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
+            RoleManager<IdentityRole> roleManager, UnitOfWork unitOfWork)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
-            this.appContext = appDbContext;
+            this.unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -70,8 +71,8 @@ namespace Store.Controllers
 
                     await userManager.AddToRoleAsync(user, "customer");
                     await signInManager.SignInAsync(user, false);
-                    await appContext.Customers.AddAsync(customer);
-                    await appContext.SaveChangesAsync();
+                    await unitOfWork.Customers.Create(customer);
+                    await unitOfWork.SaveAsync();
 
                     return RedirectToAction("Index", "Home");
                 }
