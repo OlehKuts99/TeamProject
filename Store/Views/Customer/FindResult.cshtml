@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<Store.Models.Customer>
 @{
-    ViewBag.Title = "Customers list";
+    ViewBag.Title = "Find result";
 }
 
-<a class="btn btn-sm btn-primary" style="margin: 2% 0%;" asp-action="Create">Add new customer</a>
-<a class="btn btn-sm btn-primary" style="margin: 2% 0%;" asp-action="Find">Find customer</a>
 
+<div class="input-group">
+    <h2>Founded @Model.Count() records : </h2>
+    <span class="input-group-btn">    
+        <a class="btn btn-sm btn-primary" asp-action="Index" style="float: right;">Back to Customers</a>
+    </span>
+</div>
 
 <table class="table table-hover">
     <tr>

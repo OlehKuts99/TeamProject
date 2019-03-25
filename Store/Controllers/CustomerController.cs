@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Classes;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
@@ -136,7 +137,7 @@ namespace Store.Controllers
 
                     await userManager.AddToRolesAsync(user, addedRoles);
                     await userManager.RemoveFromRolesAsync(user, removedRoles);
-                    
+
                     customer.FirstName = model.FirstName;
                     customer.SecondName = model.SecondName;
                     customer.Phone = model.Phone;
@@ -178,5 +179,78 @@ namespace Store.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Find()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Find(FindCustomerView model)
+        {
+            List<Customer> customers = new List<Customer>();
+            List<Customer> tempList = new List<Customer>();
+
+            if (ModelState.IsValid)
+            {
+                var allCustomers = unitOfWork.Customers.GetAll().ToList();
+
+                foreach (var customer in allCustomers)
+                {
+                    bool addToResult = true;
+
+                    if (model.FirstName == null && model.SecondName == null && 
+                        model.Phone == null && model.Email == null)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.FirstName != null && customer.FirstName != model.FirstName)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.SecondName != null && customer.SecondName != model.SecondName)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Phone != null && customer.Phone != model.Phone)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Email != null && customer.Email != model.Email)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (addToResult)
+                    {
+                        customers.Add(customer);
+                    }
+                }
+
+                TempData.Put("list", customers);
+
+                return RedirectToAction("FindResult", "Customer");
+            }
+
+            return View(model);
+        }
+
+        public IActionResult FindResult()
+        {
+            var customers = TempData.Get<List<Customer>>("list");
+
+            if (customers == null)
+            {
+                return RedirectToAction("Find");
+            }
+
+            return View(customers);
+        }
     }
 }
+
