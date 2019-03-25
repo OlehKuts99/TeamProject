@@ -187,10 +187,9 @@ namespace Store.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Find(FindCustomerView model)
+        public IActionResult Find(FindCustomerView model)
         {
             List<Customer> customers = new List<Customer>();
-            List<Customer> tempList = new List<Customer>();
 
             if (ModelState.IsValid)
             {
