@@ -152,7 +152,7 @@ namespace Store.Controllers
                 return RedirectToAction("Find");
             }
 
-            return View(Goods);
+            return View(goods);
         }
     }
 }
