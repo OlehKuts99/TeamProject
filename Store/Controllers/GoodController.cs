@@ -58,12 +58,6 @@ namespace Store.Controllers
                     Count = model.Count
                 };
 
-
-                if (await roleManager.FindByNameAsync("Good") == null)
-                {
-                    await roleManager.CreateAsync(new IdentityRole("Good"));
-                }
-
                 await unitOfWork.Goods.Create(Good);
                 await unitOfWork.SaveAsync();
 
@@ -78,9 +72,6 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Good good = await unitOfWork.Goods.Get(id);
-            
-            var allRoles = roleManager.Roles.ToList();
-
             if (good == null)
             {
                 return NotFound();
@@ -154,9 +145,9 @@ namespace Store.Controllers
 
         public IActionResult FindResult()
         {
-            var Goods = TempData.Get<List<Good>>("list");
+            var goods = TempData.Get<List<Good>>("list");
 
-            if (Goods == null)
+            if (goods == null)
             {
                 return RedirectToAction("Find");
             }
