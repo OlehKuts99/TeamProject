@@ -161,7 +161,7 @@ namespace Store.Controllers
 
         public IActionResult FindResult()
         {
-            var goods = TempData.Get<List<Good>>("list");
+            var goods = HttpContext.Session.Get<List<Good>>("list");
 
             if (goods == null)
             {

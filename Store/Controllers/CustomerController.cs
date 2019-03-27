@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.Classes;
@@ -231,7 +232,7 @@ namespace Store.Controllers
                     }
                 }
 
-                TempData.Put("list", customers);
+                HttpContext.Session.Set("list", customers);
 
                 return RedirectToAction("FindResult", "Customer");
             }
@@ -241,7 +242,7 @@ namespace Store.Controllers
 
         public IActionResult FindResult()
         {
-            var customers = TempData.Get<List<Customer>>("list");
+            var customers = HttpContext.Session.Get<List<Customer>>("list");
 
             if (customers == null)
             {
