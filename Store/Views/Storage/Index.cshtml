@@ -15,8 +15,8 @@
     @foreach (var storage in Model)
     {
         <tr>
-            <th>@storage.City</th>
-            <th>@storage.Street</th>
+            <td>@storage.City</td>
+            <td>@storage.Street</td>
             <td>
                 <form asp-action="Delete" asp-route-id="@storage.Id" method="post">
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@storage.Id">Edit</a>

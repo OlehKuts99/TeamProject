@@ -67,7 +67,7 @@ namespace Store.Classes
                         Name = "ImPAD B701",
                         Specification = "Laptop Impression ImPAD B701 7' IPS(1024x600) / " +
                         "Spreadtrum SC7731C to 1.2 Ghz / RAM 1 Gb / Memory 8 Gb / 2G/3G",
-                        PhotoUrl = "test",
+                        PhotoUrl = "ImPadB702.jpg",
                         YearOfManufacture = 2017,
                         WarrantyTerm = 12,
                         Producer = unitOfWork.Producers.GetAll().Where(p => p.Name == "Impression").First(),

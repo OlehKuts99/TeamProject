@@ -4,15 +4,31 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Store.Classes.UnitOfWork;
 using Store.Models;
 
 namespace Store.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly UnitOfWork unitOfWork;
+
+        public HomeController(AppDbContext appDbContext)
+        {
+            this.unitOfWork = new UnitOfWork(appDbContext);
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var goods = unitOfWork.Goods.GetAll().ToList();
+            var producers = unitOfWork.Producers.GetAll().ToList();
+
+            foreach (var good in goods)
+            {
+                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+            }
+
+            return View(goods);
         }
 
         public IActionResult About()

@@ -1,7 +1,39 @@
-﻿@{
+﻿@model IEnumerable<Store.Models.Good>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <h1>Main page</h1>
+<link rel="stylesheet" href="~/css/mainPage.css" />
+
+<div class="container content">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="#" class="list-group-item">Type1</a>
+                <a href="#" class="list-group-item">Type2</a>
+                <a href="#" class="list-group-item">Type3</a>
+                <a href="#" class="list-group-item">Type4</a>
+                <a href="#" class="list-group-item">Type5</a>
+            </div>
+        </div>
+        <div class="col-md-8 products">
+            <div class="row">
+                @foreach (var good in Model)
+                {
+                    <div class="col-sm-4">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="#"><img src="~/images/goods/@good.PhotoUrl" alt=""></a>
+                            </div>
+                            <p class="product-title">
+                                <a href="#">@good.Name</a>
+                            </p>
+                            <p class="product-desc">@good.Specification</p>
+                            <p class="product-price">Price: @good.Price</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
