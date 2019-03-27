@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.Classes;
@@ -11,19 +12,13 @@ using Store.ViewModels;
 
 namespace Store.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ProducerController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly UnitOfWork unitOfWork;
 
-        public ProducerController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
+        public ProducerController(AppDbContext appDbContext)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
             this.unitOfWork = new UnitOfWork(appDbContext);
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Store.ViewModels;
 
 namespace Store.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CustomerController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;

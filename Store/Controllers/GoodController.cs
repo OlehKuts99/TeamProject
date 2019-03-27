@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Classes;
 using Store.Classes.UnitOfWork;
@@ -11,7 +11,8 @@ using Store.ViewModels;
 
 namespace Store.Controllers
 {
-    public class GoodController:Controller
+    [Authorize(Roles = "admin")]
+    public class GoodController : Controller
     {
         private readonly UnitOfWork unitOfWork;
 
