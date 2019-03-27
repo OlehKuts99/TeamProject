@@ -28,7 +28,8 @@ namespace Store
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await DataBaseInitializer.InitializeAsync(userManager, rolesManager);
+                    var appDbContext = services.GetRequiredService<AppDbContext>();
+                    await DataBaseInitializer.InitializeAsync(userManager, rolesManager, appDbContext);
                 }
                 catch (Exception ex)
                 {

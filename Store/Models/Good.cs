@@ -9,6 +9,12 @@ namespace Store.Models
     /// </summary>
     public class Good
     {
+        public Good()
+        {
+            Storages = new List<GoodStorage>();
+            Orders = new List<GoodOrder>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

@@ -13,52 +13,67 @@ namespace Store.Controllers
 {
     public class GoodController:Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly UnitOfWork unitOfWork;
 
-        public GoodController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
-        {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
+        public GoodController(AppDbContext appDbContext)
+        { 
             this.unitOfWork = new UnitOfWork(appDbContext);
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            return View(unitOfWork.Goods.GetAll().ToList());
+            var goods = unitOfWork.Goods.GetAll().ToList();
+            var producers = unitOfWork.Producers.GetAll().ToList();
+
+            foreach (var good in goods)
+            {
+                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+            }
+
+            return View(goods);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            CreateGoodView model = new CreateGoodView
+            {
+                Producers = unitOfWork.Producers.GetAll().ToList(),
+                Storages = unitOfWork.Storages.GetAll().ToList()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateGoodView model)
+        public async Task<IActionResult> Create(CreateGoodView model, List<string> storages)
         {
             if (ModelState.IsValid)
             {
-                Good Good = new Good
+                Good good = new Good
                 {
                     Name = model.Name,
                     Specification = model.Specification,
                     PhotoUrl = model.PhotoUrl,
                     YearOfManufacture = model.YearOfManufacture,
                     WarrantyTerm = model.WarrantyTerm,
-                    ProducerId = model.Producer.Id,
-                    Producer = model.Producer,
+                    Producer = unitOfWork.Producers.GetAll().Where(p => p.Name == Request.Form["producerSelect"]).First(),
                     Price = model.Price,
                     Type = model.Type,
-                    Count = model.Count
+                    Count = model.Count,
                 };
 
-                await unitOfWork.Goods.Create(Good);
+                if (storages.Count > 0)
+                {
+                    foreach (var storage in storages)
+                    {
+                        Storage tempStorage = unitOfWork.Storages.GetAll().Where(s => s.Street == storage).First();
+                        good.Storages.Add(new GoodStorage() { Good = good, Storage = tempStorage });
+                    }
+                }
+
+                await unitOfWork.Goods.Create(good);
                 await unitOfWork.SaveAsync();
 
                 return RedirectToAction("Index", "Good");
@@ -72,6 +87,7 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Good good = await unitOfWork.Goods.Get(id);
+
             if (good == null)
             {
                 return NotFound();

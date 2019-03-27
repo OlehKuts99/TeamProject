@@ -7,6 +7,11 @@ namespace Store.Models
     /// </summary>
     public class Producer
     {
+        public Producer()
+        {
+            Products = new List<Good>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

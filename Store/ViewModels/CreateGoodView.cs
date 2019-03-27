@@ -9,12 +9,18 @@ namespace Store.ViewModels
 {
     public class CreateGoodView
     {
+        public CreateGoodView()
+        {
+            Storages = new List<Storage>();
+            Producers = new List<Producer>();
+        }
+
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
         [Display(Name = "Specification")]
+        [DataType(DataType.MultilineText)]
         public string Specification { get; set; }
 
         [Required]
@@ -30,12 +36,8 @@ namespace Store.ViewModels
         public int WarrantyTerm { get; set; }
 
         [Required]
-        [Display(Name = "Producer id")]
-        public int ProducerId { get; set; }
-
-        [Required]
         [Display(Name = "Producer")]
-        public Producer Producer { get; set; }
+        public List<Producer> Producers { get; set; }
 
         [Required]
         [Display(Name = "Price")]
@@ -48,5 +50,7 @@ namespace Store.ViewModels
         [Required]
         [Display(Name = "Amount")]
         public int Count { get; set; }
+
+        public List<Storage> Storages { get; set; }
     }
 }

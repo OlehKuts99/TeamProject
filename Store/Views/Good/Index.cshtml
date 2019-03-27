@@ -9,10 +9,9 @@
 <table class="table table-hover">
     <tr>
         <th>Name</th>
-        <th>Specification</th>
         <th>Year of goods production</th>
         <th>The warranty period</th>
-        <th>Producer</th>
+        <th>Producer name</th>
         <th>Price</th>
         <th>Type</th>
         <th>Amount</th>
@@ -21,14 +20,13 @@
     @foreach (var good in Model)
     {
         <tr>
-            <th>@good.Name</th>
-            <th>@good.Specification</th>
-            <th>@good.YearOfManufacture</th>
-            <th>@good.WarrantyTerm period</th>
-            <th>@good.Producer</th>
-            <th>@good.Price</th>
-            <th>@good.Type</th>
-            <th>@good.Count</th>
+            <td>@good.Name</td>
+            <td>@good.YearOfManufacture</td>
+            <td>@good.WarrantyTerm months</td>
+            <td>@good.Producer.Name</td>
+            <td>@good.Price</td>
+            <td>@good.Type</td>
+            <td>@good.Count</td>
             <td>
                 <form asp-action="Delete" asp-route-id="@good.Id" method="post">
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@good.Id">Edit</a>
