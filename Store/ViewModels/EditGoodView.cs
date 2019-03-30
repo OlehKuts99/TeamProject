@@ -8,6 +8,7 @@ namespace Store.ViewModels
 {
     public class EditGoodView
     {
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -29,5 +30,7 @@ namespace Store.ViewModels
         public string Type { get; set; }
 
         public int Count { get; set; }
+
+        public ICollection<GoodStorage> Storages { get; set; }
     }
 }

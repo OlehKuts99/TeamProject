@@ -93,7 +93,7 @@ namespace Store.Controllers
             {
                 return NotFound();
             }
-
+            
             EditGoodView model = new EditGoodView
             {
                 Id = good.Id,
@@ -103,17 +103,18 @@ namespace Store.Controllers
                 YearOfManufacture = good.YearOfManufacture,
                 WarrantyTerm = good.WarrantyTerm,
                 ProducerId = good.Producer.Id,
-                Producer = good.Producer,
                 Price = good.Price,
                 Type = good.Type,
-                Count = good.Count
+                Count = good.Count,
+                Producer = await unitOfWork.Producers.Get(good.ProducerId),
+                Storages = good.Storages
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditGoodView model, List<string> roles)
+        public async Task<IActionResult> Edit(EditGoodView model)
         {
             if (ModelState.IsValid)
             {
@@ -126,8 +127,6 @@ namespace Store.Controllers
                     good.PhotoUrl = model.PhotoUrl;
                     good.YearOfManufacture = model.YearOfManufacture;
                     good.WarrantyTerm = model.WarrantyTerm;
-                    good.ProducerId = model.Producer.Id;
-                    good.Producer = model.Producer;
                     good.Price = model.Price;
                     good.Type = model.Type;
                     good.Count = model.Count;
