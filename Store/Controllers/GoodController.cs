@@ -157,6 +157,64 @@ namespace Store.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Find(FindGoodView model)
+        {
+            List<Good> goods = new List<Good>();
+
+            if (ModelState.IsValid)
+            {
+                var allGoods = unitOfWork.Goods.GetAll().ToList();
+
+                foreach (var good in allGoods)
+                {
+                    bool addToResult = true;
+
+                    if (model.Name == null && model.Specification == null && 
+                        model.Price == 0 && model.YearOfManufacture == 0 && model.Type == null)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Name != null && good.Name != model.Name)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.YearOfManufacture != null && good.YearOfManufacture != model.YearOfManufacture)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Specification != null && good.Specification != model.Specification)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Price != null && good.Price != model.Price)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Type != null && good.Type != model.Type)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (addToResult)
+                    {
+                        goods.Add(good);
+                    }
+                }
+
+                HttpContext.Session.Set("list", goods);
+
+                return RedirectToAction("FindResult", "Good");
+            }
+
+            return View(model);
+        }
         
 
         public IActionResult FindResult()
