@@ -88,12 +88,21 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Good good = await unitOfWork.Goods.Get(id);
+            List<Storage> goodStorages = new List<Storage>(); 
 
             if (good == null)
             {
                 return NotFound();
             }
-            
+
+            foreach (var storage in good.Storages)
+            {
+                if (storage.GoodId == good.Id)
+                {
+                    goodStorages.Add(await unitOfWork.Storages.Get(storage.StorageId));
+                }
+            }
+
             EditGoodView model = new EditGoodView
             {
                 Id = good.Id,
@@ -102,19 +111,20 @@ namespace Store.Controllers
                 PhotoUrl = good.PhotoUrl,
                 YearOfManufacture = good.YearOfManufacture,
                 WarrantyTerm = good.WarrantyTerm,
-                ProducerId = good.Producer.Id,
-                Price = good.Price,
+                Price = Convert.ToInt32(good.Price),
                 Type = good.Type,
                 Count = good.Count,
                 Producer = await unitOfWork.Producers.Get(good.ProducerId),
-                Storages = good.Storages
+                Producers = unitOfWork.Producers.GetAll().ToList(),
+                AllStorages = unitOfWork.Storages.GetAll().ToList(),
+                Storages = goodStorages
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditGoodView model)
+        public async Task<IActionResult> Edit(EditGoodView model, List<int> storagesParameter)
         {
             if (ModelState.IsValid)
             {
@@ -130,9 +140,43 @@ namespace Store.Controllers
                     good.Price = model.Price;
                     good.Type = model.Type;
                     good.Count = model.Count;
+                    good.Producer = unitOfWork.Producers.GetAll()
+                        .Where(p => p.Name == Request.Form["producerSelect"]).First();
+
+                    List<Storage> goodStorages = new List<Storage>();
+
+                    foreach (var storage in good.Storages)
+                    {
+                        if (storage.GoodId == good.Id)
+                        {
+                            goodStorages.Add(await unitOfWork.Storages.Get(storage.StorageId));
+                        }
+                    }
+
+                    List<Storage> checkedStorages = new List<Storage>();
+                    var storages = unitOfWork.Storages.GetAll().ToList();
+
+                    for (var i = 0; i < storagesParameter.Count; i++)
+                    {
+                        var item = storages.Where(s => s.Id == storagesParameter[i])
+                            .FirstOrDefault();
+
+                        if (item != null)
+                        {
+                            checkedStorages.Add(item);
+                        }
+                    }
+
+                    var addedStorages = checkedStorages.Except(goodStorages).ToList();
+                    var removedStorage = goodStorages.Except(checkedStorages).ToList();
+
+                    await unitOfWork.Goods.DeleteGoodFromStorage(good.Id, removedStorage);
+                    await unitOfWork.Goods.AddGoodToStorage(good.Id, addedStorages);
 
                     unitOfWork.Goods.Update(good);
                     await unitOfWork.SaveAsync();
+
+                    return RedirectToAction("Index");
                 }
             }
             return View(model);
@@ -171,8 +215,8 @@ namespace Store.Controllers
                 {
                     bool addToResult = true;
 
-                    if (model.Name == null && model.Specification == null && 
-                        model.Price == 0 && model.YearOfManufacture == 0 && model.Type == null)
+                    if (model.Name == null && model.ProducerName == null && 
+                        model.EndPrice - model.StartPrice == 0 && model.YearOfManufacture == 0 && model.Type == null)
                     {
                         addToResult = false;
                     }
@@ -187,12 +231,13 @@ namespace Store.Controllers
                         addToResult = false;
                     }
 
-                    if (model.Specification != null && good.Specification != model.Specification)
+                    if (model.ProducerName != null && good.Producer.Name != model.ProducerName)
                     {
                         addToResult = false;
                     }
 
-                    if (model.Price != null && good.Price != model.Price)
+                    if (model.EndPrice - model.StartPrice != 0 && good.Price < model.StartPrice || 
+                        good.Price > model.EndPrice )
                     {
                         addToResult = false;
                     }

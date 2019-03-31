@@ -18,6 +18,8 @@ namespace Store.Models
         public DbSet<Good> Goods { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Storage> Storages { get; set; }
+        public DbSet<GoodStorage> GoodStorage { get; set; }
+        public DbSet<GoodOrder> GoodOrder { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
