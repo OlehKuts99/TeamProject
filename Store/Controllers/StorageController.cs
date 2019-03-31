@@ -9,7 +9,7 @@ using Store.Classes;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
-
+//
 namespace Store.Controllers
 {
     [Authorize(Roles = "admin")]
@@ -104,6 +104,66 @@ namespace Store.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Find()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Find(FindStorageView model)
+        {
+            List<Storage> storages = new List<Storage>();
+
+            if (ModelState.IsValid)
+            {
+                var allStorages = unitOfWork.Storages.GetAll().ToList();
+
+                foreach (var storage in allStorages)
+                {
+                    bool addToResult = true;
+
+                    if (model.City == null && model.Street== null)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.City != null && storage.City != model.City)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Street != null && storage.Street != model.Street)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (addToResult)
+                    {
+                        storages.Add(storage);
+                    }
+                }
+
+                HttpContext.Session.Set("list", storages);
+
+                return RedirectToAction("FindResult", "Storage");
+            }
+
+            return View(model);
+        }
+
+        public IActionResult FindResult()
+        {
+            var storages = HttpContext.Session.Get<List<Storage>>("list");
+
+            if (storages == null)
+            {
+                return RedirectToAction("Find");
+            }
+
+            return View(storages);
         }
     }
 }
