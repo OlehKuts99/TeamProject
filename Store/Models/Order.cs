@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.Classes;
+using System;
 using System.Collections.Generic;
 
 namespace Store.Models
@@ -13,9 +14,11 @@ namespace Store.Models
         public ICollection<GoodOrder> Products { get; set; }
 
         public DateTime OrderDate { get; set; }
-
+        
         public int CustomerId { get; set; }
 
         public Customer Customer { get; set; }
+
+        public OrderStatus OrderStatus { get; set; }
     }
 }
