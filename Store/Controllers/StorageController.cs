@@ -9,7 +9,7 @@ using Store.Classes;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
-//
+
 namespace Store.Controllers
 {
     [Authorize(Roles = "admin")]
@@ -49,7 +49,6 @@ namespace Store.Controllers
                 await unitOfWork.SaveAsync();
 
                 return RedirectToAction("Index", "Storage");
-
             }
 
             return View(model);
