@@ -23,7 +23,14 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(unitOfWork.Orders.GetAll().ToList());
+            var orders = unitOfWork.Orders.GetAll().ToList();
+            var customers = unitOfWork.Customers.GetAll().ToList();
+            foreach (var order in orders)
+            {
+               order.Customer = customers.Where(p => p.Id == order.CustomerId).First();
+            }
+
+            return View(orders);
         }
 
         [HttpGet]
@@ -48,6 +55,7 @@ namespace Store.Controllers
                     }
                     if (addToResult)
                     {
+                        order.Customer = unitOfWork.Customers.GetAll().Where(p => p.Id == order.CustomerId).First();
                         orders.Add(order);
                     }
                 }

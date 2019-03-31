@@ -9,6 +9,11 @@ namespace Store.Models
     /// </summary>
     public class Order
     {
+        public Order()
+        {
+            Products = new List<GoodOrder>();
+        }
+
         public int Id { get; set; }
 
         public ICollection<GoodOrder> Products { get; set; }
