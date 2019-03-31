@@ -40,6 +40,20 @@ namespace Store.Classes
 
             if (appDbContext != null)
             {
+                if (unitOfWork.Customers.GetAll().Count() == 0)
+                {
+                    await unitOfWork.Customers.Create(
+                        new Customer()
+                        {
+                            Id = 1,
+                            FirstName = "Adam",
+                            SecondName = "Rowan",
+                            Email = "asn@gmail.com"
+                        });
+                    await unitOfWork.SaveAsync();
+                }
+
+                
                 if (unitOfWork.Storages.GetAll().Where(s => s.Street == "Horodotska, 17").Count() == 0)
                 { 
                     await unitOfWork.Storages.Create(new Storage() { City = "Lviv", Street = "Horodotska, 17" });
@@ -76,6 +90,17 @@ namespace Store.Classes
                         Count = 450
                     });
 
+                    await unitOfWork.SaveAsync();
+                }
+
+                if (unitOfWork.Orders.GetAll().Count() == 0)
+                {
+                    await unitOfWork.Orders.Create(new Order()
+                    {
+                        OrderDate = new DateTime(2017, 7, 12),
+                        Customer = await unitOfWork.Customers.Get(2007),
+                        OrderStatus = OrderStatus.Cancelled
+                    });
                     await unitOfWork.SaveAsync();
                 }
             }
