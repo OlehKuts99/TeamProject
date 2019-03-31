@@ -28,7 +28,7 @@
             <td>@good.Count</td>
             <td>
                 <form asp-action="Delete" asp-route-id="@good.Id" method="post">
-                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@good.Id">Edit</a>
+                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-controller="Good" asp-route-id="@good.Id">Edit</a>
                     <button type="submit" class="btn btn-sm btn-danger">
                         Delete
                     </button>
