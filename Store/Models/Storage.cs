@@ -10,6 +10,11 @@ namespace Store.Models
     /// </summary>
     public class Storage
     {
+        public Storage()
+        {
+            Products = new List<GoodStorage>();
+        }
+
         public int Id { get; set; }
 
         public string City { get; set; }

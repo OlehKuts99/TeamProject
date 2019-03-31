@@ -59,6 +59,7 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Storage storage = await unitOfWork.Storages.Get(id);
+
             if (storage == null)
             {
                 return NotFound();
@@ -89,7 +90,7 @@ namespace Store.Controllers
                     await unitOfWork.SaveAsync();
                 }
             }
-            return RedirectToAction("Index","Storage");
+            return RedirectToAction("Index", "Storage");
         }
 
         [HttpPost]
@@ -104,6 +105,29 @@ namespace Store.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ShowGoods(int id)
+        {
+            Storage storage = await unitOfWork.Storages.Get(id);
+            var goods = unitOfWork.Goods.GetAll().ToList();
+            List<Good> storageGoods = new List<Good>();
+
+            foreach (var goodStorage in storage.Products)
+            {
+                var item = goods.Where(g => g.Id == goodStorage.GoodId).First();
+
+                if (item != null)
+                {
+                    item.Producer = await unitOfWork.Producers.Get(item.ProducerId);
+                    storageGoods.Add(item);
+                }
+            }
+
+            ViewBag.NameOfStorage = string.Join(", ", storage.City, storage.Street);
+
+            return View(storageGoods);
         }
     }
 }
