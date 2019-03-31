@@ -10,11 +10,13 @@ namespace Store.ViewModels
     {
         public string Name { get; set; }
 
-        public string Specification { get; set; }
+        public string ProducerName { get; set; }
 
         public int? YearOfManufacture { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal? StartPrice { get; set; }
+
+        public decimal? EndPrice { get; set; }
 
         public string Type { get; set; }
     }

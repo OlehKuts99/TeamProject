@@ -110,6 +110,77 @@ namespace Store.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
+        [HttpGet]
+        public IActionResult Find()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Find(FindProducerView model)
+        {
+            List<Producer> producers = new List<Producer>();
+
+            if (ModelState.IsValid)
+            {
+                var allProducers = unitOfWork.Producers.GetAll().ToList();
+
+                foreach (var producer in allProducers)
+                {
+                    bool addToResult = true;
+
+                    if (model.Name == null && model.Phone == null && model.Email == null && model.WebSite == null)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Name != null && producer.Name != model.Name)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Phone != null && producer.Phone != model.Phone)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Email != null && producer.Email != model.Email)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.WebSite != null && producer.WebSite != model.WebSite)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (addToResult)
+                    {
+                        producers.Add(producer);
+                    }
+                }
+
+                HttpContext.Session.Set("list", producers);
+
+                return RedirectToAction("FindResult", "Producer");
+            }
+
+            return View(model);
+        }
+
+        public IActionResult FindResult()
+        {
+            var producers = HttpContext.Session.Get<List<Producer>>("list");
+
+            if (producers == null)
+            {
+                return RedirectToAction("Find");
+            }
+
+            return View(producers);
+        }
+
+
     }
 }
