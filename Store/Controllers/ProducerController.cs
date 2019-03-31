@@ -92,6 +92,7 @@ namespace Store.Controllers
                     producer.WebSite = model.WebSite;
                     unitOfWork.Producers.Update(producer);
                     await unitOfWork.SaveAsync();
+                    return RedirectToAction("Index");
 
                 }
             }
