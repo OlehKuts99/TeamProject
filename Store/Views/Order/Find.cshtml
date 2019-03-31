@@ -1,0 +1,19 @@
+﻿@model Store.ViewModels.FindOrderView
+@{
+    ViewBag.Title = "Find Order";
+}
+
+<form asp-action="Find" asp-controller="Order">
+    <div class="form-group" style="margin-top: 2%;">
+        <label asp-for="Id" class="control-label">Id</label>
+        <input type="number" asp-for="Id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="OrderDate" class="control-label">Date of order</label>
+        <input type="date" asp-for="OrderDate" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Find" class="btn btn-primary" style="margin: 2% 35%; width: 30%;" />
+    </div>
+</form>
