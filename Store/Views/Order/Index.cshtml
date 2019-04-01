@@ -9,7 +9,8 @@
     <tr>
         <th>Id</th>
         <th>Date of order</th>
-        <th>Customer Name</th>
+        <th>Goods</th>
+        <th>Customer</th>
         <th>Status</th>
         <th></th>
     </tr>
@@ -18,7 +19,8 @@
         <tr>
             <td>@order.Id</td>
             <td>@order.OrderDate</td>
-            <td>@order.Customer.FirstName @order.Customer.SecondName</td>
+            <td><a asp-action="ShowCustomer" asp-route-id="@order.Id">Customer</a></td>
+            <td><a asp-action="ShowGoods" asp-route-id="@order.Id">Goods</a></td>
             <td>@order.OrderStatus</td>
         </tr>
     }

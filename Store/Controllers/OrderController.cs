@@ -78,5 +78,32 @@ namespace Store.Controllers
 
             return View(orders);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowGoods(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+            List<Good> goods = new List<Good>();
+            
+            foreach (var item in order.Products)
+            {
+                goods.Add(await unitOfWork.Goods.Get(item.GoodId));
+            }
+
+            ViewBag.OrderId = order.Id;
+
+            return View(goods);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowCustomer(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+            Customer customer = await unitOfWork.Customers.Get(order.CustomerId);
+
+            ViewBag.OrderId = order.Id;
+
+            return View(customer);
+        }
     }
 }
