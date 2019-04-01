@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Store.Classes.UnitOfWork.Interfaces;
@@ -33,6 +34,7 @@ namespace Store.Classes.UnitOfWork.Classes
         public async Task<Order> Get(int id)
         {
             var order = await _dbContext.Orders.FindAsync(id);
+            order.Products = _dbContext.GoodOrder.Where(g => g.OrderId == order.Id).ToList();
 
             return order;
         }

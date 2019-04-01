@@ -253,6 +253,17 @@ namespace Store.Controllers
 
             return View(customers);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> ShowOrders(int id)
+        {
+            Customer customer = await unitOfWork.Customers.Get(id);
+            List<Order> customerOrders = new List<Order>();
+
+            customerOrders.AddRange(unitOfWork.Orders.GetAll().Where(o => o.CustomerId == customer.Id));
+
+            return View(customerOrders);
+        }
     }
 }
 
