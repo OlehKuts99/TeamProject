@@ -182,6 +182,14 @@ namespace Store.Controllers
             return View(producers);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> ShowGoods(int id)
+        {
+            Producer producer = await unitOfWork.Producers.Get(id);
 
+            ViewBag.ProducerName = producer.Name;
+
+            return View(producer.Products);
+        }
     }
 }

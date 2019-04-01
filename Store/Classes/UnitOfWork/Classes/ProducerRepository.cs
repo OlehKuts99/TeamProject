@@ -33,6 +33,8 @@ namespace Store.Classes.UnitOfWork.Classes
         public async Task<Producer> Get(int id)
         {
             Producer producer = await applicationContext.Producers.FindAsync(id);
+            producer.Products = applicationContext.Goods.Where(g => g.ProducerId == producer.Id).ToList();
+
             return producer;
         }
 
