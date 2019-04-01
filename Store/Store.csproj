@@ -21,6 +21,12 @@
     <Content Update="Views\Storage\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Storage\Find.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Storage\FindResult.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Storage\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
