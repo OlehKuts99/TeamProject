@@ -37,11 +37,17 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult Find()
         {
-            return View();
+            FindOrderView model = new FindOrderView
+            {
+                OrderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList(),
+                SelectedStatuses = new List<OrderStatus>()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Find(FindOrderView model)
+        public IActionResult Find(FindOrderView model, List<OrderStatus> statuses)
         {
             List<Order> orders = new List<Order>();
             if (ModelState.IsValid)
@@ -49,11 +55,28 @@ namespace Store.Controllers
                 var allOrders = unitOfWork.Orders.GetAll().ToList();
                 foreach (var order in allOrders)
                 {
-                    bool addToResult = false;
-                    if (model.Id == order.Id || ((DateTime)model.OrderDate).Date == order.OrderDate.Date)
+                    bool addToResult = true;
+
+                    if (model.Id == null && model.OrderDate == null && statuses.Count == 0)
                     {
-                        addToResult = true;
+                        addToResult = false;
                     }
+
+                    if (model.Id != null && order.Id != model.Id)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
+                    {
+                        addToResult = false;
+                    }
+
                     if (addToResult)
                     {
                         order.Customer = unitOfWork.Customers.GetAll().Where(p => p.Id == order.CustomerId).First();
