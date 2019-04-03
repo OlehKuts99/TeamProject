@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace Store.Controllers
                 foreach (var order in allOrders)
                 {
                     bool addToResult = false;
-                    if (model.Id == order.Id || model.OrderDate == order.OrderDate)
+                    if (model.Id == order.Id || ((DateTime)model.OrderDate).Date == order.OrderDate.Date)
                     {
                         addToResult = true;
                     }
