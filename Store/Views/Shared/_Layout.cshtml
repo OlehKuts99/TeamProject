@@ -37,6 +37,10 @@
                     {
                         <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin panel</a></li>
                     }
+                    @if (User.IsInRole("manager"))
+                    {
+                        <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manage orders</a></li>
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (!User.Identity.IsAuthenticated)

@@ -27,6 +27,11 @@ namespace Store.Classes
                 await roleManager.CreateAsync(new IdentityRole("customer"));
             }
 
+            if (await roleManager.FindByNameAsync("manager") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("manager"));
+            }
+
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
                 ApplicationUser admin = new ApplicationUser { Email = adminEmail, UserName = adminEmail };
