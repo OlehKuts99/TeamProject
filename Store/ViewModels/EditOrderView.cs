@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Store.Classes;
+using System;
 using System.Collections.Generic;
-using Store.Classes;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Store.ViewModels
 {
-    public class FindOrderView
+    public class EditOrderView
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public string CustomerName { get; set; }
 
@@ -18,8 +20,8 @@ namespace Store.ViewModels
 
         public string EndPointCity { get; set; }
 
-        public List<OrderStatus> OrderStatuses { get; set; }
+        public string EndPointStreet { get; set; }
 
-        public List<OrderStatus> SelectedStatuses { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

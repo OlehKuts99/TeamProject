@@ -1,14 +1,269 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using Store.Classes;
+using Store.Classes.UnitOfWork;
+using Store.Models;
+using Store.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
     [Authorize(Roles = "manager")]
     public class ManagerController : Controller
     {
+        private readonly UnitOfWork unitOfWork;
+
+        public ManagerController(AppDbContext appDbContext)
+        {
+            this.unitOfWork = new UnitOfWork(appDbContext);
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(unitOfWork.Orders.GetAll().ToList());
+        }
+
+        [HttpGet]
+        public IActionResult Find()
+        {
+            FindOrderView model = new FindOrderView
+            {
+                OrderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList(),
+                SelectedStatuses = new List<OrderStatus>()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Find(FindOrderView model, List<OrderStatus> statuses)
+        {
+            List<Order> orders = new List<Order>();
+
+            if (ModelState.IsValid)
+            {
+                var allOrders = unitOfWork.Orders.GetAll().ToList();
+                foreach (var order in allOrders)
+                {
+                    order.Customer = await unitOfWork.Customers.Get(order.CustomerId);
+
+                    bool addToResult = true;
+
+                    if (model.Id == null && model.CustomerName == null && model.CustomerSurname == null &&
+                        model.CustomerEmail == null && model.EndPointCity == null && 
+                        model.OrderDate == null && statuses.Count == 0)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.Id != null && order.Id != model.Id)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.CustomerName != null && order.Customer.FirstName != model.CustomerName)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.CustomerSurname != null && order.Customer.SecondName != model.CustomerSurname)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.EndPointCity != null && order.EndPointCity != model.EndPointCity)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.CustomerEmail != null && order.Customer.Email != model.CustomerEmail)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
+                    {
+                        addToResult = false;
+                    }
+
+                    if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
+                    {
+                        addToResult = false;
+                    }
+
+                    if (addToResult)
+                    {
+                        orders.Add(order);
+                    }
+                }
+
+                HttpContext.Session.Set("list", orders);
+
+                return RedirectToAction("FindResult", "Manager");
+            }
+            return View(model);
+        }
+
+        public IActionResult FindResult()
+        {
+            var orders = HttpContext.Session.Get<List<Order>>("list");
+
+            if (orders == null)
+            {
+                return RedirectToAction("Find");
+            }
+
+            return View(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowGoods(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+            List<Good> goods = new List<Good>();
+
+            if (order != null)
+            {
+                foreach (var item in order.Products)
+                {
+                    goods.Add(await unitOfWork.Goods.Get(item.GoodId));
+                }
+
+                ViewBag.OrderId = order.Id;
+
+                return View(goods);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowCustomer(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+            Customer customer = await unitOfWork.Customers.Get(order.CustomerId);
+
+            if (order != null && customer != null)
+            {
+                ViewBag.OrderId = order.Id;
+
+                return View(customer);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+
+            ChangeOrderStatusView model = new ChangeOrderStatusView
+            {
+                Id = order.Id,
+                CurrentStatus = order.OrderStatus,
+                OrderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(ChangeOrderStatusView model)
+        {
+            Order order = await unitOfWork.Orders.Get(model.Id);
+            Customer customer = await unitOfWork.Customers.Get(order.CustomerId);
+            bool sendEmail = true;
+
+            if (order != null && customer != null)
+            {
+                Enum.TryParse(Request.Form["orderStatus"], out OrderStatus temp);
+
+                if (order.OrderStatus == temp)
+                {
+                    sendEmail = false;
+                }
+
+                order.OrderStatus = temp;
+                unitOfWork.Orders.Update(order);
+                await unitOfWork.SaveAsync();
+
+                if (sendEmail)
+                {
+                    await SendEmailAsync(customer.Email, "TestSecond", "");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Order order = await unitOfWork.Orders.Get(id);
+            order.Customer = await unitOfWork.Customers.Get(order.CustomerId);
+
+            EditOrderView model = new EditOrderView
+            {
+                Id = order.Id,
+                CustomerName = order.Customer.FirstName,
+                CustomerSurname = order.Customer.SecondName,
+                CustomerEmail = order.Customer.Email,
+                OrderDate = order.OrderDate,
+                EndPointCity = order.EndPointCity,
+                EndPointStreet = order.EndPointStreet,
+                Status = order.OrderStatus
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditOrderView model)
+        {
+            Order order = await unitOfWork.Orders.Get(model.Id);
+
+            if (order != null)
+            {
+                order.EndPointCity = model.EndPointCity;
+                order.EndPointStreet = model.EndPointStreet;
+
+                unitOfWork.Orders.Update(order);
+                await unitOfWork.SaveAsync();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        // Testing ...
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            var emailMessage = new MimeMessage();
+
+            emailMessage.From.Add(new MailboxAddress("Store administration", "whosend@gmai.com"));
+            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = message
+            };
+
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync("smtp.gmail.com", 587, false);
+                await client.AuthenticateAsync("whosend@gmail.com", "password");
+                await client.SendAsync(emailMessage);
+
+                await client.DisconnectAsync(true);
+            }
         }
     }
 }
