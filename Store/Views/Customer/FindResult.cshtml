@@ -17,23 +17,25 @@
         <th>Second Name</th>
         <th>Phone</th>
         <th>Email</th>
+        <th>Orders</th>
         <th></th>
     </tr>
     @foreach (var customer in Model)
     {
-        <tr>
-            <td>@customer.FirstName</td>
-            <td>@customer.SecondName</td>
-            <td>@customer.Phone</td>
-            <td>@customer.Email</td>
-            <td>
-                <form asp-action="Delete" asp-route-id="@customer.Id" method="post">
-                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
+    <tr>
+        <td>@customer.FirstName</td>
+        <td>@customer.SecondName</td>
+        <td>@customer.Phone</td>
+        <td>@customer.Email</td>
+        <td><a asp-action="ShowOrders" asp-route-id="@customer.Id">Orders</a></td>
+        <td>
+            <form asp-action="Delete" asp-route-id="@customer.Id" method="post">
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                </button>
+            </form>
+        </td>
+    </tr>
     }
 </table>

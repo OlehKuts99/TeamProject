@@ -25,5 +25,9 @@ namespace Store.Models
         public Customer Customer { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public string EndPointCity { get; set; }
+
+        public string EndPointStreet { get; set; }
     }
 }

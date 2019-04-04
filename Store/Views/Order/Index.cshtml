@@ -11,6 +11,8 @@
         <th>Date of order</th>
         <th>Goods</th>
         <th>Customer</th>
+        <th>City</th>
+        <th>Street</th>
         <th>Status</th>
         <th></th>
     </tr>
@@ -21,6 +23,8 @@
             <td>@order.OrderDate</td>
             <td><a asp-action="ShowCustomer" asp-route-id="@order.Id">Customer</a></td>
             <td><a asp-action="ShowGoods" asp-route-id="@order.Id">Goods</a></td>
+            <td>@order.EndPointCity</td>
+            <td>@order.EndPointStreet</td>
             <td>@order.OrderStatus</td>
         </tr>
     }
