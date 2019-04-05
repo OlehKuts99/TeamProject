@@ -22,6 +22,8 @@ namespace Store.ViewModels
 
         public string EndPointStreet { get; set; }
 
+        public bool SendEmail { get; set; }
+
         public OrderStatus Status { get; set; }
     }
 }

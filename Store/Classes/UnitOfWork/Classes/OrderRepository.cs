@@ -35,6 +35,7 @@ namespace Store.Classes.UnitOfWork.Classes
         {
             var order = await _dbContext.Orders.FindAsync(id);
             order.Products = _dbContext.GoodOrder.Where(g => g.OrderId == order.Id).ToList();
+            order.Customer = await _dbContext.Customers.FindAsync(order.CustomerId);
 
             return order;
         }

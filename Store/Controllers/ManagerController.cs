@@ -1,8 +1,7 @@
-﻿using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
 using Store.Classes;
+using Store.Classes.Sender;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
@@ -147,13 +146,12 @@ namespace Store.Controllers
         public async Task<IActionResult> ShowCustomer(int id)
         {
             Order order = await unitOfWork.Orders.Get(id);
-            Customer customer = await unitOfWork.Customers.Get(order.CustomerId);
 
-            if (order != null && customer != null)
+            if (order != null)
             {
                 ViewBag.OrderId = order.Id;
 
-                return View(customer);
+                return View(order.Customer);
             }
 
             return RedirectToAction("Index");
@@ -178,11 +176,10 @@ namespace Store.Controllers
         public async Task<IActionResult> ChangeStatus(ChangeOrderStatusView model)
         {
             Order order = await unitOfWork.Orders.Get(model.Id);
-            Customer customer = await unitOfWork.Customers.Get(order.CustomerId);
-            bool sendEmail = true;
 
-            if (order != null && customer != null)
+            if (order != null)
             {
+                bool sendEmail = model.SendEmail;
                 Enum.TryParse(Request.Form["orderStatus"], out OrderStatus temp);
 
                 if (order.OrderStatus == temp)
@@ -196,7 +193,8 @@ namespace Store.Controllers
 
                 if (sendEmail)
                 {
-                    await SendEmailAsync(customer.Email, "TestSecond", "");
+                    EmailSender emailSender = new EmailSender();
+                    await emailSender.StatusChangedSend(order);
                 }
             }
 
@@ -207,7 +205,6 @@ namespace Store.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Order order = await unitOfWork.Orders.Get(id);
-            order.Customer = await unitOfWork.Customers.Get(order.CustomerId);
 
             EditOrderView model = new EditOrderView
             {
@@ -231,39 +228,24 @@ namespace Store.Controllers
 
             if (order != null)
             {
+                string oldEndPoint = order.EndPointCity + ", " + order.EndPointStreet;
+
                 order.EndPointCity = model.EndPointCity;
                 order.EndPointStreet = model.EndPointStreet;
 
                 unitOfWork.Orders.Update(order);
                 await unitOfWork.SaveAsync();
+                
+                if (model.SendEmail)
+                {
+                    EmailSender emailSender = new EmailSender();
+                    await emailSender.EndPointChangeSend(order, oldEndPoint);
+                }
 
                 return RedirectToAction("Index");
             }
 
             return View(model);
-        }
-
-        // Testing ...
-        public async Task SendEmailAsync(string email, string subject, string message)
-        {
-            var emailMessage = new MimeMessage();
-
-            emailMessage.From.Add(new MailboxAddress("Store administration", "whosend@gmai.com"));
-            emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = message
-            };
-
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync("smtp.gmail.com", 587, false);
-                await client.AuthenticateAsync("whosend@gmail.com", "password");
-                await client.SendAsync(emailMessage);
-
-                await client.DisconnectAsync(true);
-            }
         }
     }
 }
