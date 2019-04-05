@@ -33,9 +33,10 @@ namespace Store.Classes.Sender
         }
 
         /// <summary>
-        /// Method generates email letter that informs that order status has changed.
+        /// Method generates email letter that informs that end point of order has changed.
         /// </summary>
         /// <param name="order">Order that was changed.</param>
+        /// <param name="oldEndPoint">Old end point of order.</param>
         public async Task EndPointChangeSend(Order order, string oldEndPoint)
         {
             const string EmailTemplateSection = "EmailSendTemplates";
