@@ -4,26 +4,39 @@
 }
 
 <link rel="stylesheet" href="~/css/mainPage.css" />
+<link rel="stylesheet" href="~/css/Scrollbar.css" />
 
 <div class="container content">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="list-group">
-                <a href="#" class="list-group-item">Type1</a>
-                <a href="#" class="list-group-item">Type2</a>
-                <a href="#" class="list-group-item">Type3</a>
-                <a href="#" class="list-group-item">Type4</a>
-                <a href="#" class="list-group-item">Type5</a>
+    <div class="row justify-content-md-center">
+        <div class="col-lg-2">
+            <div class="card example-1 scrollbar-ripe-malinka">
+                <div class="card-body">
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">ALL</a>
+                    </p>
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Notebook">Notebook</a>
+                    </p>
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="PC">PC</a>
+                    </p>
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Laptop">Laptop</a>
+                    </p>
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Phone">Phone</a>
+                    </p>
+                </div>
             </div>
         </div>
-        <div class="col-md-8 products">
+        <div class="col-lg-10 mr-auto products">
             <div class="row">
                 @foreach (var good in Model)
                 {
                     <div class="col-sm-4">
                         <div class="product">
                             <div class="product-img">
-                                <a href="#"><img src="~/images/goods/@good.PhotoUrl" alt=""></a>
+                                <a href="#"><img src="../images/goods/@good.PhotoUrl" alt=""></a>
                             </div>
                             <p class="product-title">
                                 <a href="#">@good.Name</a>

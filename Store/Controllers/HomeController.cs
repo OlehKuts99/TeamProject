@@ -31,6 +31,19 @@ namespace Store.Controllers
             return View(goods);
         }
 
+        public IActionResult NameSearch(string goodType)
+        {
+            var goods = unitOfWork.Goods.GetAll().ToList().Where(p=>p.Type==goodType);
+            var producers = unitOfWork.Producers.GetAll().ToList();
+
+            foreach (var good in goods)
+            {
+                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+            }
+
+            return View("Index",goods);
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
