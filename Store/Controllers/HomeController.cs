@@ -39,6 +39,11 @@ namespace Store.Controllers
             var goods = new List<Good>();
             var resultModel = new FindRangeInMainView();
             var allGoods = unitOfWork.Goods.GetAll().ToList();
+            var producers = unitOfWork.Producers.GetAll().ToList();
+            foreach (var good in goods)
+            {
+                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+            }
 
             foreach (var good in allGoods)
             {
