@@ -18,8 +18,10 @@ namespace Store.Models
         public DbSet<Good> Goods { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Storage> Storages { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DbSet<GoodStorage> GoodStorage { get; set; }
         public DbSet<GoodOrder> GoodOrder { get; set; }
+        public DbSet<GoodCart> GoodCart { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,10 +36,15 @@ namespace Store.Models
             modelBuilder.Entity<Storage>()
                 .HasKey(s => s.Id);
 
+            modelBuilder.Entity<Cart>().
+                HasKey(c => c.Id);
+
             modelBuilder.Entity<GoodOrder>()
                 .HasKey(g => new { g.GoodId, g.OrderId });
             modelBuilder.Entity<GoodStorage>()
                 .HasKey(g => new { g.GoodId, g.StorageId });
+            modelBuilder.Entity<GoodCart>()
+                .HasKey(g => new { g.GoodId, g.CartId });
 
             modelBuilder.Entity<GoodOrder>()
                 .HasOne(g => g.Order)
@@ -55,6 +62,15 @@ namespace Store.Models
             modelBuilder.Entity<GoodStorage>()
                 .HasOne(s => s.Good)
                 .WithMany(g => g.Storages)
+                .HasForeignKey(g => g.GoodId);
+
+            modelBuilder.Entity<GoodCart>()
+                .HasOne(g => g.Cart)
+                .WithMany(c => c.Goods)
+                .HasForeignKey(g => g.CartId);
+            modelBuilder.Entity<GoodCart>()
+                .HasOne(g => g.Good)
+                .WithMany(g => g.Carts)
                 .HasForeignKey(g => g.GoodId);
         }
     }

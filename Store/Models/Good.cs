@@ -40,5 +40,7 @@ namespace Store.Models
         public ICollection<GoodOrder> Orders { get; set; }
 
         public ICollection<GoodStorage> Storages { get; set; }
+
+        public ICollection<GoodCart> Carts { get; set; }
     }
 }

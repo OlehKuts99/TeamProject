@@ -16,5 +16,7 @@ namespace Store.Models
         public int Phone { get; set; }
 
         public string Email { get; set; }
+
+        public Cart Cart { get; set; }
     }
 }
