@@ -19,5 +19,7 @@ namespace Store.ViewModels
         public decimal? EndPrice { get; set; }
 
         public string Type { get; set; }
+
+        public int? WarrantyTerm { get; set; }
     }
 }

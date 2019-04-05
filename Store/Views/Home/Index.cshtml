@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Store.Models.Good>
+﻿@model Store.ViewModels.FindRangeInMainView
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -15,38 +15,62 @@
                         <a asp-area="" asp-controller="Home" asp-action="Index">ALL</a>
                     </p>
                     <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Notebook">Notebook</a>
+                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Notebook">Notebook</a>
                     </p>
                     <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="PC">PC</a>
+                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="PC">PC</a>
                     </p>
                     <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Laptop">Laptop</a>
+                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Laptop">Laptop</a>
                     </p>
                     <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="NameSearch" asp-route-goodType="Phone">Phone</a>
+                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Phone">Phone</a>
                     </p>
                 </div>
+            </div>
+            <div class="card-body">
+                <form asp-action="Find" asp-controller="Home">
+                    <div class="form-group">
+                        <label asp-for="@Model.GoodView.ProducerName" class="control-label">Producer name</label>
+                        <input type="text" asp-for="@Model.GoodView.ProducerName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.GoodView.YearOfManufacture" class="control-label">Year of manufacture</label>
+                        <input type="number" asp-for="@Model.GoodView.YearOfManufacture" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.GoodView.StartPrice" class="control-label">Price</label>
+                        <input type="number" asp-for="@Model.GoodView.StartPrice" placeholder="From" class="form-control" />
+                        <input type="number" asp-for="@Model.GoodView.EndPrice" placeholder="To" class="form-control" style="margin-top: 1%;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.GoodView.WarrantyTerm" class="control-label">WarrantyTerm</label>
+                        <input type="number" asp-for="@Model.GoodView.WarrantyTerm" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Find" class="btn btn-primary" style="margin: 2% 35%; width: 30%;" />
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-lg-10 mr-auto products">
             <div class="row">
-                @foreach (var good in Model)
+                @foreach (var good in Model.list)
                 {
-                <div class="col-sm-4">
-                    <a asp-area="" asp-controller="Home" asp-action="GoodPage" asp-route-goodId="@good.Id">
-                        <div class="product">
-                            <div class="product-img">
-                                <img src="../images/goods/@good.PhotoUrl" alt="">
+                    <div class="col-sm-4">
+                        <a asp-area="" asp-controller="Home" asp-action="GoodPage" asp-route-goodId="@good.Id">
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="../images/goods/@good.PhotoUrl" alt="">
+                                </div>
+                                <p class="product-title">
+                                    <div>@good.Name</div>
+                                </p>
+                                <p class="product-desc">@good.Specification</p>
+                                <p class="product-price">Price: @good.Price</p>
                             </div>
-                            <p class="product-title">
-                                <div>@good.Name</div>
-                            </p>
-                            <p class="product-desc">@good.Specification</p>
-                            <p class="product-price">Price: @good.Price</p>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
                 }
             </div>
         </div>
