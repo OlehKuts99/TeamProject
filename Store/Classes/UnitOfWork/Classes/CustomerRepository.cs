@@ -54,6 +54,7 @@ namespace Store.Classes.UnitOfWork.Classes
                 cart.Goods = applicationContext.GoodCart.Where(c => c.CartId == cart.Id).ToList();
                 customer.Cart = cart;
                 await this.applicationContext.Carts.AddAsync(cart);
+                await this.applicationContext.SaveChangesAsync();
             }
 
             return customer;
