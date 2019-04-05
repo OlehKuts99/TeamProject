@@ -1,0 +1,52 @@
+﻿@model Store.Models.Good
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="~/css/mainPage.css" />
+<div class="container content">
+    <div class="row product-page">
+        <div class="col-lg-6 image">
+            <img src="../images/goods/@Model.PhotoUrl" />
+        </div>
+        <div class="col-lg-6">
+            <h2>@Model.Name</h2>
+            <p>
+                @Model.Specification
+            </p>
+            <p>
+                Color:
+            </p>
+            <ul class="circles">
+                <li>
+                    <div class="white-circle"></div>
+                </li>
+                <li>
+                    <div class="red-circle"></div>
+                </li>
+                <li>
+                    <div class="black-circle"></div>
+                </li>
+            </ul>
+            <hr class="black-hr"/>
+            <div class="price">
+                <p>
+                    @Model.Price
+                </p>
+                <button class="btn btn-green">Add to guat</button>
+            </div>
+        </div>
+    </div>
+    <hr class="black-hr" />
+    <div class="row product-review">
+        <div class="col-lg-6 col-lg-offset-3 form-group">
+            <textarea class="form-control" id="FormControlTextarea1" rows="8"></textarea>
+        </div>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-primary">Live a review</button>
+    </div>
+    <hr class="black-hr" />
+    <div class="row text-center">
+        <a href="#">Show rewiews</a>
+    </div>
+</div>

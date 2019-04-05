@@ -44,6 +44,11 @@ namespace Store.Controllers
             return View("Index",goods);
         }
 
+        public async Task<IActionResult> GoodPage(int goodId)
+        {
+            return View(await unitOfWork.Goods.Get(goodId));
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

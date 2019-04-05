@@ -33,18 +33,20 @@
             <div class="row">
                 @foreach (var good in Model)
                 {
-                    <div class="col-sm-4">
+                <div class="col-sm-4">
+                    <a asp-area="" asp-controller="Home" asp-action="GoodPage" asp-route-goodId="@good.Id">
                         <div class="product">
                             <div class="product-img">
-                                <a href="#"><img src="../images/goods/@good.PhotoUrl" alt=""></a>
+                                <img src="../images/goods/@good.PhotoUrl" alt="">
                             </div>
                             <p class="product-title">
-                                <a href="#">@good.Name</a>
+                                <div>@good.Name</div>
                             </p>
                             <p class="product-desc">@good.Specification</p>
                             <p class="product-price">Price: @good.Price</p>
                         </div>
-                    </div>
+                    </a>
+                </div>
                 }
             </div>
         </div>
