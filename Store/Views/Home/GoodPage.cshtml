@@ -13,6 +13,30 @@
             <p>
                 @Model.Specification
             </p>
+            @if (Model.YearOfManufacture != 0)
+            {
+                <p>
+                    Year : @Model.YearOfManufacture
+                </p>
+            }
+            @if (Model.WarrantyTerm != 0)
+            {
+                <p>
+                    Warranty term (months) : @Model.WarrantyTerm
+                </p>
+            }
+            @if (Model.Type != null)
+            {
+                <p>
+                    Type : @Model.Type
+                </p>
+            }
+            @if (Model.Producer != null)
+            {
+                <p>
+                    Producer : @Model.Producer.Name
+                </p>
+            }
             <p>
                 Color:
             </p>
@@ -27,7 +51,7 @@
                     <div class="black-circle"></div>
                 </li>
             </ul>
-            <hr class="black-hr"/>
+            <hr class="black-hr" />
             <div class="price">
                 <p>
                     @Model.Price

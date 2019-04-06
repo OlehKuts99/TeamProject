@@ -53,7 +53,7 @@
     width: 70%;
 }
 
-.product-page .price p{
+.product-page .price p {
     font-size: 18px;
     display: inline;
     padding-right: 20px;
@@ -112,7 +112,7 @@
 
 .rate {
     margin: 0;
-    margin-left:85px;
+    margin-left: 85px;
     padding: 0;
     font-size: 0;
 }
@@ -131,6 +131,10 @@
         text-shadow: 0 1px #000, 0 -1px #000, 1px 0 #000, -1px 0 #000;
     }
 
+        .star:visited {
+            color: aqua;
+        }
+
         .rate .star:before {
             content: '\2605';
         }
@@ -138,3 +142,11 @@
         .rate .star:hover ~ .star {
             color: #fff;
         }
+
+.good-link {
+    color: black;
+}
+
+    .good-link:hover {
+        text-decoration: none;
+    }

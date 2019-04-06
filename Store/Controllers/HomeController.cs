@@ -121,7 +121,10 @@ namespace Store.Controllers
 
         public async Task<IActionResult> GoodPage(int goodId)
         {
-            return View(await unitOfWork.Goods.Get(goodId));
+            Good good = await unitOfWork.Goods.Get(goodId);
+            good.Producer = await unitOfWork.Producers.Get(good.ProducerId);
+
+            return View(good);
         }
 
         public IActionResult About()
