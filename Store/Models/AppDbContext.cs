@@ -19,6 +19,7 @@ namespace Store.Models
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<GoodReview> Reviews { get; set; }
         public DbSet<GoodStorage> GoodStorage { get; set; }
         public DbSet<GoodOrder> GoodOrder { get; set; }
         public DbSet<GoodCart> GoodCart { get; set; }

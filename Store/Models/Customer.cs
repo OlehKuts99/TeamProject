@@ -18,5 +18,7 @@ namespace Store.Models
         public string Email { get; set; }
 
         public Cart Cart { get; set; }
+
+        public ICollection<GoodReview> Reviews { get; set; }
     }
 }
