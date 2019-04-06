@@ -4,12 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Store.Classes;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
 
 namespace Store.Controllers
 {
+    public delegate List<Good> SortGoods(List<Good> goods);
+
     public class HomeController : Controller
     {
         private readonly UnitOfWork unitOfWork;
@@ -43,10 +46,14 @@ namespace Store.Controllers
 
             foreach (var good in allGoods)
             {
+                good.Reviews = unitOfWork.Goods.GetReviews(good.Id);
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
             model.GoodView.Type = resultModel.Types.Where(t => t == Request.Form["typeSelect"]).First();
+            resultModel.ChoosenType = model.GoodView.Type;
+            Enum.TryParse(Request.Form["sortSelect"].ToString(), out SortBy temp);
+            resultModel.SortBy = temp;
 
             foreach (var good in allGoods)
             {
@@ -85,6 +92,9 @@ namespace Store.Controllers
                     goods.Add(good);
                 }
             }
+
+            SortGoods sortGoods = this.SortDelegate();
+            goods = sortGoods?.Invoke(goods);
 
             resultModel.List = goods;
             return View("Index", resultModel);
@@ -136,6 +146,26 @@ namespace Store.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public SortGoods SortDelegate()
+        {
+            if (Request.Form["sortSelect"] == SortBy.Popularity.ToString())
+            {
+                return (goods) => goods.OrderBy(g => g.Reviews.Count).ToList();
+            }
+
+            if (Request.Form["sortSelect"] == SortBy.PriceFromBigger.ToString())
+            {
+                return (goods) => goods.OrderByDescending(g => g.Price).ToList();
+            }
+
+            if (Request.Form["sortSelect"] == SortBy.PriceFromLower.ToString())
+            {
+                return (goods) => goods.OrderBy(g => g.Price).ToList();
+            }
+
+            return null;
         }
     }
 }

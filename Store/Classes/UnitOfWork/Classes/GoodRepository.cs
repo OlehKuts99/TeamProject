@@ -35,6 +35,7 @@ namespace Store.Classes.UnitOfWork.Classes
         {
             Good good = await applicationContext.Goods.FindAsync(id);
             good.Storages = applicationContext.GoodStorage.Where(g => g.GoodId == id).ToList();
+            good.Reviews = applicationContext.Reviews.Where(r => r.GoodId == id).ToList();
 
             return good;
         }
@@ -72,6 +73,13 @@ namespace Store.Classes.UnitOfWork.Classes
             {
                 applicationContext.GoodStorage.Add(new GoodStorage { Good = good, Storage = storages[i] });
             }
+        }
+
+        public List<GoodReview> GetReviews(int id)
+        {
+            List<GoodReview> reviews = applicationContext.Reviews.Where(r => r.GoodId == id).ToList();
+
+            return reviews;
         }
     }
 }

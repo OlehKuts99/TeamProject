@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Remotion.Linq.Clauses;
 using Store.Classes.UnitOfWork;
+using Store.Classes;
 
 namespace Store.ViewModels
 {
@@ -16,15 +17,17 @@ namespace Store.ViewModels
             {
                 "All"
             };
+
+            AllSort = new Dictionary<string, string>
+            {
+                {SortBy.PriceFromLower.ToString(), "Lowest price"},
+                {SortBy.PriceFromBigger.ToString(), "Highest price"},
+                {SortBy.Popularity.ToString(), "Most popular"},
+            };
         }
 
-        public FindRangeInMainView(UnitOfWork unitOfWork)
+        public FindRangeInMainView(UnitOfWork unitOfWork) : this()
         {
-            this.Types = new List<string>
-            {
-                "All"
-            };
-
             var allTypes = unitOfWork.Goods.GetAll()
                 .Select(p => p.Type)
                 .Distinct();
@@ -36,5 +39,11 @@ namespace Store.ViewModels
         public IEnumerable<Good> List { get; set; }
 
         public List<string> Types { get; set; }
+
+        public string ChoosenType { get; set; }
+
+        public SortBy SortBy { get; set; }
+
+        public Dictionary<string, string> AllSort { get; set; }
     }
 }
