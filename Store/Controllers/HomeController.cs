@@ -14,14 +14,17 @@ namespace Store.Controllers
     {
         private readonly UnitOfWork unitOfWork;
 
+        private readonly AppDbContext _appDbContext;
+
         public HomeController(AppDbContext appDbContext)
         {
             this.unitOfWork = new UnitOfWork(appDbContext);
+            this._appDbContext = appDbContext;
         }
 
         public IActionResult Index()
         {
-            var model = new FindRangeInMainView();
+            var model = new FindRangeInMainView(_appDbContext);
             var goods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
 
@@ -42,7 +45,7 @@ namespace Store.Controllers
         public IActionResult Filter(FindRangeInMainView model)
         {
             var goods = new List<Good>();
-            var resultModel = new FindRangeInMainView();
+            var resultModel = new FindRangeInMainView(_appDbContext);
             var allGoods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
 
@@ -102,7 +105,7 @@ namespace Store.Controllers
 
         public IActionResult TypeSearch(string goodType)
         {
-            var model = new FindRangeInMainView();
+            var model = new FindRangeInMainView(_appDbContext);
             var goods = unitOfWork.Goods.GetAll().ToList().Where(p=>p.Type==goodType);
             var producers = unitOfWork.Producers.GetAll().ToList();
 

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Remotion.Linq.Clauses;
+using Store.Classes.UnitOfWork;
 
 namespace Store.ViewModels
 {
@@ -14,6 +16,20 @@ namespace Store.ViewModels
             {
                 "All"
             };
+        }
+
+        public FindRangeInMainView(AppDbContext appDbContext)
+        {
+            this.Types = new List<string>
+            {
+                "All"
+            };
+
+            var unitOfWork=new UnitOfWork(appDbContext);
+            var allTypes = unitOfWork.Goods.GetAll()
+                .Select(p => p.Type)
+                .Distinct();
+            this.Types.AddRange(allTypes);
         }
 
         public FindGoodView GoodView { get; set; }
