@@ -8,8 +8,18 @@ namespace Store.ViewModels
 {
     public class FindRangeInMainView
     {
+        public FindRangeInMainView()
+        {
+            this.Types = new List<string>
+            {
+                "All"
+            };
+        }
+
         public FindGoodView GoodView { get; set; }
 
-        public IEnumerable<Good> list { get; set; }
+        public IEnumerable<Good> List { get; set; }
+
+        public List<string> Types { get; set; }
     }
 }

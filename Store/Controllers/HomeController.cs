@@ -21,29 +21,41 @@ namespace Store.Controllers
 
         public IActionResult Index()
         {
-            var model=new FindRangeInMainView();
+            var model = new FindRangeInMainView();
             var goods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
 
             foreach (var good in goods)
             {
+                if (!model.Types.Contains(good.Type))
+                {
+                    model.Types.Add(good.Type);
+                }
+
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
-            model.list = goods;
+            model.List = goods;
             return View(model);
         }
 
-        public IActionResult Find(FindRangeInMainView model)
+        public IActionResult Filter(FindRangeInMainView model)
         {
             var goods = new List<Good>();
             var resultModel = new FindRangeInMainView();
             var allGoods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
-            foreach (var good in goods)
+
+            foreach (var good in allGoods)
             {
+                if (!model.Types.Contains(good.Type))
+                {
+                    model.Types.Add(good.Type);
+                }
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
+
+            model.GoodView.Type = model.Types.Where(t => t == Request.Form["typeSelect"]).First();
 
             foreach (var good in allGoods)
             {
@@ -66,7 +78,10 @@ namespace Store.Controllers
 
                 if (model.GoodView.Type != null && good.Type != model.GoodView.Type)
                 {
-                    addToResult = false;
+                    if (model.GoodView.Type != "All")
+                    {
+                        addToResult = false;
+                    }
                 }
 
                 if (model.GoodView.WarrantyTerm != null && good.WarrantyTerm != model.GoodView.WarrantyTerm)
@@ -80,7 +95,8 @@ namespace Store.Controllers
                 }
             }
 
-            resultModel.list = goods;
+            resultModel.Types = model.Types;
+            resultModel.List = goods;
             return View("Index", resultModel);
         }
 
@@ -92,11 +108,15 @@ namespace Store.Controllers
 
             foreach (var good in goods)
             {
+                if (!model.Types.Contains(good.Type))
+                {
+                    model.Types.Add(good.Type);
+                }
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
-            model.list = goods;
-            return View("Index",model);
+            model.List = goods;
+            return View("Index", model);
         }
 
         public async Task<IActionResult> GoodPage(int goodId)

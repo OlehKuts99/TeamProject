@@ -14,48 +14,56 @@
                     <p class="product-title">
                         <a asp-area="" asp-controller="Home" asp-action="Index">ALL</a>
                     </p>
-                    <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Notebook">Notebook</a>
-                    </p>
-                    <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="PC">PC</a>
-                    </p>
-                    <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Laptop">Laptop</a>
-                    </p>
-                    <p class="product-title">
-                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="Phone">Phone</a>
-                    </p>
+                    @foreach (var type in Model.Types)
+                    {
+                        @if (type == "All")
+                        {
+                            continue;
+                        }
+
+                        <p class="product-title">
+                            <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="@type">@type</a>
+                        </p>
+                    }
                 </div>
             </div>
             <div class="card-body">
-                <form asp-action="Find" asp-controller="Home">
+                <form asp-action="Filter" asp-controller="Home">
                     <div class="form-group">
-                        <label asp-for="@Model.GoodView.ProducerName" class="control-label">Producer name</label>
-                        <input type="text" asp-for="@Model.GoodView.ProducerName" class="form-control" />
+                        <label asp-for="GoodView.ProducerName" class="control-label">Producer name</label>
+                        <input type="text" asp-for="GoodView.ProducerName" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.GoodView.YearOfManufacture" class="control-label">Year of manufacture</label>
-                        <input type="number" asp-for="@Model.GoodView.YearOfManufacture" class="form-control" />
+                        <label asp-for="Types">Producer</label>
+                        <select class="form-control" name="typeSelect">
+                            @foreach (var type in Model.Types)
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.GoodView.StartPrice" class="control-label">Price</label>
-                        <input type="number" asp-for="@Model.GoodView.StartPrice" placeholder="From" class="form-control" />
-                        <input type="number" asp-for="@Model.GoodView.EndPrice" placeholder="To" class="form-control" style="margin-top: 1%;" />
+                        <label asp-for="GoodView.YearOfManufacture" class="control-label">Year of manufacture</label>
+                        <input type="number" asp-for="GoodView.YearOfManufacture" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.GoodView.WarrantyTerm" class="control-label">WarrantyTerm</label>
-                        <input type="number" asp-for="@Model.GoodView.WarrantyTerm" class="form-control" />
+                        <label asp-for="GoodView.StartPrice" class="control-label">Price</label>
+                        <input type="number" asp-for="GoodView.StartPrice" placeholder="From" class="form-control" />
+                        <input type="number" asp-for="GoodView.EndPrice" placeholder="To" class="form-control" style="margin-top: 1%;" />
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Find" class="btn btn-primary" style="margin: 2% 35%; width: 30%;" />
+                        <label asp-for="GoodView.WarrantyTerm" class="control-label">WarrantyTerm</label>
+                        <input type="number" asp-for="GoodView.WarrantyTerm" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Filter" class="btn btn-primary" style="margin: 2% 32%; width: 35%;" />
                     </div>
                 </form>
             </div>
         </div>
         <div class="col-lg-10 mr-auto products">
             <div class="row">
-                @foreach (var good in Model.list)
+                @foreach (var good in Model.List)
                 {
                     <div class="col-sm-4">
                         <a asp-area="" asp-controller="Home" asp-action="GoodPage" asp-route-goodId="@good.Id">
