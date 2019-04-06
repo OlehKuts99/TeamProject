@@ -14,27 +14,19 @@ namespace Store.Controllers
     {
         private readonly UnitOfWork unitOfWork;
 
-        private readonly AppDbContext _appDbContext;
-
         public HomeController(AppDbContext appDbContext)
         {
             this.unitOfWork = new UnitOfWork(appDbContext);
-            this._appDbContext = appDbContext;
         }
 
         public IActionResult Index()
         {
-            var model = new FindRangeInMainView(_appDbContext);
+            var model = new FindRangeInMainView(unitOfWork);
             var goods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
 
             foreach (var good in goods)
             {
-                if (!model.Types.Contains(good.Type))
-                {
-                    model.Types.Add(good.Type);
-                }
-
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
@@ -45,20 +37,16 @@ namespace Store.Controllers
         public IActionResult Filter(FindRangeInMainView model)
         {
             var goods = new List<Good>();
-            var resultModel = new FindRangeInMainView(_appDbContext);
+            var resultModel = new FindRangeInMainView(unitOfWork);
             var allGoods = unitOfWork.Goods.GetAll().ToList();
             var producers = unitOfWork.Producers.GetAll().ToList();
 
             foreach (var good in allGoods)
             {
-                if (!model.Types.Contains(good.Type))
-                {
-                    model.Types.Add(good.Type);
-                }
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
-            model.GoodView.Type = model.Types.Where(t => t == Request.Form["typeSelect"]).First();
+            model.GoodView.Type = resultModel.Types.Where(t => t == Request.Form["typeSelect"]).First();
 
             foreach (var good in allGoods)
             {
@@ -98,23 +86,18 @@ namespace Store.Controllers
                 }
             }
 
-            resultModel.Types = model.Types;
             resultModel.List = goods;
             return View("Index", resultModel);
         }
 
         public IActionResult TypeSearch(string goodType)
         {
-            var model = new FindRangeInMainView(_appDbContext);
+            var model = new FindRangeInMainView(unitOfWork);
             var goods = unitOfWork.Goods.GetAll().ToList().Where(p=>p.Type==goodType);
             var producers = unitOfWork.Producers.GetAll().ToList();
 
             foreach (var good in goods)
             {
-                if (!model.Types.Contains(good.Type))
-                {
-                    model.Types.Add(good.Type);
-                }
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 

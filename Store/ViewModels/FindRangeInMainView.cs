@@ -18,14 +18,13 @@ namespace Store.ViewModels
             };
         }
 
-        public FindRangeInMainView(AppDbContext appDbContext)
+        public FindRangeInMainView(UnitOfWork unitOfWork)
         {
             this.Types = new List<string>
             {
                 "All"
             };
 
-            var unitOfWork=new UnitOfWork(appDbContext);
             var allTypes = unitOfWork.Goods.GetAll()
                 .Select(p => p.Type)
                 .Distinct();
