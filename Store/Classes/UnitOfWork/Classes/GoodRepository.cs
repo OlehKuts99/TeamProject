@@ -42,7 +42,15 @@ namespace Store.Classes.UnitOfWork.Classes
 
         public IEnumerable<Good> GetAll()
         {
-            return applicationContext.Goods;
+            IEnumerable<Good> goods = applicationContext.Goods;
+
+            foreach (var good in goods)
+            {
+                good.Producer = applicationContext.Producers.Where(p => p.Id == good.ProducerId).First();
+                good.Reviews = GetReviews(good.Id);
+            }
+
+            return goods;
         }
 
         public void Update(Good item)

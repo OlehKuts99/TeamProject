@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Store.Models
 {
@@ -39,6 +41,8 @@ namespace Store.Models
 
         public ICollection<GoodOrder> Orders { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<GoodStorage> Storages { get; set; }
 
         public ICollection<GoodCart> Carts { get; set; }

@@ -76,6 +76,7 @@ namespace Store.Controllers
 
                 await unitOfWork.Goods.Create(good);
                 await unitOfWork.SaveAsync();
+                HttpContext.Session.Set("goods", unitOfWork.Goods.GetAll().ToList());
 
                 return RedirectToAction("Index", "Good");
 
@@ -175,6 +176,7 @@ namespace Store.Controllers
 
                     unitOfWork.Goods.Update(good);
                     await unitOfWork.SaveAsync();
+                    HttpContext.Session.Set("goods", unitOfWork.Goods.GetAll().ToList());
 
                     return RedirectToAction("Index");
                 }
@@ -191,6 +193,8 @@ namespace Store.Controllers
             {
                 await unitOfWork.Goods.Delete(id);
                 await unitOfWork.SaveAsync();
+
+                HttpContext.Session.Set("goods", unitOfWork.Goods.GetAll().ToList());
             }
 
             return RedirectToAction("Index");

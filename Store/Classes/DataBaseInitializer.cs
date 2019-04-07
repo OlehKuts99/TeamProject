@@ -70,29 +70,9 @@ namespace Store.Classes
                     await unitOfWork.Producers.Create(new Producer()
                     {
                         Name = "Impression",
-                        Phone = 443230303,
+                        Phone = "443230303",
                         Email = "info@impression.ua",
                         WebSite = "https://impression.ua/"
-                    });
-
-                    unitOfWork.SaveAsync();
-                }
-
-                if (unitOfWork.Goods.GetAll().Where(g => g.Name == "ImPAD B701").Count() == 0)
-                {
-                    await unitOfWork.Goods.Create(
-                    new Good()
-                    {
-                        Name = "ImPAD B701",
-                        Specification = "Laptop Impression ImPAD B701 7' IPS(1024x600) / " +
-                        "Spreadtrum SC7731C to 1.2 Ghz / RAM 1 Gb / Memory 8 Gb / 2G/3G",
-                        PhotoUrl = "ImPadB702.jpg",
-                        YearOfManufacture = 2017,
-                        WarrantyTerm = 12,
-                        Producer = unitOfWork.Producers.GetAll().Where(p => p.Name == "Impression").First(),
-                        Price = 1599,
-                        Type = "Laptop",
-                        Count = 450
                     });
 
                     await unitOfWork.SaveAsync();

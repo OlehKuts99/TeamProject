@@ -20,75 +20,88 @@ namespace Store.Controllers
             this.unitOfWork = new UnitOfWork(appDbContext);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            var model = new FindRangeInMainView(unitOfWork);
-            var goods = unitOfWork.Goods.GetAll().ToList();
-            var producers = unitOfWork.Producers.GetAll().ToList();
-
-            foreach (var good in goods)
+            var filterModel = HttpContext.Session.Get<FindRangeInMainView>("filter");
+            if (filterModel == null)
             {
-                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+                filterModel = new FindRangeInMainView(unitOfWork);
+            }
+            else
+            {
+                filterModel.Types = filterModel.Types.Distinct().ToList();
             }
 
-            HttpContext.Session.Set("filter", model);
+            var goods = HttpContext.Session.Get<List<Good>>("goods");
+            if (goods == null)
+            {
+                goods = unitOfWork.Goods.GetAll().ToList();
+            }
+
+            var items = goods.Skip((page - 1) * PageViewModel.PageSize).Take(PageViewModel.PageSize);
+
+            HttpContext.Session.Set("filter", filterModel);
             HttpContext.Session.Set("goods", goods);
 
-            model.List = goods;
+            filterModel.Goods = items;
+            IndexViewModel model = new IndexViewModel
+            {
+                PageViewModel = new PageViewModel(goods.Count, page),
+                FilterModel = filterModel
+            };
+
             return View(model);
         }
 
-        public IActionResult Filter(FindRangeInMainView model)
+        public IActionResult Filter(IndexViewModel model)
         {
             var goods = new List<Good>();
-            var resultModel = new FindRangeInMainView(unitOfWork);
+            var tempModel = new FindRangeInMainView(unitOfWork);
             var allGoods = unitOfWork.Goods.GetAll().ToList();
-            var producers = unitOfWork.Producers.GetAll().ToList();
 
-            foreach (var good in allGoods)
-            {
-                good.Reviews = unitOfWork.Goods.GetReviews(good.Id);
-                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
-            }
-
-            model.GoodView.Type = resultModel.Types.Where(t => t == Request.Form["typeSelect"]).First();
-            resultModel.ChoosenType = model.GoodView.Type;
-            model.Types = resultModel.Types;
+            model.FilterModel.GoodView.Type = tempModel.Types
+                .Where(t => t == Request.Form["typeSelect"]).First();
+            tempModel.ChoosenType = model.FilterModel.GoodView.Type;
+            model.FilterModel.Types = tempModel.Types;
 
             foreach (var good in allGoods)
             {
                 bool addToResult = true;
 
-                if (model.GoodView.Name != null && good.Name != model.GoodView.Name)
+                if (model.FilterModel.GoodView.Name != null && good.Name != model.FilterModel.GoodView.Name)
                 {
                     addToResult = false;
                 }
 
-                if (model.GoodView.YearOfManufacture != null && good.YearOfManufacture != model.GoodView.YearOfManufacture)
+                if (model.FilterModel.GoodView.YearOfManufacture != null 
+                    && good.YearOfManufacture != model.FilterModel.GoodView.YearOfManufacture)
                 {
                     addToResult = false;
                 }
 
-                if (model.GoodView.ProducerName != null && good.Producer.Name != model.GoodView.ProducerName)
+                if (model.FilterModel.GoodView.ProducerName != null 
+                    && good.Producer.Name != model.FilterModel.GoodView.ProducerName)
                 {
                     addToResult = false;
                 }
 
-                if (model.GoodView.EndPrice - model.GoodView.StartPrice != 0 && good.Price < model.GoodView.StartPrice ||
-                    good.Price > model.GoodView.EndPrice)
+                if (model.FilterModel.GoodView.EndPrice - model.FilterModel.GoodView.StartPrice != 0 
+                    && good.Price < model.FilterModel.GoodView.StartPrice ||
+                    good.Price > model.FilterModel.GoodView.EndPrice)
                 {
                     addToResult = false;
                 }
 
-                if (model.GoodView.Type != null && good.Type != model.GoodView.Type)
+                if (model.FilterModel.GoodView.Type != null && good.Type != model.FilterModel.GoodView.Type)
                 {
-                    if (model.GoodView.Type != "All")
+                    if (model.FilterModel.GoodView.Type != "All")
                     {
                         addToResult = false;
                     }
                 }
 
-                if (model.GoodView.WarrantyTerm != null && good.WarrantyTerm != model.GoodView.WarrantyTerm)
+                if (model.FilterModel.GoodView.WarrantyTerm != null 
+                    && good.WarrantyTerm != model.FilterModel.GoodView.WarrantyTerm)
                 {
                     addToResult = false;
                 }
@@ -99,28 +112,26 @@ namespace Store.Controllers
                 }
             }
 
-            HttpContext.Session.Set("filter", model);
+            HttpContext.Session.Set("filter", model.FilterModel);
             HttpContext.Session.Set("goods", goods);
 
-            resultModel.List = goods;
-            return View("Index", resultModel);
+            return RedirectToAction("Index", new { pageNumber = 1 });
         }
 
         public IActionResult TypeSearch(string goodType)
         {
             var model = new FindRangeInMainView(unitOfWork);
-            var goods = unitOfWork.Goods.GetAll().ToList().Where(p=>p.Type==goodType);
-            var producers = unitOfWork.Producers.GetAll().ToList();
+            var goods = unitOfWork.Goods.GetAll().ToList().Where(p => p.Type == goodType);
 
-            foreach (var good in goods)
+            if (goodType == "All")
             {
-                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
+                goods = unitOfWork.Goods.GetAll().ToList();
             }
 
             HttpContext.Session.Set("filter", model);
             HttpContext.Session.Set("goods", goods);
-            model.List = goods;
-            return View("Index", model);
+
+            return RedirectToAction("Index", new { pageNumber = 1 });
         }
 
         public async Task<IActionResult> GoodPage(int goodId)
@@ -156,6 +167,7 @@ namespace Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [HttpPost]
         public IActionResult Sort()
         {
             var model = HttpContext.Session.Get<FindRangeInMainView>("filter");
@@ -176,11 +188,6 @@ namespace Store.Controllers
 
             if (Request.Form["sortSelect"] == SortBy.Popularity.ToString())
             {
-                foreach (var good in goods)
-                {
-                    good.Reviews = unitOfWork.Goods.GetReviews(good.Id);
-                }
-
                 goods = goods.OrderBy(g => g.Reviews.Count).ToList();
             }
 
@@ -194,8 +201,11 @@ namespace Store.Controllers
                 goods = goods.OrderBy(g => g.Price).ToList();
             }
 
-            model.List = goods;
-            return View("Index", model);
+            model.Goods = goods;
+            HttpContext.Session.Set("filter", model);
+            HttpContext.Session.Set("goods", goods);
+
+            return RedirectToAction("Index", new { pageNumber = 1 });
         }
     }
 }

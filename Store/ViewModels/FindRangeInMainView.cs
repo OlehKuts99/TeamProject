@@ -36,7 +36,7 @@ namespace Store.ViewModels
 
         public FindGoodView GoodView { get; set; }
 
-        public IEnumerable<Good> List { get; set; }
+        public IEnumerable<Good> Goods { get; set; }
 
         public List<string> Types { get; set; }
 
