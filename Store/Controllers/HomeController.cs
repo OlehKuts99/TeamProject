@@ -11,8 +11,6 @@ using Store.ViewModels;
 
 namespace Store.Controllers
 {
-    public delegate List<Good> SortGoods(List<Good> goods);
-
     public class HomeController : Controller
     {
         private readonly UnitOfWork unitOfWork;
@@ -33,6 +31,9 @@ namespace Store.Controllers
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
+            HttpContext.Session.Set("filter", model);
+            HttpContext.Session.Set("goods", goods);
+
             model.List = goods;
             return View(model);
         }
@@ -52,12 +53,17 @@ namespace Store.Controllers
 
             model.GoodView.Type = resultModel.Types.Where(t => t == Request.Form["typeSelect"]).First();
             resultModel.ChoosenType = model.GoodView.Type;
-            Enum.TryParse(Request.Form["sortSelect"].ToString(), out SortBy temp);
-            resultModel.SortBy = temp;
+            model.Types = resultModel.Types;
 
             foreach (var good in allGoods)
             {
                 bool addToResult = true;
+
+                if (model.GoodView.Name != null && good.Name != model.GoodView.Name)
+                {
+                    addToResult = false;
+                }
+
                 if (model.GoodView.YearOfManufacture != null && good.YearOfManufacture != model.GoodView.YearOfManufacture)
                 {
                     addToResult = false;
@@ -93,8 +99,8 @@ namespace Store.Controllers
                 }
             }
 
-            SortGoods sortGoods = this.SortDelegate();
-            goods = sortGoods?.Invoke(goods);
+            HttpContext.Session.Set("filter", model);
+            HttpContext.Session.Set("goods", goods);
 
             resultModel.List = goods;
             return View("Index", resultModel);
@@ -111,6 +117,8 @@ namespace Store.Controllers
                 good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
             }
 
+            HttpContext.Session.Set("filter", model);
+            HttpContext.Session.Set("goods", goods);
             model.List = goods;
             return View("Index", model);
         }
@@ -148,24 +156,46 @@ namespace Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public SortGoods SortDelegate()
+        public IActionResult Sort()
         {
+            var model = HttpContext.Session.Get<FindRangeInMainView>("filter");
+            var goods = HttpContext.Session.Get<List<Good>>("goods");
+
+            if (model == null)
+            {
+                model = new FindRangeInMainView(unitOfWork);
+            }
+
+            if (goods == null)
+            {
+                goods = unitOfWork.Goods.GetAll().ToList();
+            }
+
+            Enum.TryParse(Request.Form["sortSelect"].ToString(), out SortBy temp);
+            model.SortBy = temp;
+
             if (Request.Form["sortSelect"] == SortBy.Popularity.ToString())
             {
-                return (goods) => goods.OrderBy(g => g.Reviews.Count).ToList();
+                foreach (var good in goods)
+                {
+                    good.Reviews = unitOfWork.Goods.GetReviews(good.Id);
+                }
+
+                goods = goods.OrderBy(g => g.Reviews.Count).ToList();
             }
 
             if (Request.Form["sortSelect"] == SortBy.PriceFromBigger.ToString())
             {
-                return (goods) => goods.OrderByDescending(g => g.Price).ToList();
+                goods = goods.OrderByDescending(g => g.Price).ToList();
             }
 
             if (Request.Form["sortSelect"] == SortBy.PriceFromLower.ToString())
             {
-                return (goods) => goods.OrderBy(g => g.Price).ToList();
+                goods = goods.OrderBy(g => g.Price).ToList();
             }
 
-            return null;
+            model.List = goods;
+            return View("Index", model);
         }
     }
 }

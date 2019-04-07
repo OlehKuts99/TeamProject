@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Store.Models
 {
@@ -22,6 +24,8 @@ namespace Store.Models
 
         public string WebSite { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<Good> Products { get; set; }
     }
 }

@@ -31,20 +31,8 @@
             <div class="card-body">
                 <form asp-action="Filter" asp-controller="Home">
                     <div class="form-group">
-                        <label asp-for="SortBy">Sort by</label>
-                        <select class="form-control" name="sortSelect">
-                            @foreach (var option in Model.AllSort)
-                            {
-                                @if (option.Key == Model.SortBy.ToString())
-                                {
-                                    <option value="@option.Key" selected>@option.Value</option>
-                                }
-                                else
-                                {
-                                    <option value="@option.Key">@option.Value</option>
-                                }
-                            }
-                        </select>
+                        <label asp-for="GoodView.Name" class="control-label">Good name</label>
+                        <input type="text" asp-for="GoodView.Name" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="GoodView.ProducerName" class="control-label">Producer name</label>
@@ -86,6 +74,28 @@
             </div>
         </div>
         <div class="col-lg-8 mr-auto products">
+            <form method="post" asp-action="Sort" asp-controller="Home">
+                <div class="form-group">
+                    <div class="input-group" style="margin-left: 2%;">
+                        <select class="form-control" name="sortSelect">
+                            @foreach (var option in Model.AllSort)
+                            {
+                                @if (option.Key == Model.SortBy.ToString())
+                                {
+                                    <option value="@option.Key" selected>@option.Value</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.Key">@option.Value</option>
+                                }
+                            }
+                        </select>
+                        <span class="input-group-btn">
+                            <input type="submit" value="Sort" class="btn btn-warning" />
+                        </span>
+                    </div>
+                </div>
+            </form>
             @foreach (var good in Model.List)
             {
                 <div class="col-sm-4">
