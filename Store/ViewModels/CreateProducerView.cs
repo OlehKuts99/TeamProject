@@ -15,7 +15,7 @@ namespace Store.ViewModels
         
         [Required]
         [Display(Name = "Phone")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [Required]
         [Display(Name = "Email")]

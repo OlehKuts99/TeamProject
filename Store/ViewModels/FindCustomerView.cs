@@ -9,7 +9,7 @@ namespace Store.ViewModels
 
         public string SecondName { get; set; }
 
-        public int? Phone { get; set; }
+        public string Phone { get; set; }
 
         public string Email { get; set; }
     }
