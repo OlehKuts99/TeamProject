@@ -47,6 +47,7 @@ namespace Store.Helpers
                 TagBuilder nextItem = CreateTag(PageModel.PageNumber + 1, urlHelper);
                 tag.InnerHtml.AppendHtml(nextItem);
             }
+
             output.Content.AppendHtml(tag);
         }
 
@@ -54,6 +55,7 @@ namespace Store.Helpers
         {
             TagBuilder item = new TagBuilder("li");
             TagBuilder link = new TagBuilder("a");
+
             if (pageNumber == PageModel.PageNumber)
             {
                 item.AddCssClass("active");
