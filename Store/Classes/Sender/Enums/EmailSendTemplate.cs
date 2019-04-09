@@ -4,8 +4,13 @@
     {
         EndPointChangedMessage,
         EndPointChangedSubject,
+
         StatusChangedMessage,
         StatusChangedSubject,
+
+        PasswordChangeMessage,
+        PasswordChangeSubject,
+
         FromWhoEmail,
         FromWhoName,
         GmailHost,

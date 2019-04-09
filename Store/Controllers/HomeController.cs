@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.Classes;
 using Store.Classes.UnitOfWork;
@@ -141,34 +142,6 @@ namespace Store.Controllers
 
             return View(good);
         }
-
-        [HttpGet]
-        public IActionResult CustomerSettingPage()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CustomerSettingPage(int id)
-        {
-            Customer customer = await unitOfWork.Customers.Get(id);
-           
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            EditCustomerView model = new EditCustomerView
-            {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                SecondName = customer.SecondName,
-                Phone = customer.Phone,
-                Email = customer.Email,
-            };
-
-            return View(model);
-        }
-
 
 
         public IActionResult About()

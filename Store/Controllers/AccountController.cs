@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Classes.Sender;
 using Store.Classes.UnitOfWork;
 using Store.Models;
 using Store.ViewModels;
@@ -134,6 +136,113 @@ namespace Store.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult CustomerSettingPage()
+        {
+            string name = User.Identity.Name;
+            Customer customer = unitOfWork.Customers.GetAll().Where(c => c.Email == name)
+                .FirstOrDefault();
+
+            if (customer != null)
+            {
+                EditCustomerView model = new EditCustomerView
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    SecondName = customer.SecondName,
+                    Phone = customer.Phone,
+                    Email = customer.Email,
+                };
+
+
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CustomerSettingPage(EditCustomerView model)
+        {
+            Customer customer = await unitOfWork.Customers.Get(model.Id);
+
+            customer.FirstName = model.FirstName;
+            customer.SecondName = model.SecondName;
+            customer.Phone = model.Phone;
+
+            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
+            user.UserName = model.Email;
+
+            unitOfWork.Customers.Update(customer);
+            await unitOfWork.SaveAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ChangePasswordView model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
+                {
+                    return View("ForgotPasswordInfo");
+                }
+
+                var customer = unitOfWork.Customers.GetAll().Where(c => c.Email == model.Email).First();
+                var code = await userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ChangePassword", "Account", new { userId = user.Id, code }, 
+                    protocol: HttpContext.Request.Scheme);
+
+                EmailSender emailSender = new EmailSender();
+
+                await emailSender.PasswordChangeCodeSend(customer, callbackUrl);
+
+                return View("ForgotPasswordInfo");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByNameAsync(model.Email);
+
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

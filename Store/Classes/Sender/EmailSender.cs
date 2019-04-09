@@ -53,6 +53,24 @@ namespace Store.Classes.Sender
         }
 
         /// <summary>
+        /// Method generates email letter where is code to change password.
+        /// </summary>
+        /// <param name="order">Order that was changed.</param>
+        /// <param name="oldEndPoint">Old end point of order.</param>
+        public async Task PasswordChangeCodeSend(Customer customer, string url)
+        {
+            const string EmailTemplateSection = "EmailSendTemplates";
+
+            ConfigurationManger configurationManger = new ConfigurationManger();
+            var section = configurationManger.Configuration.GetSection($"{EmailTemplateSection}");
+
+            var message = string.Format(section[EmailSendTemplate.PasswordChangeMessage.ToString()], url);
+            var subject = section[EmailSendTemplate.PasswordChangeSubject.ToString()];
+
+            await SendEmailAsync(customer.Email, subject, message, section);
+        }
+
+        /// <summary>
         /// Common method that sends letter to customer's email.
         /// </summary>
         /// <param name="email">Customer'email.</param>
