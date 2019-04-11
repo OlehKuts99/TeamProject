@@ -11,32 +11,36 @@
 }
 else
 {
-<table class="table table-hover">
-    <tr>
-        <th>Name</th>
-        <th>Year of goods production</th>
-        <th>The warranty period</th>
-        <th>Producer name</th>
-        <th>Price</th>
-        <th>Type</th>
-    </tr>
-    @foreach (var good in Model)
-    {
+    <table class="table table-hover">
         <tr>
-            <td>@good.Name</td>
-            <td>@good.YearOfManufacture</td>
-            <td>@good.WarrantyTerm months</td>
-            <td>@good.Producer.Name</td>
-            <td>@good.Price</td>
-            <td>@good.Type</td>
-            <td>
-                <form>
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Delete
-                    </button>
-                </form>
-            </td>
+            <th>Name</th>
+            <th>Year of goods production</th>
+            <th>The warranty period</th>
+            <th>Producer name</th>
+            <th>Price</th>
+            <th>Type</th>
         </tr>
-    }
-</table>
+        @foreach (var good in Model)
+        {
+        
+            <tr>
+
+                <td><a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">@good.Name</a></td>
+                <td>@good.YearOfManufacture</td>
+                <td>@good.WarrantyTerm months</td>
+                <td>@good.Producer.Name</td>
+                <td>@good.Price</td>
+                <td>@good.Type</td>
+
+                <td>
+                    <form>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        
+        }
+    </table>
 }

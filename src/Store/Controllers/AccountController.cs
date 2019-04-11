@@ -257,11 +257,13 @@ namespace Store.Controllers
             int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == name)
                 .FirstOrDefault().Id;
             Customer customer = await unitOfWork.Customers.Get(customerId);
+            var producers = unitOfWork.Producers.GetAll().ToList();
             var goodCarts = customer.Cart.Goods;
             var goods = new List<Good>();
             foreach(var good in goodCarts)
             {
                 good.Good = await unitOfWork.Goods.Get(good.GoodId);
+                good.Good.Producer = producers.Where(p => p.Id == good.Good.ProducerId).First();
                 goods.Add(good.Good);
             }
             return View(goods);
