@@ -135,14 +135,6 @@ namespace Store.Controllers
             return RedirectToAction("Index", new { pageNumber = 1 });
         }
 
-        public async Task<IActionResult> GoodPage(int goodId)
-        {
-            Good good = await unitOfWork.Goods.Get(goodId);
-            good.Producer = await unitOfWork.Producers.Get(good.ProducerId);
-
-            return View(good);
-        }
-
 
         public IActionResult About()
         {

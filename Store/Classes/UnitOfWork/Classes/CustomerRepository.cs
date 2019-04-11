@@ -43,6 +43,7 @@ namespace Store.Classes.UnitOfWork.Classes
         {
             Customer customer = await applicationContext.Customers.FindAsync(id);
             customer.Cart = applicationContext.Carts.Where(c => c.CustomerId == customer.Id).FirstOrDefault();
+            customer.Cart.Goods = applicationContext.GoodCart.Where(c => c.CartId == customer.Cart.Id).ToList();
 
             if (customer.Cart == null)
             {
@@ -53,6 +54,7 @@ namespace Store.Classes.UnitOfWork.Classes
 
                 cart.Goods = applicationContext.GoodCart.Where(c => c.CartId == cart.Id).ToList();
                 customer.Cart = cart;
+
                 await this.applicationContext.Carts.AddAsync(cart);
                 await this.applicationContext.SaveChangesAsync();
             }
@@ -62,7 +64,9 @@ namespace Store.Classes.UnitOfWork.Classes
 
         public IEnumerable<Customer> GetAll()
         {
-            return applicationContext.Customers;
+            IEnumerable<Customer> customers = applicationContext.Customers;
+
+            return customers;
         }
 
         public void Update(Customer item)
@@ -72,7 +76,21 @@ namespace Store.Classes.UnitOfWork.Classes
 
         public void AddToCart(Good good, Customer customer)
         {
-            customer.Cart.Goods.Add(new GoodCart { Good = good, Cart = customer.Cart });
+            List<GoodCart> cartGoods = customer.Cart.Goods.ToList();
+            bool addToCart = true;
+
+            foreach (var cartGood in cartGoods)
+            {
+                if (cartGood.GoodId == good.Id)
+                {
+                    addToCart = false;
+                }
+            }
+
+            if (addToCart)
+            {
+                customer.Cart.Goods.Add(new GoodCart { Good = good, Cart = customer.Cart });
+            }
         }
     }
 }

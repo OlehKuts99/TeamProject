@@ -196,8 +196,12 @@ namespace Store.Controllers
 
                 if (user == null)
                 {
+                    ViewBag.UserIsNull = true;
+
                     return View("ForgotPasswordInfo");
                 }
+
+                ViewBag.UserIsNull = true;
 
                 var customer = unitOfWork.Customers.GetAll().Where(c => c.Email == model.Email).First();
                 var code = await userManager.GeneratePasswordResetTokenAsync(user);

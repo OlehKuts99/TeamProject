@@ -89,5 +89,11 @@ namespace Store.Classes.UnitOfWork.Classes
 
             return reviews;
         }
+
+        public async Task AddReview(GoodReview review, Good good)
+        {
+            review.Good = good;
+            await applicationContext.Reviews.AddAsync(review);
+        }
     }
 }
