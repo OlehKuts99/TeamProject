@@ -8,6 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/cart.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -50,7 +51,7 @@
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ShowCart">Cart</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="ShowCart"><div class="cart"><img src="~/images/menu-cart.svg"/></div></a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="CustomerSettingPage">@User.Identity.Name</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a></li>
                     }

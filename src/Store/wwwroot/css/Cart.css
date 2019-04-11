@@ -1,0 +1,18 @@
+﻿.cart img {
+    height: 2.5rem;
+    width: 2.5rem;
+    opacity: 0.5;
+}
+
+.cart img:hover{
+    opacity:1;
+}
+
+
+.number-cart {
+    position: relative;
+    margin-top: 2rem;
+    border-radius: 50%;
+    color: white;
+    background-color: red;
+}
