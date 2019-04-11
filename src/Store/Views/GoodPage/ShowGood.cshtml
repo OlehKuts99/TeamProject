@@ -1,0 +1,92 @@
+﻿@model DAL.Models.Good
+@{
+    ViewData["Title"] = Model.Name;
+}
+<link rel="stylesheet" href="~/css/mainPage.css" />
+<div class="container content">
+    <div class="row product-page">
+        <div class="col-lg-6 image">
+            <img src="../images/goods/@Model.PhotoUrl" />
+        </div>
+        <div class="col-lg-6">
+            <h2>@Model.Name</h2>
+            <p>
+                @Model.Specification
+            </p>
+            @if (Model.YearOfManufacture != 0)
+            {
+                <p>
+                    Year : @Model.YearOfManufacture
+                </p>
+            }
+            @if (Model.WarrantyTerm != 0)
+            {
+                <p>
+                    Warranty term (months) : @Model.WarrantyTerm
+                </p>
+            }
+            @if (Model.Type != null)
+            {
+                <p>
+                    Type : @Model.Type
+                </p>
+            }
+            @if (Model.Producer != null)
+            {
+                <p>
+                    Producer : @Model.Producer.Name
+                </p>
+            }
+            <p>
+                Color:
+            </p>
+            <ul class="circles">
+                <li>
+                    <div class="white-circle"></div>
+                </li>
+                <li>
+                    <div class="red-circle"></div>
+                </li>
+                <li>
+                    <div class="black-circle"></div>
+                </li>
+            </ul>
+            <hr class="black-hr" />
+            <form asp-action="AddToCart" asp-controller="GoodPage" asp-route-id="@Model.Id">
+                <div class="price">
+                    <p>
+                        @Model.Price
+                    </p>
+                    <button class="btn btn-green">Add to cart</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr class="black-hr" />
+    <form asp-action="LeaveReview" asp-controller="GoodPage" asp-route-id="@Model.Id">
+        <div class="row product-review text-center">
+            <p class="visible-lg-inline">Rate product </p>
+            <div class="row">
+                <div class="col-lg-3 col-lg-offset-4 text-center">
+                    <ul class="rate">
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-lg-offset-3 form-group">
+                <textarea class="form-control" id="FormControlTextarea1" rows="8" name="reviewArea"></textarea>
+            </div>
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-primary">Live a review</button>
+        </div>
+    </form>
+    <hr class="black-hr" />
+    <div class="row text-center">
+        <a href="#">Show rewiews</a>
+    </div>
+</div>

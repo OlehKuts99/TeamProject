@@ -1,0 +1,120 @@
+﻿@model Store.ViewModels.IndexViewModel
+@addTagHelper "*, Store"
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<link rel="stylesheet" href="~/css/mainPage.css" />
+<link rel="stylesheet" href="~/css/Scrollbar.css" />
+
+<div class="container content">
+    <div class="row justify-content-md-center">
+        <div class="col-lg-2">
+            <div class="card example-1 scrollbar-ripe-malinka">
+                <div class="card-body">
+                    <p class="product-title">
+                        <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="All">ALL</a>
+                    </p>
+                    @foreach (var type in Model.FilterModel.Types)
+                    {
+                        @if (type == "All")
+                        {
+                            continue;
+                        }
+
+                        <p class="product-title">
+                            <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="@type">@type</a>
+                        </p>
+                    }
+                </div>
+            </div>
+            <div class="card-body" style="margin-top: 10%;">
+                <form asp-action="Filter" asp-controller="Home">
+                    <div class="form-group">
+                        <label asp-for="FilterModel.GoodView.Name" class="control-label">Good name</label>
+                        <input type="text" asp-for="FilterModel.GoodView.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FilterModel.GoodView.ProducerName" class="control-label">Producer name</label>
+                        <input type="text" asp-for="FilterModel.GoodView.ProducerName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FilterModel.Types">Type</label>
+                        <select class="form-control" name="typeSelect">
+                            @foreach (var type in Model.FilterModel.Types)
+                            {
+                                @if (type == Model.FilterModel.ChoosenType)
+                                {
+                                    <option selected>@type</option>
+                                }
+                                else
+                                {
+                                    <option>@type</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FilterModel.GoodView.YearOfManufacture" class="control-label">Year of manufacture</label>
+                        <input type="number" asp-for="FilterModel.GoodView.YearOfManufacture" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FilterModel.GoodView.StartPrice" class="control-label">Price</label>
+                        <input type="number" asp-for="FilterModel.GoodView.StartPrice" placeholder="From" class="form-control" />
+                        <input type="number" asp-for="FilterModel.GoodView.EndPrice" placeholder="To" class="form-control" style="margin-top: 1%;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FilterModel.GoodView.WarrantyTerm" class="control-label">WarrantyTerm</label>
+                        <input type="number" asp-for="FilterModel.GoodView.WarrantyTerm" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Filter" class="btn btn-primary" style="margin: 2% 32%; width: 35%;" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-8 mr-auto products">
+            <form method="post" asp-action="Sort" asp-controller="Home">
+                <div class="form-group">
+                    <div class="input-group" style="margin-left: 2%;">
+                        <select class="form-control" name="sortSelect">
+                            @foreach (var option in Model.FilterModel.AllSort)
+                            {
+                                @if (option.Key == Model.FilterModel.SortBy.ToString())
+                                {
+                                    <option value="@option.Key" selected>@option.Value</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.Key">@option.Value</option>
+                                }
+                            }
+                        </select>
+                        <span class="input-group-btn">
+                            <input type="submit" value="Sort" class="btn btn-warning" />
+                        </span>
+                    </div>
+                </div>
+            </form>
+            @foreach (var good in Model.FilterModel.Goods)
+            {
+                <div class="col-sm-4">
+                    <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id" class="good-link">
+                        <div class="product">
+                            <div class="product-img">
+                                <img src="../images/goods/@good.PhotoUrl" alt="">
+                            </div>
+                            <p class="product-title">
+                                <div>@good.Name</div>
+                            </p>
+                            <p class="product-desc">@good.Specification</p>
+                            <p class="product-price">Price: @good.Price</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<page-link page-model="Model.PageViewModel" page-action="Index" style="float: right;"></page-link>
