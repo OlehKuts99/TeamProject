@@ -5,6 +5,7 @@ using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Helpers;
 using Store.Helpers.Sender;
 using Store.ViewModels;
 
@@ -49,7 +50,7 @@ namespace Store.Controllers
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
-                    UserName = model.FirstName + model.SecondName,
+                    UserName = model.Email,
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now
                 };
@@ -61,6 +62,16 @@ namespace Store.Controllers
                     Phone = model.Phone,
                     Email = model.Email
                 };
+
+                if (userManager.Users.Where(u => u.Email == model.Email).Count() > 0)
+                {
+                    var configuration = new ConfigurationManager();
+                    var section = configuration.Configuration.GetSection("ErrorMessages");
+
+                    ViewBag.Message = section["EmailExistAlready"];
+
+                    return View("ErrorPage"); 
+                }
 
                 var addResult = await userManager.CreateAsync(user, model.Password);
 

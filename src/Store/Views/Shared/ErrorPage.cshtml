@@ -1,0 +1,9 @@
+﻿@model Store.ViewModels.ErrorPageVIew
+@{
+    ViewBag.Title = "Some error happend!";
+}
+
+<div class="center-text">
+    <h4>@ViewBag.Message</h4>
+    <a asp-action="Index" asp-controller="Home">Main page</a>
+</div>

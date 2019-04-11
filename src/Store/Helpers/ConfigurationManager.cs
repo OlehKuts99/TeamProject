@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Store.Helpers
 {
-    public class ConfigurationManger
+    public class ConfigurationManager
     {
-        public ConfigurationManger()
+        public ConfigurationManager()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
