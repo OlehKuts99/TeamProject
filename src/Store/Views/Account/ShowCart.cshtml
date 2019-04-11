@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DAL.Models.Good>
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<link rel="stylesheet" href="~/css/mainPage.css" />
+
+@if (Model.Count() == 0 ||Model == null )
+{
+    <h2>Your cart is empty</h2>
+}
+else
+{
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Year of goods production</th>
+        <th>The warranty period</th>
+        <th>Producer name</th>
+        <th>Price</th>
+        <th>Type</th>
+    </tr>
+    @foreach (var good in Model)
+    {
+        <tr>
+            <td>@good.Name</td>
+            <td>@good.YearOfManufacture</td>
+            <td>@good.WarrantyTerm months</td>
+            <td>@good.Producer.Name</td>
+            <td>@good.Price</td>
+            <td>@good.Type</td>
+            <td>
+                <form>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+}

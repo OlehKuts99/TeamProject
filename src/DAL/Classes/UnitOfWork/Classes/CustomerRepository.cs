@@ -22,8 +22,8 @@ namespace DAL.Classes.UnitOfWork.Classes
             {
                 CustomerId = item.Id
             };
-
             await this.applicationContext.Carts.AddAsync(cart);
+            item.Cart = cart;
             await this.applicationContext.Customers.AddAsync(item);
         }
 

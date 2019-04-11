@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Classes.UnitOfWork;
@@ -49,7 +50,7 @@ namespace Store.Controllers
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
-                    UserName = model.FirstName + model.SecondName,
+                    UserName = model.Email,
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now
                 };
@@ -247,6 +248,23 @@ namespace Store.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowCart()
+        {
+            string name = User.Identity.Name;
+            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == name)
+                .FirstOrDefault().Id;
+            Customer customer = await unitOfWork.Customers.Get(customerId);
+            var goodCarts = customer.Cart.Goods;
+            var goods = new List<Good>();
+            foreach(var good in goodCarts)
+            {
+                good.Good = await unitOfWork.Goods.Get(good.GoodId);
+                goods.Add(good.Good);
+            }
+            return View(goods);
         }
 
         protected override void Dispose(bool disposing)
