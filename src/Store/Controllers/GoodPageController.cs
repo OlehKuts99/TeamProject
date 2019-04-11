@@ -52,7 +52,7 @@ namespace Store.Controllers
 
         [Authorize(Roles = "customer")]
         [HttpPost]
-        public async Task AddToCart(int id)
+        public async Task<IActionResult> AddToCart(int id)
         {
             Good good = await unitOfWork.Goods.Get(id);
             int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name).First().Id;
@@ -63,6 +63,7 @@ namespace Store.Controllers
                 unitOfWork.Customers.AddToCart(good, customer);
                 await unitOfWork.SaveAsync();
             }
+            return RedirectToAction("ShowGood", new { goodid = id });
         }
     }
 }
