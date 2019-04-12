@@ -162,6 +162,7 @@
 }
 
     .cart-goods .cart-item {
+        font-size: 18px;
         display: flex;
         align-items: center;
         padding-bottom: 1rem;

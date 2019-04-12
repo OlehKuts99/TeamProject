@@ -92,5 +92,27 @@ namespace DAL.Classes.UnitOfWork.Classes
                 customer.Cart.Goods.Add(new GoodCart { Good = good, Cart = customer.Cart });
             }
         }
+
+        public void RemoveFromCart(Good good, Customer customer)
+        {
+            List<GoodCart> cartGoods = customer.Cart.Goods.ToList();
+            bool removeFromCart = false;
+
+            foreach (var cartGood in cartGoods)
+            {
+                if (cartGood.GoodId == good.Id)
+                {
+                    removeFromCart = true;
+                }
+            }
+            if (removeFromCart)
+            {
+                var goodCart = customer.Cart.Goods.Where(g => g.GoodId == good.Id && g.Cart.Id == customer.Cart.Id).FirstOrDefault();
+                if(goodCart != null)
+                {
+                    customer.Cart.Goods.Remove(goodCart);
+                }
+            }
+        }
     }
 }

@@ -65,5 +65,21 @@ namespace Store.Controllers
             }
             return RedirectToAction("ShowGood", new { goodid = id });
         }
+
+        [Authorize(Roles = "customer")]
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int goodid)
+        {
+            Good good = await unitOfWork.Goods.Get(goodid);
+            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name).First().Id;
+            Customer customer = await unitOfWork.Customers.Get(customerId);
+
+            if (good != null && customer != null)
+            {
+                unitOfWork.Customers.RemoveFromCart(good, customer);
+                await unitOfWork.SaveAsync();
+            }
+            return RedirectToAction("ShowCart", "Account");
+        }
     }
 }
