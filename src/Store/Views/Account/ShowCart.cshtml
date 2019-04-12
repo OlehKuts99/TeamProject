@@ -5,42 +5,48 @@
 
 <link rel="stylesheet" href="~/css/mainPage.css" />
 
-@if (Model.Count() == 0 ||Model == null )
+@if (Model.Count() == 0 || Model == null)
 {
     <h2>Your cart is empty</h2>
 }
 else
 {
-    <table class="table table-hover">
-        <tr>
-            <th>Name</th>
-            <th>Year of goods production</th>
-            <th>The warranty period</th>
-            <th>Producer name</th>
-            <th>Price</th>
-            <th>Type</th>
-        </tr>
+
+    <div class=" cart-goods">
+        <div class="row text-center">
+            <h3>Your Cart</h3>
+        </div>
         @foreach (var good in Model)
         {
-        
-            <tr>
-
-                <td><a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">@good.Name</a></td>
-                <td>@good.YearOfManufacture</td>
-                <td>@good.WarrantyTerm months</td>
-                <td>@good.Producer.Name</td>
-                <td>@good.Price</td>
-                <td>@good.Type</td>
-
-                <td>
+           
+        <div class="row cart-item text-center">
+            
+            <div class="col-lg-3 col-3">
+                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
+                    <div><img src="../images/goods/@good.PhotoUrl" /></div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-3">
+                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
+                    <p>@good.Name</p>
+                </a>
+            </div>
+                <div class="col-lg-3 col-3">
+                    <p>@good.Price</p>
+                </div>
+           
+                <div class="col-lg-3 col-3">
                     <form>
                         <button type="submit" class="btn btn-sm btn-danger">
                             Delete
                         </button>
                     </form>
-                </td>
-            </tr>
-        
+                </div>
+        </div>
+           
+
+
         }
-    </table>
+    </div>
+
 }

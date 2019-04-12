@@ -150,3 +150,20 @@
     .good-link:hover {
         text-decoration: none;
     }
+
+
+.cart-goods{
+    margin-top: 4rem;
+}
+
+.cart-goods img{
+    height: 10rem;
+    width: 8rem;
+}
+
+.cart-goods .cart-item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
