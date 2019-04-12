@@ -92,7 +92,8 @@
             @foreach (var review in Model.Reviews)
              {
                  <div class="col-lg-2">
-                     @review.Customer.SecondName
+                     @review.Customer.FirstName
+                     <p>@review.Date</p>
                  </div>
                  <div class="col-lg-8 mr-auto products">
                      @review.Message
