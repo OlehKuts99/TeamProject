@@ -7,7 +7,11 @@
 
 @if (Model.Count() == 0 || Model == null)
 {
-    <h2>Your cart is empty</h2>
+<div class=" cart-goods">
+    <div class="row text-center">
+        <h3>Your cart is empty</h3>
+    </div>
+</div>
 }
 else
 {
@@ -18,23 +22,23 @@ else
         </div>
         @foreach (var good in Model)
         {
-           
-        <div class="row cart-item text-center">
-            
-            <div class="col-lg-3 col-3">
-                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
-                    <div><img src="../images/goods/@good.PhotoUrl" /></div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-3">
-                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
-                    <p>@good.Name</p>
-                </a>
-            </div>
+
+            <div class="row cart-item text-center">
+
+                <div class="col-lg-3 col-3">
+                    <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
+                        <div><img src="../images/goods/@good.PhotoUrl" /></div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-3">
+                    <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
+                        <p>@good.Name</p>
+                    </a>
+                </div>
                 <div class="col-lg-3 col-3">
                     <p>@good.Price</p>
                 </div>
-           
+
                 <div class="col-lg-3 col-3">
                     <form asp-area="" asp-controller="GoodPage" asp-action="RemoveFromCart" asp-route-goodId="@good.Id">
                         <button type="submit" class="btn btn-sm btn-danger">
@@ -42,8 +46,8 @@ else
                         </button>
                     </form>
                 </div>
-        </div>
-           
+            </div>
+
 
 
         }
