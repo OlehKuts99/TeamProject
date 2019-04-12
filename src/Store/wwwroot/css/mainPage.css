@@ -165,11 +165,4 @@
         font-size: 18px;
         display: flex;
         align-items: center;
-        padding-bottom: 1rem;
-        padding-top: 1rem;
-        background-color: #efdcdc;
-        border-radius: 3rem;
-    }
-    .cart-goods h3{
-        font-family: cursive;
     }
