@@ -25,6 +25,14 @@ namespace Store.Controllers
             return View(good);
         }
 
+        public async Task<IActionResult> ShowGoodWithReviews(int goodId)
+        {
+            Good good = await unitOfWork.Goods.Get(goodId);
+            good.Producer = await unitOfWork.Producers.Get(good.ProducerId);
+
+            return View(good);
+        }
+
         [Authorize(Roles = "customer")]
         [HttpPost]
         public async Task<IActionResult> LeaveReview(int id, string reviewArea)

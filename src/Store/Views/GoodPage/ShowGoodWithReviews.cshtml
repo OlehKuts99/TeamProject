@@ -87,8 +87,23 @@
     </form>
     <hr class="black-hr" />
     <div class="row text-center">
-        <a asp-area="" asp-controller="GoodPage" asp-action="ShowGoodWithReviews" asp-route-goodId="@Model.Id" class="good-link">
-            Show rewiews
-        </a>
+        @if (Model.Reviews.Count != 0)
+        {
+            @foreach (var review in Model.Reviews)
+             {
+                 <div class="col-lg-2">
+                     @review.Customer.SecondName
+                 </div>
+                 <div class="col-lg-8 mr-auto products">
+                     @review.Message
+                 </div>
+             }
+        }
+        else
+        {
+            <p>
+               No reviews for now , become first !
+            </p>
+        }
     </div>
 </div>
