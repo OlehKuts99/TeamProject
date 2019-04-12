@@ -29,6 +29,11 @@ body {
     margin: 15px;
 }
 
+.center-text {
+    text-align: center;
+    margin-top: 25%
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

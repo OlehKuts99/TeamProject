@@ -21,7 +21,7 @@ namespace Store.Helpers.Sender
         {
             const string EmailTemplateSection = "EmailSendTemplates";
 
-            ConfigurationManger configurationManger = new ConfigurationManger();
+            ConfigurationManager configurationManger = new ConfigurationManager();
             var section = configurationManger.Configuration.GetSection($"{EmailTemplateSection}");
 
             var message = string.Format(section[EmailSendTemplate.StatusChangedMessage.ToString()],
@@ -41,7 +41,7 @@ namespace Store.Helpers.Sender
         {
             const string EmailTemplateSection = "EmailSendTemplates";
 
-            ConfigurationManger configurationManger = new ConfigurationManger();
+            ConfigurationManager configurationManger = new ConfigurationManager();
             var section = configurationManger.Configuration.GetSection($"{EmailTemplateSection}");
 
             var message = string.Format(section[EmailSendTemplate.EndPointChangedMessage.ToString()],
@@ -61,7 +61,7 @@ namespace Store.Helpers.Sender
         {
             const string EmailTemplateSection = "EmailSendTemplates";
 
-            ConfigurationManger configurationManger = new ConfigurationManger();
+            ConfigurationManager configurationManger = new ConfigurationManager();
             var section = configurationManger.Configuration.GetSection($"{EmailTemplateSection}");
 
             var message = string.Format(section[EmailSendTemplate.PasswordChangeMessage.ToString()], url);
