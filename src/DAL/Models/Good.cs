@@ -47,6 +47,8 @@ namespace DAL.Models
 
         public ICollection<GoodCart> Carts { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<GoodReview> Reviews { get; set; }
     }
 }

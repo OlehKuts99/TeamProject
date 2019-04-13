@@ -55,7 +55,7 @@ namespace Store.Controllers
                 await unitOfWork.SaveAsync();
             }
 
-            return View();
+            return RedirectToAction("ShowGoodWithReviews", id);
         }
 
         [Authorize(Roles = "customer")]

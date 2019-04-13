@@ -18,6 +18,7 @@ namespace Store.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UnitOfWork unitOfWork;
+        private readonly ErrorMessage errorMessage;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
@@ -26,6 +27,7 @@ namespace Store.Controllers
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.unitOfWork = new UnitOfWork(appDbContext);
+            this.errorMessage = new ErrorMessage();
         }
 
         /// <summary>
@@ -66,12 +68,9 @@ namespace Store.Controllers
 
                 if (userManager.Users.Where(u => u.Email == model.Email).Count() > 0)
                 {
-                    var configuration = new ConfigurationManager();
-                    var section = configuration.Configuration.GetSection("ErrorMessages");
+                    ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "EmailExistAlready");
 
-                    ViewBag.Message = section["EmailExistAlready"];
-
-                    return View("ErrorPage"); 
+                    return View("ErrorPage");
                 }
 
                 var addResult = await userManager.CreateAsync(user, model.Password);
@@ -123,6 +122,13 @@ namespace Store.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
+                {
+                    ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "UserIsNotRegistered");
+
+                    return View("ErrorPage");
+                }
 
                 var result =
                     await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
