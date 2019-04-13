@@ -50,53 +50,7 @@ namespace Store.Controllers
                 var allOrders = unitOfWork.Orders.GetAll().ToList();
                 foreach (var order in allOrders)
                 {
-                    order.Customer = await unitOfWork.Customers.Get(order.CustomerId);
-
-                    bool addToResult = true;
-
-                    if (model.Id == null && model.CustomerName == null && model.CustomerSurname == null &&
-                        model.CustomerEmail == null && model.EndPointCity == null && 
-                        model.OrderDate == null && statuses.Count == 0)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Id != null && order.Id != model.Id)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.CustomerName != null && order.Customer.FirstName != model.CustomerName)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.CustomerSurname != null && order.Customer.SecondName != model.CustomerSurname)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.EndPointCity != null && order.EndPointCity != model.EndPointCity)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.CustomerEmail != null && order.Customer.Email != model.CustomerEmail)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
+                    if (this.AddToResult(model, order, statuses))
                     {
                         orders.Add(order);
                     }
@@ -246,6 +200,55 @@ namespace Store.Controllers
             }
 
             return View(model);
+        }
+
+        private bool AddToResult(FindOrderView model, Order order, List<OrderStatus> statuses)
+        {
+            bool addToResult = true;
+
+            if (model.Id == null && model.CustomerName == null && model.CustomerSurname == null &&
+                        model.CustomerEmail == null && model.EndPointCity == null &&
+                        model.OrderDate == null && statuses.Count == 0)
+            {
+                addToResult = false;
+            }
+
+            if (model.Id != null && order.Id != model.Id)
+            {
+                addToResult = false;
+            }
+
+            if (model.CustomerName != null && order.Customer.FirstName != model.CustomerName)
+            {
+                addToResult = false;
+            }
+
+            if (model.CustomerSurname != null && order.Customer.SecondName != model.CustomerSurname)
+            {
+                addToResult = false;
+            }
+
+            if (model.EndPointCity != null && order.EndPointCity != model.EndPointCity)
+            {
+                addToResult = false;
+            }
+
+            if (model.CustomerEmail != null && order.Customer.Email != model.CustomerEmail)
+            {
+                addToResult = false;
+            }
+
+            if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
+            {
+                addToResult = false;
+            }
+
+            if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

@@ -25,11 +25,6 @@ namespace Store.Controllers
         public IActionResult Index()
         {
             var orders = unitOfWork.Orders.GetAll().ToList();
-            var customers = unitOfWork.Customers.GetAll().ToList();
-            foreach (var order in orders)
-            {
-               order.Customer = customers.Where(p => p.Id == order.CustomerId).First();
-            }
 
             return View(orders);
         }
@@ -50,36 +45,15 @@ namespace Store.Controllers
         public IActionResult Find(FindOrderView model, List<OrderStatus> statuses)
         {
             List<Order> orders = new List<Order>();
+
             if (ModelState.IsValid)
             {
                 var allOrders = unitOfWork.Orders.GetAll().ToList();
+
                 foreach (var order in allOrders)
                 {
-                    bool addToResult = true;
-
-                    if (model.Id == null && model.OrderDate == null && statuses.Count == 0)
+                    if (this.AddToResult(model, order, statuses))
                     {
-                        addToResult = false;
-                    }
-
-                    if (model.Id != null && order.Id != model.Id)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
-                    {
-                        order.Customer = unitOfWork.Customers.GetAll().Where(p => p.Id == order.CustomerId).First();
                         orders.Add(order);
                     }
                 }
@@ -88,6 +62,7 @@ namespace Store.Controllers
 
                 return RedirectToAction("FindResult", "Order");
             }
+
             return View(model);
         }
 
@@ -128,6 +103,33 @@ namespace Store.Controllers
             ViewBag.OrderId = order.Id;
 
             return View(customer);
+        }
+
+        private bool AddToResult(FindOrderView model, Order order, List<OrderStatus> statuses)
+        {
+            bool addToResult = true;
+
+            if (model.Id == null && model.OrderDate == null && statuses.Count == 0)
+            {
+                addToResult = false;
+            }
+
+            if (model.Id != null && order.Id != model.Id)
+            {
+                addToResult = false;
+            }
+
+            if (model.OrderDate != null && ((DateTime)model.OrderDate).Date != order.OrderDate.Date)
+            {
+                addToResult = false;
+            }
+
+            if (statuses.Count > 0 && !statuses.Contains(order.OrderStatus))
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

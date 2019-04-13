@@ -8,11 +8,13 @@ namespace DAL.Classes.UnitOfWork
     public class UnitOfWork : IDisposable
     {
         private readonly AppDbContext applicationContext;
+
         private CustomerRepository customerRepository;
         private GoodRepository goodRepository;
         private StorageRepository storageRepository;
         private OrderRepository _orderRepository;
         private ProducerRepository producerRepository;
+
         private bool disposed = false;
 
         public UnitOfWork(AppDbContext appDbContext)
@@ -32,6 +34,7 @@ namespace DAL.Classes.UnitOfWork
                 return customerRepository;
             }
         }
+
         public ProducerRepository Producers
         {
             get

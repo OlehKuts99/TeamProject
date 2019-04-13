@@ -7,6 +7,7 @@ using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Store.Helpers;
 using Store.ViewModels;
 
 namespace Store.Controllers
@@ -15,22 +16,18 @@ namespace Store.Controllers
     public class GoodController : Controller
     {
         private readonly UnitOfWork unitOfWork;
+        private readonly ErrorMessage errorMessage;
 
         public GoodController(AppDbContext appDbContext)
         { 
             this.unitOfWork = new UnitOfWork(appDbContext);
+            this.errorMessage = new ErrorMessage();
         }
 
         [HttpGet]
         public IActionResult Index()
         {
             var goods = unitOfWork.Goods.GetAll().ToList();
-            var producers = unitOfWork.Producers.GetAll().ToList();
-
-            foreach (var good in goods)
-            {
-                good.Producer = producers.Where(p => p.Id == good.ProducerId).First();
-            }
 
             return View(goods);
         }
@@ -93,7 +90,9 @@ namespace Store.Controllers
 
             if (good == null)
             {
-                return NotFound();
+                ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "GoodIsNotFounded");
+
+                return View("ErrorPage");
             }
 
             foreach (var storage in good.Storages)
@@ -217,41 +216,7 @@ namespace Store.Controllers
 
                 foreach (var good in allGoods)
                 {
-                    bool addToResult = true;
-
-                    if (model.Name == null && model.ProducerName == null && 
-                        model.EndPrice - model.StartPrice == 0 && model.YearOfManufacture == 0 && model.Type == null)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Name != null && good.Name != model.Name)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.YearOfManufacture != null && good.YearOfManufacture != model.YearOfManufacture)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.ProducerName != null && good.Producer.Name != model.ProducerName)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.EndPrice - model.StartPrice != 0 && good.Price < model.StartPrice || 
-                        good.Price > model.EndPrice )
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Type != null && good.Type != model.Type)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
+                    if (this.AddToResult(model, good))
                     {
                         goods.Add(good);
                     }
@@ -276,6 +241,45 @@ namespace Store.Controllers
             }
 
             return View(goods);
+        }
+
+        private bool AddToResult(FindGoodView model, Good good)
+        {
+            bool addToResult = true;
+
+            if (model.Name == null && model.ProducerName == null &&
+            model.EndPrice - model.StartPrice == 0 && model.YearOfManufacture == 0 && model.Type == null)
+            {
+                addToResult = false;
+            }
+
+            if (model.Name != null && good.Name != model.Name)
+            {
+                addToResult = false;
+            }
+
+            if (model.YearOfManufacture != null && good.YearOfManufacture != model.YearOfManufacture)
+            {
+                addToResult = false;
+            }
+
+            if (model.ProducerName != null && good.Producer.Name != model.ProducerName)
+            {
+                addToResult = false;
+            }
+
+            if (model.EndPrice - model.StartPrice != 0 && good.Price < model.StartPrice ||
+                good.Price > model.EndPrice)
+            {
+                addToResult = false;
+            }
+
+            if (model.Type != null && good.Type != model.Type)
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using DAL.Classes;
 using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.ViewModels;
 
@@ -25,6 +23,7 @@ namespace Store.Controllers
         public IActionResult Index(int page = 1)
         {
             var filterModel = HttpContext.Session.Get<FindRangeInMainView>("filter");
+
             if (filterModel == null)
             {
                 filterModel = new FindRangeInMainView(unitOfWork);
@@ -35,6 +34,7 @@ namespace Store.Controllers
             }
 
             var goods = HttpContext.Session.Get<List<Good>>("goods");
+
             if (goods == null)
             {
                 goods = unitOfWork.Goods.GetAll().ToList();
@@ -68,47 +68,7 @@ namespace Store.Controllers
 
             foreach (var good in allGoods)
             {
-                bool addToResult = true;
-
-                if (model.FilterModel.GoodView.Name != null && good.Name != model.FilterModel.GoodView.Name)
-                {
-                    addToResult = false;
-                }
-
-                if (model.FilterModel.GoodView.YearOfManufacture != null 
-                    && good.YearOfManufacture != model.FilterModel.GoodView.YearOfManufacture)
-                {
-                    addToResult = false;
-                }
-
-                if (model.FilterModel.GoodView.ProducerName != null 
-                    && good.Producer.Name != model.FilterModel.GoodView.ProducerName)
-                {
-                    addToResult = false;
-                }
-
-                if (model.FilterModel.GoodView.EndPrice - model.FilterModel.GoodView.StartPrice != 0 
-                    && good.Price < model.FilterModel.GoodView.StartPrice ||
-                    good.Price > model.FilterModel.GoodView.EndPrice)
-                {
-                    addToResult = false;
-                }
-
-                if (model.FilterModel.GoodView.Type != null && good.Type != model.FilterModel.GoodView.Type)
-                {
-                    if (model.FilterModel.GoodView.Type != "All")
-                    {
-                        addToResult = false;
-                    }
-                }
-
-                if (model.FilterModel.GoodView.WarrantyTerm != null 
-                    && good.WarrantyTerm != model.FilterModel.GoodView.WarrantyTerm)
-                {
-                    addToResult = false;
-                }
-
-                if (addToResult)
+                if (this.AddToResult(model, good))
                 {
                     goods.Add(good);
                 }
@@ -201,6 +161,51 @@ namespace Store.Controllers
             HttpContext.Session.Set("goods", goods);
 
             return RedirectToAction("Index", new { pageNumber = 1 });
+        }
+
+        private bool AddToResult(IndexViewModel model, Good good)
+        {
+            bool addToResult = true;
+
+            if (model.FilterModel.GoodView.Name != null && good.Name != model.FilterModel.GoodView.Name)
+            {
+                addToResult = false;
+            }
+
+            if (model.FilterModel.GoodView.YearOfManufacture != null
+                && good.YearOfManufacture != model.FilterModel.GoodView.YearOfManufacture)
+            {
+                addToResult = false;
+            }
+
+            if (model.FilterModel.GoodView.ProducerName != null
+                && good.Producer.Name != model.FilterModel.GoodView.ProducerName)
+            {
+                addToResult = false;
+            }
+
+            if (model.FilterModel.GoodView.EndPrice - model.FilterModel.GoodView.StartPrice != 0
+                && good.Price < model.FilterModel.GoodView.StartPrice ||
+                good.Price > model.FilterModel.GoodView.EndPrice)
+            {
+                addToResult = false;
+            }
+
+            if (model.FilterModel.GoodView.Type != null && good.Type != model.FilterModel.GoodView.Type)
+            {
+                if (model.FilterModel.GoodView.Type != "All")
+                {
+                    addToResult = false;
+                }
+            }
+
+            if (model.FilterModel.GoodView.WarrantyTerm != null
+                && good.WarrantyTerm != model.FilterModel.GoodView.WarrantyTerm)
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

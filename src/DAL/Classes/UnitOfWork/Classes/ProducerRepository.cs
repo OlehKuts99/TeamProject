@@ -16,14 +16,16 @@ namespace DAL.Classes.UnitOfWork.Classes
         {
             applicationContext = appDbContext;
         }
+
         public async Task Create(Producer item)
         {
             await this.applicationContext.Producers.AddAsync(item);
-
         }
+
         public async Task Delete(int id)
         {
             Producer producer = await applicationContext.Producers.FindAsync(id);
+
             if (producer != null)
             {
                 applicationContext.Producers.Remove(producer);

@@ -71,6 +71,7 @@ namespace Store.Controllers
                 unitOfWork.Customers.AddToCart(good, customer);
                 await unitOfWork.SaveAsync();
             }
+
             return RedirectToAction("ShowGood", new { goodid = id });
         }
 
@@ -87,6 +88,7 @@ namespace Store.Controllers
                 unitOfWork.Customers.RemoveFromCart(good, customer);
                 await unitOfWork.SaveAsync();
             }
+
             return RedirectToAction("ShowCart", "Account");
         }
     }

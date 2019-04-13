@@ -8,6 +8,7 @@ using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Helpers;
 using Store.ViewModels;
 
 namespace Store.Controllers
@@ -16,10 +17,12 @@ namespace Store.Controllers
     public class StorageController : Controller
     {
         private readonly UnitOfWork unitOfWork;
+        private readonly ErrorMessage errorMessage;
 
         public StorageController(AppDbContext appDbContext)
         {
             this.unitOfWork = new UnitOfWork(appDbContext);
+            this.errorMessage = new ErrorMessage();
         }
 
         [HttpGet]
@@ -61,7 +64,9 @@ namespace Store.Controllers
 
             if (storage == null)
             {
-                return NotFound();
+                ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "StorageIsNotFounded");
+
+                return View("ErrorPage");
             }
 
             EditSorageView model = new EditSorageView
@@ -85,10 +90,12 @@ namespace Store.Controllers
                 {
                     storage.City = model.City;
                     storage.Street = model.Street;
+
                     unitOfWork.Storages.Update(storage);
                     await unitOfWork.SaveAsync();
                 }
             }
+
             return RedirectToAction("Index", "Storage");
         }
 
@@ -124,24 +131,7 @@ namespace Store.Controllers
 
                 foreach (var storage in allStorages)
                 {
-                    bool addToResult = true;
-
-                    if (model.City == null && model.Street== null)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.City != null && storage.City != model.City)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Street != null && storage.Street != model.Street)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
+                    if (this.AddToResult(model, storage))
                     {
                         storages.Add(storage);
                     }
@@ -166,26 +156,42 @@ namespace Store.Controllers
 
             return View(storages);
         }
+
         public async Task<ActionResult> ShowGoods(int id)
         {
             Storage storage = await unitOfWork.Storages.Get(id);
-            var goods = unitOfWork.Goods.GetAll().ToList();
             List<Good> storageGoods = new List<Good>();
 
-            foreach (var goodStorage in storage.Products)
+            foreach (var good in storage.Products)
             {
-                var item = goods.Where(g => g.Id == goodStorage.GoodId).First();
-
-                if (item != null)
-                {
-                    item.Producer = await unitOfWork.Producers.Get(item.ProducerId);
-                    storageGoods.Add(item);
-                }
+                storageGoods.Add(await unitOfWork.Goods.Get(good.GoodId));
             }
 
             ViewBag.NameOfStorage = string.Join(", ", storage.City, storage.Street);
 
             return View(storageGoods);
+        }
+
+        private bool AddToResult(FindStorageView model, Storage storage)
+        {
+            bool addToResult = true;
+
+            if (model.City == null && model.Street == null)
+            {
+                addToResult = false;
+            }
+
+            if (model.City != null && storage.City != model.City)
+            {
+                addToResult = false;
+            }
+
+            if (model.Street != null && storage.Street != model.Street)
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

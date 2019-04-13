@@ -83,9 +83,10 @@ namespace DAL.Classes
                     await unitOfWork.Orders.Create(new Order()
                     {
                         OrderDate = new DateTime(2017, 7, 12),
-                        Customer = await unitOfWork.Customers.Get(2007),
+                        Customer = await unitOfWork.Customers.Get(appContext.Customers.First().Id),
                         OrderStatus = OrderStatus.Cancelled
                     });
+
                     await unitOfWork.SaveAsync();
                 }
             }

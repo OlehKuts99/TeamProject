@@ -22,6 +22,7 @@ namespace DAL.Classes.UnitOfWork.Classes
             {
                 CustomerId = item.Id
             };
+
             await this.applicationContext.Carts.AddAsync(cart);
             item.Cart = cart;
             await this.applicationContext.Customers.AddAsync(item);
@@ -105,9 +106,12 @@ namespace DAL.Classes.UnitOfWork.Classes
                     removeFromCart = true;
                 }
             }
+
             if (removeFromCart)
             {
-                var goodCart = customer.Cart.Goods.Where(g => g.GoodId == good.Id && g.Cart.Id == customer.Cart.Id).FirstOrDefault();
+                var goodCart = customer.Cart.Goods
+                    .Where(g => g.GoodId == good.Id && g.Cart.Id == customer.Cart.Id).FirstOrDefault();
+
                 if(goodCart != null)
                 {
                     customer.Cart.Goods.Remove(goodCart);

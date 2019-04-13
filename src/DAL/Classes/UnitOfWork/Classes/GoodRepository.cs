@@ -36,6 +36,8 @@ namespace DAL.Classes.UnitOfWork.Classes
             Good good = await applicationContext.Goods.FindAsync(id);
             good.Storages = applicationContext.GoodStorage.Where(g => g.GoodId == id).ToList();
             good.Reviews = applicationContext.Reviews.Where(r => r.GoodId == id).ToList();
+            good.Producer = await applicationContext.Producers
+                .Where(p => p.Id == good.ProducerId).FirstOrDefaultAsync();
             
             foreach (var review in good.Reviews)
             {

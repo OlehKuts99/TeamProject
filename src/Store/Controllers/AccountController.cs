@@ -77,11 +77,6 @@ namespace Store.Controllers
 
                 if (addResult.Succeeded)
                 {
-                    if (await roleManager.FindByNameAsync("customer") == null)
-                    {
-                        await roleManager.CreateAsync(new IdentityRole("customer"));
-                    }
-
                     await userManager.AddToRoleAsync(user, "customer");
                     await signInManager.SignInAsync(user, false);
                     await unitOfWork.Customers.Create(customer);
@@ -186,15 +181,18 @@ namespace Store.Controllers
         {
             Customer customer = await unitOfWork.Customers.Get(model.Id);
 
-            customer.FirstName = model.FirstName;
-            customer.SecondName = model.SecondName;
-            customer.Phone = model.Phone;
+            if (customer != null)
+            {
+                customer.FirstName = model.FirstName;
+                customer.SecondName = model.SecondName;
+                customer.Phone = model.Phone;
 
-            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
-            user.UserName = model.Email;
+                ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
+                user.UserName = model.Email;
 
-            unitOfWork.Customers.Update(customer);
-            await unitOfWork.SaveAsync();
+                unitOfWork.Customers.Update(customer);
+                await unitOfWork.SaveAsync();
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -214,9 +212,9 @@ namespace Store.Controllers
 
                 if (user == null)
                 {
-                    ViewBag.UserIsNull = true;
+                    ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "UserIsNotFounded");
 
-                    return View("ForgotPasswordInfo");
+                    return View("ErrorPage");
                 }
 
                 ViewBag.UserIsNull = false;
@@ -254,7 +252,9 @@ namespace Store.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "UserIsNotFounded");
+
+                return View("ErrorPage");
             }
 
             var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
@@ -270,19 +270,18 @@ namespace Store.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowCart()
         {
-            string name = User.Identity.Name;
-            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == name)
+            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name)
                 .FirstOrDefault().Id;
             Customer customer = await unitOfWork.Customers.Get(customerId);
-            var producers = unitOfWork.Producers.GetAll().ToList();
             var goodCarts = customer.Cart.Goods;
             var goods = new List<Good>();
+
             foreach(var good in goodCarts)
             {
                 good.Good = await unitOfWork.Goods.Get(good.GoodId);
-                good.Good.Producer = producers.Where(p => p.Id == good.Good.ProducerId).First();
                 goods.Add(good.Good);
             }
+
             return View(goods);
         }
 

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Classes;
 using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Store.Helpers;
 using Store.ViewModels;
 
 namespace Store.Controllers
@@ -16,10 +15,12 @@ namespace Store.Controllers
     public class ProducerController : Controller
     {
         private readonly UnitOfWork unitOfWork;
+        private readonly ErrorMessage errorMessage;
 
         public ProducerController(AppDbContext appDbContext)
         {
             this.unitOfWork = new UnitOfWork(appDbContext);
+            this.errorMessage = new ErrorMessage();
         }
 
         [HttpGet]
@@ -46,12 +47,13 @@ namespace Store.Controllers
                     Email = model.Email,
                     WebSite = model.WebSite
                 };
+
                 await unitOfWork.Producers.Create(producer);
                 await unitOfWork.SaveAsync();
 
                 return RedirectToAction("Index", "Producer");
-
             }
+
             return View(model);
         }
 
@@ -62,7 +64,9 @@ namespace Store.Controllers
            
             if (producer == null)
             {
-                return NotFound();
+                ViewBag.Message = errorMessage.ReturnErrorMessage("ErrorMessages", "ProducerIsNotFounded");
+
+                return View("ErrorPage");
             }
 
             EditProducerView model = new EditProducerView
@@ -90,12 +94,14 @@ namespace Store.Controllers
                     producer.Phone = model.Phone;
                     producer.Email = model.Email;
                     producer.WebSite = model.WebSite;
+
                     unitOfWork.Producers.Update(producer);
                     await unitOfWork.SaveAsync();
-                    return RedirectToAction("Index");
 
+                    return RedirectToAction("Index");
                 }
             }
+
             return View(model);
         }
 
@@ -103,6 +109,7 @@ namespace Store.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             Producer producer = await unitOfWork.Producers.Get(id);
+
             if (producer != null)
             {
                 await unitOfWork.Producers.Delete(id);
@@ -129,34 +136,7 @@ namespace Store.Controllers
 
                 foreach (var producer in allProducers)
                 {
-                    bool addToResult = true;
-
-                    if (model.Name == null && model.Phone == null && model.Email == null && model.WebSite == null)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Name != null && producer.Name != model.Name)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Phone != null && producer.Phone != model.Phone)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Email != null && producer.Email != model.Email)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.WebSite != null && producer.WebSite != model.WebSite)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
+                    if (this.AddToResult(model, producer))
                     {
                         producers.Add(producer);
                     }
@@ -190,6 +170,38 @@ namespace Store.Controllers
             ViewBag.ProducerName = producer.Name;
 
             return View(producer.Products);
+        }
+
+        private bool AddToResult(FindProducerView model, Producer producer)
+        {
+            bool addToResult = true;
+
+            if (model.Name == null && model.Phone == null && model.Email == null && model.WebSite == null)
+            {
+                addToResult = false;
+            }
+
+            if (model.Name != null && producer.Name != model.Name)
+            {
+                addToResult = false;
+            }
+
+            if (model.Phone != null && producer.Phone != model.Phone)
+            {
+                addToResult = false;
+            }
+
+            if (model.Email != null && producer.Email != model.Email)
+            {
+                addToResult = false;
+            }
+
+            if (model.WebSite != null && producer.WebSite != model.WebSite)
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }

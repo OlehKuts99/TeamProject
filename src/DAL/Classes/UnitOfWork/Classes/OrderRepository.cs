@@ -42,7 +42,14 @@ namespace DAL.Classes.UnitOfWork.Classes
 
         public IEnumerable<Order> GetAll()
         {
-            return _dbContext.Orders;
+            IEnumerable<Order> orders = _dbContext.Orders;
+
+            foreach (var order in orders)
+            {
+                order.Customer = _dbContext.Customers.Where(c => c.Id == order.CustomerId).First();
+            }
+
+            return orders;
         }
 
         public void Update(Order item)

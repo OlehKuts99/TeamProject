@@ -51,7 +51,10 @@
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ShowCart"><div class="cart"><img src="~/images/menu-cart.svg"/></div></a></li>
+                        @if (User.IsInRole("customer"))
+                        {
+                            <li><a asp-area="" asp-controller="Account" asp-action="ShowCart"><div class="cart"><img src="~/images/menu-cart.svg" /></div></a></li>
+                        }
                         <li><a asp-area="" asp-controller="Account" asp-action="CustomerSettingPage">@User.Identity.Name</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a></li>
                     }

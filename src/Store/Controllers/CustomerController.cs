@@ -77,11 +77,6 @@ namespace Store.Controllers
 
                 if (addResult.Succeeded)
                 {
-                    if (await roleManager.FindByNameAsync("customer") == null)
-                    {
-                        await roleManager.CreateAsync(new IdentityRole("customer"));
-                    }
-
                     await userManager.AddToRoleAsync(user, "customer");
                     await unitOfWork.Customers.Create(customer);
                     await unitOfWork.SaveAsync();
@@ -210,35 +205,7 @@ namespace Store.Controllers
 
                 foreach (var customer in allCustomers)
                 {
-                    bool addToResult = true;
-
-                    if (model.FirstName == null && model.SecondName == null && 
-                        model.Phone == null && model.Email == null)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.FirstName != null && customer.FirstName != model.FirstName)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.SecondName != null && customer.SecondName != model.SecondName)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Phone != null && customer.Phone != model.Phone)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (model.Email != null && customer.Email != model.Email)
-                    {
-                        addToResult = false;
-                    }
-
-                    if (addToResult)
+                    if (this.AddToList(model, customer))
                     {
                         customers.Add(customer);
                     }
@@ -273,6 +240,39 @@ namespace Store.Controllers
             customerOrders.AddRange(unitOfWork.Orders.GetAll().Where(o => o.CustomerId == customer.Id));
 
             return View(customerOrders);
+        }
+
+        private bool AddToList(FindCustomerView model, Customer customer)
+        {
+            bool addToResult = true;
+
+            if (model.FirstName == null && model.SecondName == null &&
+            model.Phone == null && model.Email == null)
+            {
+                addToResult = false;
+            }
+
+            if (model.FirstName != null && customer.FirstName != model.FirstName)
+            {
+                addToResult = false;
+            }
+
+            if (model.SecondName != null && customer.SecondName != model.SecondName)
+            {
+                addToResult = false;
+            }
+
+            if (model.Phone != null && customer.Phone != model.Phone)
+            {
+                addToResult = false;
+            }
+
+            if (model.Email != null && customer.Email != model.Email)
+            {
+                addToResult = false;
+            }
+
+            return addToResult;
         }
     }
 }
