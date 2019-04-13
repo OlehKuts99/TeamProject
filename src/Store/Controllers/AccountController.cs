@@ -282,6 +282,8 @@ namespace Store.Controllers
                 goods.Add(good.Good);
             }
 
+            ViewBag.CommonPrice = goods.Sum(g => g.Price);
+
             return View(goods);
         }
 

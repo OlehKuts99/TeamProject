@@ -7,52 +7,55 @@
 
 @if (Model.Count() == 0 || Model == null)
 {
-<div class=" cart-goods">
-    <div class="row text-center">
-        <h3>Your cart is empty</h3>
+    <div class=" cart-goods">
+        <div class="row text-center">
+            <h3>Your cart is empty</h3>
+        </div>
     </div>
-</div>
 }
 else
 {
 
-<div class=" cart-goods">
-    <div class="row text-center">
-        <h3>Your Cart</h3>
-    </div>
-    @foreach (var good in Model)
-    {
-
-        <div class="row cart-item text-center">
-
-            <div class="col-lg-3 col-3">
-                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
-                    <div><img src="../images/goods/@good.PhotoUrl" /></div>
-                </a>
+    <div class=" cart-goods">
+        <div class="row">
+            <div class="col-lg-3">
+                <h4>Common price : @ViewBag.CommonPrice</h4>
             </div>
-            <div class="col-lg-3 col-3">
-                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
-                    <p>@good.Name</p>
-                </a>
+            <div class="col-lg-2">
+                <h4>Count : @Model.Count()</h4>
             </div>
-            <div class="col-lg-3 col-3">
-                <p>@good.Price</p>
-            </div>
-
-            <div class="col-lg-3 col-3">
-                <form asp-area="" asp-controller="GoodPage" asp-action="RemoveFromCart" asp-route-goodId="@good.Id">
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Delete
-                    </button>
-                </form>
-            </div>
-
         </div>
-        <hr class="black-hr" />
+        <div class="row text-center">
+            <h3>Your Cart</h3>
+        </div>
+        @foreach (var good in Model)
+        {
 
+            <div class="row cart-item text-center">
 
+                <div class="col-lg-3 col-3">
+                    <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">
+                        <div><img src="../images/goods/@good.PhotoUrl" /></div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-3">
+                    <p>Name : <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id">@good.Name</a></p>
+                </div>
+                <div class="col-lg-3 col-3">
+                    <p>Price : @good.Price</p>
+                </div>
 
-    }
-</div>
+                <div class="col-lg-3 col-3">
+                    <form asp-area="" asp-controller="GoodPage" asp-action="RemoveFromCart" asp-route-goodId="@good.Id">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+            <hr class="black-hr" />
+        }
+    </div>
 
 }

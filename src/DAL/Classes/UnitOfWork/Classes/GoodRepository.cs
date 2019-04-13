@@ -98,10 +98,22 @@ namespace DAL.Classes.UnitOfWork.Classes
             return reviews;
         }
 
+        public List<GoodReview> GetAllReviews()
+        {
+            List<GoodReview> reviews = applicationContext.Reviews.ToList();
+
+            return reviews;
+        }
+
         public async Task AddReview(GoodReview review, Good good)
         {
             review.Good = good;
             await applicationContext.Reviews.AddAsync(review);
+        }
+
+        public void DeleteReview(GoodReview review)
+        {
+            applicationContext.Reviews.Remove(review);
         }
     }
 }

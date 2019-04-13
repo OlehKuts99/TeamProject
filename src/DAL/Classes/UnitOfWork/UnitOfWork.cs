@@ -108,5 +108,10 @@ namespace DAL.Classes.UnitOfWork
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public AppDbContext GetContext()
+        {
+            return this.applicationContext;
+        }
     }
 }

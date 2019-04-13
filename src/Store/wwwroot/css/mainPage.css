@@ -69,57 +69,12 @@
     border-top: 1px solid #c4bfbf;
 }
 
-.circles {
-    list-style: none;
-    display: inline;
-    padding: 0;
-}
-
-    .circles li {
-        display: inline;
-        padding: 0 10px;
-    }
-
-    .circles .red-circle {
-        display: inline-block;
-        height: 40px;
-        width: 40px;
-        content: '';
-        font-size: 15px;
-        border-radius: 50%;
-        background-color: red;
-    }
-
-    .circles .black-circle {
-        display: inline-block;
-        height: 40px;
-        width: 40px;
-        content: '';
-        font-size: 15px;
-        border-radius: 50%;
-        background-color: black;
-    }
-
-    .circles .white-circle {
-        display: inline-block;
-        height: 40px;
-        width: 40px;
-        content: '';
-        font-size: 15px;
-        border-radius: 50%;
-        background-color: white;
-    }
-
 .rate {
     margin: 0;
     margin-left: 85px;
     padding: 0;
     font-size: 0;
 }
-
-    .rate:hover .star {
-        color: #ffdb11;
-    }
 
     .rate .star {
         margin: 0;
