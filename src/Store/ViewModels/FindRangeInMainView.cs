@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DAL.Classes;
 using DAL.Classes.UnitOfWork;
 using DAL.Models;
-using Remotion.Linq.Clauses;
 
 namespace Store.ViewModels
 {

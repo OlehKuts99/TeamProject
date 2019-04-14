@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Store.ViewModels
+﻿namespace Store.ViewModels
 {
     public class FindStorageView
     {

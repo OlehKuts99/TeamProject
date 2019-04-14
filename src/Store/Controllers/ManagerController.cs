@@ -1,14 +1,14 @@
-﻿using DAL.Classes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DAL.Classes;
 using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Helpers.Sender;
 using Store.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Store.Controllers
 {

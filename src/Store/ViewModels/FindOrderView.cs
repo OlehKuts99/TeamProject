@@ -1,6 +1,6 @@
-﻿using DAL.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DAL.Classes;
 
 namespace Store.ViewModels
 {

@@ -1,8 +1,5 @@
-﻿using DAL.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using DAL.Classes;
 
 namespace Store.ViewModels
 {

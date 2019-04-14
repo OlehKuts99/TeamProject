@@ -1,13 +1,10 @@
-﻿using MailKit.Net.Smtp;
-using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using Store.Helpers.Sender.Enums;
 using DAL.Models;
-using DAL.Classes;
 using Microsoft.Extensions.Configuration;
+using MimeKit;
+using MailKit.Net.Smtp;
+using Store.Helpers.Sender.Enums;
 
 namespace Store.Helpers.Sender
 {

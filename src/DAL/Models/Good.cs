@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace DAL.Models
 {
@@ -45,6 +43,8 @@ namespace DAL.Models
         [IgnoreDataMember]
         public ICollection<GoodStorage> Storages { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<GoodCart> Carts { get; set; }
 
         [JsonIgnore]

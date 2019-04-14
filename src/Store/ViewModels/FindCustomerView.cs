@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace Store.ViewModels
+﻿namespace Store.ViewModels
 {
     public class FindCustomerView
     {

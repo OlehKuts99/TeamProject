@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Store.ViewModels
 {
@@ -15,6 +11,5 @@ namespace Store.ViewModels
         [Required]
         [Display(Name = "Street")]
         public string Street { get; set; }
-
     }
 }
