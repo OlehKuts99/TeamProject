@@ -12,7 +12,7 @@
 .scrollbar-deep-purple::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-color: #512da8;
+    background-color: blanchedalmond;
 }
 
 .scrollbar-cyan::-webkit-scrollbar-track {
@@ -29,7 +29,7 @@
 .scrollbar-cyan::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-color: #00bcd4;
+    background-color: #292a2b;
 }
 
 .scrollbar-dusty-grass::-webkit-scrollbar-track {
@@ -63,14 +63,14 @@
 
 .scrollbar-ripe-malinka::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    background-image: -webkit-linear-gradient(330deg, #f093fb 0%, #f5576c 100%);
-    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+    -webkit-box-shadow: inset 0 0 6px rgba(66, 64, 64, 0.1);
+    background-image: -webkit-linear-gradient(330deg, rgb(48, 46, 48) 0%, #352e2f 100%);
+    background-image: linear-gradient(120deg, #756c75 0%, #4b3e40 100%);
 }
 
 .bordered-deep-purple::-webkit-scrollbar-track {
     -webkit-box-shadow: none;
-    border: 1px solid #512da8;
+    border: 1px solid #3a3a3b;
 }
 
 .bordered-deep-purple::-webkit-scrollbar-thumb {
@@ -79,7 +79,7 @@
 
 .bordered-cyan::-webkit-scrollbar-track {
     -webkit-box-shadow: none;
-    border: 1px solid #00bcd4;
+    border: 1px solid #1a1e1f;
 }
 
 .bordered-cyan::-webkit-scrollbar-thumb {
