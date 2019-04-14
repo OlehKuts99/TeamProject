@@ -18,4 +18,4 @@ Main parts of project :
 - Manager panel (it is functionality for managers, he can to view all orders, change status and end point of order and can send letter to customer's e-mail)
 - Admin panel (it is functionality for admins, admin can edit, add or remove customers, producers, products, storages, it is possible to view orders and their owner)
 - Setting page (part that helps to change some information (expect of e-mail) for customer, also customer can reset his password)
-- Customer's page (when customer tap on the button "add to cart" on page of product it stores in cart, there customer can set count of products he wants to buy, choose end point of order and confirm his purchase)
+- Cart page (when customer tap on the button "add to cart" on page of product it stores in cart, there customer can set count of products he wants to buy, choose end point of order and confirm his purchase)
