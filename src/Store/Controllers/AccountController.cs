@@ -267,26 +267,6 @@ namespace Store.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ShowCart()
-        {
-            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name)
-                .FirstOrDefault().Id;
-            Customer customer = await unitOfWork.Customers.Get(customerId);
-            var goodCarts = customer.Cart.Goods;
-            var goods = new List<Good>();
-
-            foreach(var good in goodCarts)
-            {
-                good.Good = await unitOfWork.Goods.Get(good.GoodId);
-                goods.Add(good.Good);
-            }
-
-            ViewBag.CommonPrice = goods.Sum(g => g.Price);
-
-            return View(goods);
-        }
-
         protected override void Dispose(bool disposing)
         {
             unitOfWork.Dispose();
