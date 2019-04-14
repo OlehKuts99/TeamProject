@@ -1,0 +1,43 @@
+﻿@model Store.ViewModels.ConfirmOrderView
+@{
+    ViewBag.Title = "Choose endpoint";
+}
+
+<link rel="stylesheet" href="~/css/mainPage.css" />
+
+<form>
+    <div>
+        <h1>Enter Your Location Details</h1>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndPointCity" class="control-label">City</label>
+        <input type="text" asp-for="EndPointCity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label id="endPointCity" asp-for="EndPointStreet" class="control-label">Street</label>
+        <input id="endPointStreet" type="text" asp-for="EndPointStreet" class="form-control" />
+    </div>
+    <div>
+        <input type="button" class="btn bg-success" value="Search" onclick="getmap()">
+    </div>
+</form>
+
+<h3 class="text-center">Products in order</h3>
+<div class=" cart-goods">
+    @foreach (var good in Model.Goods)
+    {
+        <div class="row cart-item">
+            <div class="col-lg-3 col-3 text-center">
+                <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Good.Id">
+                    <div><img src="../images/goods/@good.Good.PhotoUrl" /></div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-3">
+                <p>Name : <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Good.Id">@good.Good.Name</a></p>
+                <p>Price : @good.Good.Price</p>
+                <p>Count : @good.Count</p>
+            </div>
+        </div>
+        <hr class="black-hr" />
+    }
+</div>

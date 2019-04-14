@@ -1,11 +1,13 @@
-﻿using DAL.Classes.UnitOfWork;
-using DAL.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.Classes;
+using DAL.Classes.UnitOfWork;
+using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Store.ViewModels;
 
 namespace Store.Controllers
 {
@@ -26,15 +28,16 @@ namespace Store.Controllers
                 .FirstOrDefault().Id;
             Customer customer = await unitOfWork.Customers.Get(customerId);
             var goodCarts = customer.Cart.Goods;
-            var goods = new List<Good>();
+            var goods = new List<OrderPart>();
 
-            foreach (var good in goodCarts)
+            foreach (var good in customer.Cart.Goods)
             {
                 good.Good = await unitOfWork.Goods.Get(good.GoodId);
-                goods.Add(good.Good);
+                goods.Add(new OrderPart { Good = good.Good, Count = 1 });
             }
 
-            ViewBag.CommonPrice = goods.Sum(g => g.Price);
+            ViewBag.CommonPrice = Convert.ToInt32(goods.Sum(g => g.Good.Price));
+            HttpContext.Session.Set("goodsConfirm", goods);
 
             return View(goods);
         }
@@ -57,10 +60,10 @@ namespace Store.Controllers
         }
 
         [Authorize(Roles = "customer")]
-        [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int goodid)
+        [HttpGet]
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
-            Good good = await unitOfWork.Goods.Get(goodid);
+            Good good = await unitOfWork.Goods.Get(id);
             int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name).First().Id;
             Customer customer = await unitOfWork.Customers.Get(customerId);
 
@@ -71,6 +74,42 @@ namespace Store.Controllers
             }
 
             return RedirectToAction("ShowCart", "Cart");
+        }
+
+        [Authorize(Roles = "customer")]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmGoods(List<string> goodCount)
+        {
+            int customerId = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name).First().Id;
+            Customer customer = await unitOfWork.Customers.Get(customerId);
+            var goods = HttpContext.Session.Get<List<OrderPart>>("goodsConfirm");
+            var modelGoods = new List<OrderPart>();
+
+            if (goods == null)
+            {
+                return RedirectToAction("ShowCart", "Cart");
+            }
+
+            for (int i = 0; i < goodCount.Count; i++)
+            {
+                if (goodCount[i] == "0")
+                {
+                    continue;
+                }
+
+                modelGoods.Add(new OrderPart { Good = goods[i].Good, Count = Convert.ToInt32(goodCount[i])});
+            }
+
+            ConfirmOrderView model = new ConfirmOrderView
+            {
+                Customer = customer,
+                Goods = modelGoods,
+                Storages = unitOfWork.Storages.GetAll().ToList(),
+                Count = Convert.ToInt32(Request.Form["goodCommonCount"]),
+                CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
+            };
+
+            return View("ConfirmOrder", model);
         }
     }
 }
