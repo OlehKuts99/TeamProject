@@ -19,3 +19,9 @@ Main parts of project :
 - Admin panel (it is functionality for admins, admin can edit, add or remove customers, producers, products, storages, it is possible to view orders and their owner)
 - Setting page (part that helps to change some information (expect of e-mail) for customer, also customer can reset his password)
 - Cart page (when customer tap on the button "add to cart" on page of product it stores in cart, there customer can set count of products he wants to buy, choose end point of order and confirm his purchase)
+
+Architecture of solution : 
+
+- DAL (class library project that contains models, repositories and classes relating to the database)
+- Store (web project that contains main part of application, in particular : controllers, views, viewmodels, migrations and file with configuration : Startup.cs, and Program file that contains main method, also it contains directory with static files (images, scripts, css files))
+- NUnitTestStore - (nunit test project that contains tests for methods in application)
