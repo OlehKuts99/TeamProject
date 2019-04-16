@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/cart.css" />
+        <link rel="stylesheet" href="~/css/footer.css"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -68,7 +69,22 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-
+    <footer class="page-footer font-small special-color-dark">
+        <div class="row">
+            <div class="col-lg-4 col text-center">
+                <p>Company 2019</p>
+            </div>
+            <div class="col-lg-4 col text-center">
+                <a>About</a>
+            </div>
+            <div class="col-lg-4 col icons">
+                <p>Follow us:</p>
+                <a href="#"><div><img src="~/images/facebook.svg" /></div></a>
+                <a href="#"><div><img src="~/images/linkedin.svg" /></div></a>
+                <a href="#"><div><img src="~/images/github.svg" /></div></a>
+            </div>
+        </div>
+    </footer>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

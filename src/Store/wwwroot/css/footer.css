@@ -1,0 +1,38 @@
+﻿body{
+    padding-bottom: 0;
+}
+footer {
+    background-color: black;
+    padding: 2rem;
+}
+
+    footer a, p {
+        font-size: 18px;
+        margin-bottom: 0;
+        color: #7f7f7f;
+    }
+    footer a:hover{
+        text-decoration-line: none;
+        color: white;
+    }
+    footer .icons {
+        display: flex;
+    }
+
+        footer .icons div {
+            margin: 0 3rem;
+            margin-top: -0.3rem;
+            width: 4rem;
+            height: 4rem;
+        }
+
+            footer .icons div img {
+                border-radius: 3rem;
+                border: 2px solid white;
+                background-color: white;
+                opacity: 0.5;
+            }
+
+                footer .icons div img:hover {
+                   opacity: 1;
+                }
