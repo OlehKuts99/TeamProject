@@ -36,6 +36,7 @@ namespace Store.Controllers
             {
                 GoodReview review = new GoodReview
                 {
+                    Good = await unitOfWork.Goods.Get(id),
                     Customer = customer,
                     Date = DateTime.Now,
                     Message = reviewArea,
