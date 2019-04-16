@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/cart.css" />
+        <link rel="stylesheet" href="~/css/footer.css"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -68,7 +69,22 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-
+    <footer class="page-footer">
+        <div class="row">
+            <div class="col-lg-4 col text-center">
+                <p class="footer__text">PurchLand</p>
+            </div>
+            <div class="col-lg-4 col text-center">
+                <a asp-area="" asp-controller="Home" asp-action="About" class="footer__link">About</a>
+            </div>
+            <div class="col-lg-4 col icons">
+                <p class="footer__text">Follow us:</p>
+                <a href="#"><div><img src="~/images/facebook.svg" /></div></a>
+                <a href="#"><div><img src="~/images/linkedin.svg" /></div></a>
+                <a href="https://github.com/OlehKuts99/TeamProject"><div><img src="~/images/github.svg" /></div></a>
+            </div>
+        </div>
+    </footer>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -89,7 +105,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>
