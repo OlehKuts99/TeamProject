@@ -69,16 +69,16 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-    <footer class="page-footer font-small special-color-dark">
+    <footer class="page-footer">
         <div class="row">
             <div class="col-lg-4 col text-center">
-                <p>Company 2019</p>
+                <p class="footer__text">Company 2019</p>
             </div>
             <div class="col-lg-4 col text-center">
-                <a>About</a>
+                <a class="footer__link">About</a>
             </div>
             <div class="col-lg-4 col icons">
-                <p>Follow us:</p>
+                <p class="footer__text">Follow us:</p>
                 <a href="#"><div><img src="~/images/facebook.svg" /></div></a>
                 <a href="#"><div><img src="~/images/linkedin.svg" /></div></a>
                 <a href="#"><div><img src="~/images/github.svg" /></div></a>
@@ -105,7 +105,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>
