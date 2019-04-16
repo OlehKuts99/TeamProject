@@ -3,13 +3,11 @@
 }
 
 .developers .developer{
-    position: relative;
     margin-bottom: 3rem;
     border-radius: 2rem;
     border: 2px solid #101010;
     padding: 1rem;
-    width: 30rem;
-    height: 40rem;
+    align-items: center;
 }
 
     .developers .developer .developer__img img{
@@ -25,11 +23,7 @@
     }
     .developers .developer .developer__links {
         display: flex;
-        bottom: 0;
-        padding-left: 27%;
-        padding-right: 25%;
         padding-bottom: 2rem;
-        position: absolute;
     }
         .developers .developer .developer__links div {
             width: 4rem;
@@ -43,6 +37,7 @@
                 opacity: 0.5;
                 width: 4rem;
                 height: 4rem;
+                align-items: center;
             }
 
                 .developers .developer .developer__links div img:hover {
