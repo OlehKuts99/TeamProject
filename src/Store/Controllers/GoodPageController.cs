@@ -53,10 +53,10 @@ namespace Store.Controllers
 
         public async Task<IActionResult> DeleteReview(int id)
         {
-            GoodReview review = unitOfWork.Goods.GetAllReviews().Where(r => r.Id == id).First();
+            GoodReview review = unitOfWork.Reviews.GetAll().Where(r => r.Id == id).First();
             int goodId = review.GoodId;
 
-            unitOfWork.Goods.DeleteReview(review);
+            await unitOfWork.Reviews.Delete(review.Id);
             await unitOfWork.SaveAsync();
 
             return RedirectToAction("ShowGood", new { goodId });

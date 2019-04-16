@@ -14,6 +14,7 @@ namespace DAL.Classes.UnitOfWork
         private StorageRepository storageRepository;
         private OrderRepository _orderRepository;
         private ProducerRepository producerRepository;
+        private ReviewRepository reviewRepository;
 
         private bool disposed = false;
 
@@ -83,6 +84,18 @@ namespace DAL.Classes.UnitOfWork
                 }
 
                 return _orderRepository;
+            }
+        }
+
+        public ReviewRepository Reviews
+        {
+            get
+            {
+                if (reviewRepository == null)
+                {
+                    reviewRepository = new ReviewRepository(applicationContext);
+                }
+                return reviewRepository;
             }
         }
 

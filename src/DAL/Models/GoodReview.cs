@@ -19,5 +19,7 @@ namespace DAL.Models
         public int StarCount { get; set; }
 
         public DateTime Date { get; set; }
+
+        public bool IsVisibleForAll { get; set; }
     }
 }

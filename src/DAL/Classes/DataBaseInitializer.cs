@@ -59,13 +59,13 @@ namespace DAL.Classes
                 }
 
                 
-                if (unitOfWork.Storages.GetAll().Where(s => s.Street == "Horodotska, 17").Count() == 0)
+                if (unitOfWork.Storages.GetAll().Count() == 0)
                 { 
                     await unitOfWork.Storages.Create(new Storage() { City = "Lviv", Street = "Horodotska, 17" });
                     await unitOfWork.Storages.Create(new Storage() { City = "Kiev", Street = "Kachalova, 54" });
                 }
 
-                if (unitOfWork.Producers.GetAll().Where(p => p.Name == "Impression").Count() == 0)
+                if (unitOfWork.Producers.GetAll().Count() == 0)
                 {
                     await unitOfWork.Producers.Create(new Producer()
                     {

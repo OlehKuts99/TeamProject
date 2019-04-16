@@ -109,7 +109,29 @@ namespace Store.Controllers
                 CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
             };
 
+            HttpContext.Session.Set("orderConfirm", model);
+
             return View("ConfirmOrder", model);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmOrder()
+        {
+            ConfirmOrderView model = HttpContext.Session.Get<ConfirmOrderView>("orderConfirm");
+
+            if (model == null)
+            {
+                return RedirectToAction("ShowCart", "Cart");
+            }
+
+            Order order = new Order
+            {
+                OrderDate = DateTime.Now,
+                Customer = model.Customer,
+                OrderStatus = OrderStatus.Ordered,
+            };
+
+            return RedirectToAction("ShowCart");
         }
     }
 }
