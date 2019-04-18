@@ -78,17 +78,17 @@ namespace DAL.Classes
                     await unitOfWork.SaveAsync();
                 }
 
-                if (unitOfWork.Orders.GetAll().Count() == 0)
-                {
-                    await unitOfWork.Orders.Create(new Order()
-                    {
-                        OrderDate = new DateTime(2017, 7, 12),
-                        Customer = await unitOfWork.Customers.Get(appContext.Customers.First().Id),
-                        OrderStatus = OrderStatus.Cancelled
-                    });
+                //if (unitOfWork.Orders.GetAll().Count() == 0)
+                //{
+                //    await unitOfWork.Orders.Create(new Order()
+                //    {
+                //        OrderDate = new DateTime(2017, 7, 12),
+                //        Customer = await unitOfWork.Customers.Get(appContext.Customers.First().Id),
+                //        OrderStatus = OrderStatus.Cancelled
+                //    });
 
-                    await unitOfWork.SaveAsync();
-                }
+                //    await unitOfWork.SaveAsync();
+                //}
             }
         }
     }

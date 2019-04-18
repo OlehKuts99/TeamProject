@@ -29,5 +29,7 @@ namespace DAL.Models
         public string EndPointCity { get; set; }
 
         public string EndPointStreet { get; set; }
+
+        public int CommonPrice { get; set; }
     }
 }

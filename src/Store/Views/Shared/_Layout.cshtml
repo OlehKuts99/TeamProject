@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Store</title>
+    
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -42,6 +43,10 @@
                     @if (User.IsInRole("manager"))
                     {
                         <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manage orders</a></li>
+                    }
+                    @if (User.IsInRole("customer"))
+                    {
+                        <li><a asp-area="" asp-controller="User" asp-action="Index">All orders</a></li>
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

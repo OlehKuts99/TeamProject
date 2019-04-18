@@ -9,6 +9,8 @@ namespace Store.ViewModels
 
         public Customer Customer { get; set; }
 
+        public Country Country { get; set; }
+
         public List<OrderPart> Goods { get; set; }
 
         public int Count { get; set; }

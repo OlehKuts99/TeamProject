@@ -34,8 +34,12 @@ namespace DAL.Classes.UnitOfWork.Classes
         public async Task<Order> Get(int id)
         {
             var order = await _dbContext.Orders.FindAsync(id);
-            order.Products = _dbContext.GoodOrder.Where(g => g.OrderId == order.Id).ToList();
-            order.Customer = await _dbContext.Customers.FindAsync(order.CustomerId);
+
+            if (order != null)
+            {
+                order.Products = _dbContext.GoodOrder.Where(g => g.OrderId == order.Id).ToList();
+                order.Customer = await _dbContext.Customers.FindAsync(order.CustomerId);
+            }
 
             return order;
         }
@@ -55,6 +59,14 @@ namespace DAL.Classes.UnitOfWork.Classes
         public void Update(Order item)
         {
             _dbContext.Entry(item).State = EntityState.Modified;
+        }
+
+        public void SetProducts(List<Good> goods, Order order)
+        {
+            foreach (var good in goods)
+            {
+                order.Products.Add(new GoodOrder { Order = order, Good = good });
+            }
         }
     }
 }

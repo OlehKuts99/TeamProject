@@ -34,6 +34,11 @@ body {
     margin-top: 25%
 }
 
+.center-button {
+    margin-left: 45%;
+    width: 10%;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
