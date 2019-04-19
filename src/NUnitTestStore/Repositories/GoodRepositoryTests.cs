@@ -195,7 +195,24 @@ namespace NUnitTestStore.Repositories
         [Test]
         public async Task GetGoodStoragesTest()
         {
-            throw new NotImplementedException();
+            //Arrange
+            using (var context = new AppDbContext(options))
+            {
+                var good = new Good { Id = 1, Name = "Test" };
+                var storages = new List<GoodStorage> { new GoodStorage { GoodId = good.Id }};
+                var repo = new GoodRepository(context);
+
+                //Act
+                foreach (var storage in storages)
+                {
+                    context.GoodStorage.Add(storage);
+                }
+                var actualResult = await repo.GetGoodStorages(good.Id);
+                var expectedResult = new List<Storage> { new Storage { Products = storages } };
+
+                //Assert
+                Assert.AreEqual(expectedResult.Count, actualResult.Count);
+            }
         }
     }
 }

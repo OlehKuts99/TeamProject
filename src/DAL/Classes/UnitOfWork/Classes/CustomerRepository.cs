@@ -34,7 +34,7 @@ namespace DAL.Classes.UnitOfWork.Classes
 
             if (customer != null)
             {
-                Cart cart = applicationContext.Carts.Where(c => c.CustomerId == customer.Id).First();
+                Cart cart = applicationContext.Carts.Local.Where(c => c.CustomerId == customer.Id).First();
                 applicationContext.Carts.Remove(cart);
                 applicationContext.Customers.Remove(customer);
             }
@@ -43,8 +43,8 @@ namespace DAL.Classes.UnitOfWork.Classes
         public async Task<Customer> Get(int id)
         {
             Customer customer = await applicationContext.Customers.FindAsync(id);
-            customer.Cart = applicationContext.Carts.Where(c => c.CustomerId == customer.Id).FirstOrDefault();
-            customer.Cart.Goods = applicationContext.GoodCart.Where(c => c.CartId == customer.Cart.Id).ToList();
+            customer.Cart = applicationContext.Carts.Local.Where(c => c.CustomerId == customer.Id).FirstOrDefault();
+            customer.Cart.Goods = applicationContext.GoodCart.Local.Where(c => c.CartId == customer.Cart.Id).ToList();
 
             if (customer.Cart == null)
             {
@@ -53,7 +53,7 @@ namespace DAL.Classes.UnitOfWork.Classes
                     CustomerId = customer.Id
                 };
 
-                cart.Goods = applicationContext.GoodCart.Where(c => c.CartId == cart.Id).ToList();
+                cart.Goods = applicationContext.GoodCart.Local.Where(c => c.CartId == cart.Id).ToList();
                 customer.Cart = cart;
 
                 await this.applicationContext.Carts.AddAsync(cart);

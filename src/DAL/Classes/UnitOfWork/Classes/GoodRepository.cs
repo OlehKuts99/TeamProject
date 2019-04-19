@@ -93,7 +93,7 @@ namespace DAL.Classes.UnitOfWork.Classes
 
         public List<GoodReview> GetReviews(int id)
         {
-            List<GoodReview> reviews = applicationContext.Reviews.Where(r => r.GoodId == id).ToList();
+            List<GoodReview> reviews = applicationContext.Reviews.Local.Where(r => r.GoodId == id).ToList();
 
             return reviews;
         }
@@ -107,7 +107,7 @@ namespace DAL.Classes.UnitOfWork.Classes
         public async Task<List<Storage>> GetGoodStorages(int goodId)
         {
             List<Storage> storages = new List<Storage>();
-            List<GoodStorage> goodStorages = applicationContext.GoodStorage.Where(g => g.GoodId == goodId)
+            List<GoodStorage> goodStorages = applicationContext.GoodStorage.Local.Where(g => g.GoodId == goodId)
                 .ToList();
 
             foreach (var goodStorage in goodStorages)

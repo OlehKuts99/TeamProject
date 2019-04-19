@@ -100,7 +100,7 @@ namespace NUnitTestStore.Repositories
                 var result =  repo.Get(customer.Id);
 
                 //Assert
-                Assert.AreEqual(expectedResult, result);
+                Assert.AreEqual(expectedResult.Id, result.Id);
             }
         }
 
