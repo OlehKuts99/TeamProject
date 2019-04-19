@@ -7,6 +7,8 @@ using DAL.Classes.UnitOfWork;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Store.Helpers;
 using Store.ViewModels;
 
 namespace Store.Controllers
@@ -14,10 +16,12 @@ namespace Store.Controllers
     public class CartController : Controller
     {
         private readonly UnitOfWork unitOfWork;
+        private readonly ErrorMessage errorMessage;
 
         public CartController(AppDbContext appDbContext)
         {
             this.unitOfWork = new UnitOfWork(appDbContext);
+            errorMessage = new ErrorMessage();
         }
 
         [Authorize(Roles = "customer")]
@@ -105,19 +109,27 @@ namespace Store.Controllers
                 });
             }
 
-            ConfirmOrderView model = new ConfirmOrderView
+            if (modelGoods.Count != 0)
             {
-                Country = new Country(),
-                Customer = customer,
-                Goods = modelGoods,
-                Storages = await this.GetStorages(modelGoods),
-                Count = Convert.ToInt32(Request.Form["goodCommonCount"]),
-                CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
-            };
+                ConfirmOrderView model = new ConfirmOrderView
+                {
+                    Country = new Country(),
+                    Customer = customer,
+                    Goods = modelGoods,
+                    Storages = await this.GetStorages(modelGoods),
+                    Count = Convert.ToInt32(Request.Form["goodCommonCount"]),
+                    CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
+                };
 
-            HttpContext.Session.Set("orderConfirm", model);
+                HttpContext.Session.Set("orderConfirm", model);
 
-            return View("ConfirmOrder", model);
+                return View("ConfirmOrder", model);
+            }
+            else
+            {
+                ViewBag.Message = "You cannot buy nothing!";
+                return View("ErrorPage");
+            }
         }
 
         [HttpPost]
