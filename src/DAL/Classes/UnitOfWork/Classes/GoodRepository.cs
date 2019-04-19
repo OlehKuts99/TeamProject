@@ -103,5 +103,19 @@ namespace DAL.Classes.UnitOfWork.Classes
             review.Good = good;
             await applicationContext.Reviews.AddAsync(review);
         }
+
+        public async Task<List<Storage>> GetGoodStorages(int goodId)
+        {
+            List<Storage> storages = new List<Storage>();
+            List<GoodStorage> goodStorages = applicationContext.GoodStorage.Where(g => g.GoodId == goodId)
+                .ToList();
+
+            foreach (var goodStorage in goodStorages)
+            {
+                storages.Add(await applicationContext.Storages.FindAsync(goodStorage.StorageId));
+            }
+
+            return storages;
+        }
     }
 }

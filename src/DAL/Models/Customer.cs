@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace DAL.Models
 {
@@ -17,6 +19,8 @@ namespace DAL.Models
 
         public string Email { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public Cart Cart { get; set; }
 
         public ICollection<GoodReview> Reviews { get; set; }

@@ -20,7 +20,7 @@ namespace Store.Controllers
             this.unitOfWork = new UnitOfWork(appDbContext);
         }
 
-        [Authorize(Roles="customer")]
+        [Authorize(Roles = "customer")]
         [HttpGet]
         public async Task<IActionResult> ShowCart()
         {
@@ -97,14 +97,20 @@ namespace Store.Controllers
                     continue;
                 }
 
-                modelGoods.Add(new OrderPart { Good = goods[i].Good, Count = Convert.ToInt32(goodCount[i])});
+                modelGoods.Add(new OrderPart
+                {
+                    Good = goods[i].Good,
+                    Count = Convert.ToInt32(goodCount[i]),
+                    GoodId = goods[i].Good.Id
+                });
             }
 
             ConfirmOrderView model = new ConfirmOrderView
             {
+                Country = new Country(),
                 Customer = customer,
                 Goods = modelGoods,
-                Storages = unitOfWork.Storages.GetAll().ToList(),
+                Storages = await this.GetStorages(modelGoods),
                 Count = Convert.ToInt32(Request.Form["goodCommonCount"]),
                 CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
             };
@@ -115,7 +121,7 @@ namespace Store.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder()
+        public async Task<IActionResult> ConfirmOrder(ConfirmOrderView formModel)
         {
             ConfirmOrderView model = HttpContext.Session.Get<ConfirmOrderView>("orderConfirm");
 
@@ -124,14 +130,61 @@ namespace Store.Controllers
                 return RedirectToAction("ShowCart", "Cart");
             }
 
+            var date = DateTime.Now;
+
             Order order = new Order
             {
-                OrderDate = DateTime.Now,
-                Customer = model.Customer,
+                OrderDate = date,
+                CustomerId = model.Customer.Id,
                 OrderStatus = OrderStatus.Ordered,
+                EndPointCity = Request.Form["EndPointCity"],
+                EndPointStreet = formModel.EndPointStreet,
+                CommonPrice = Convert.ToInt32(Request.Form["commonPrice"])
             };
 
+            unitOfWork.Orders.SetProducts(await GetGoodsAsync(model.Goods), order);
+            await unitOfWork.Orders.Create(order);
+            
+            foreach (var good in await GetGoodsAsync(model.Goods))
+            {
+                await this.RemoveFromCart(good.Id);
+            }
+            await unitOfWork.SaveAsync();
+
             return RedirectToAction("ShowCart");
+        }
+
+        private async Task<List<Storage>> GetStorages(List<OrderPart> orderParts)
+        {
+            List<Storage> storages = await unitOfWork.Goods.GetGoodStorages(orderParts[0].GoodId);
+
+            foreach (var part in orderParts)
+            {
+                if (storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId)).Count() == 0)
+                {
+                    return new List<Storage>();
+                }
+                else
+                {
+                    storages = storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId))
+                        .ToList();
+                }
+            }
+
+            return storages.Distinct().ToList();
+        }
+
+        private async Task<List<Good>> GetGoodsAsync(List<OrderPart> orderParts)
+        {
+            List<Good> goods = new List<Good>();
+
+            foreach (var part in orderParts)
+            {
+                var good = await unitOfWork.Goods.Get(part.Good.Id);
+                goods.Add(good);
+            }
+
+            return goods;
         }
     }
 }

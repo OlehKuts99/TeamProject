@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace DAL.Models
 {
@@ -18,6 +19,7 @@ namespace DAL.Models
 
         public string Street { get; set; }
 
+        [JsonIgnore]
         public ICollection<GoodStorage> Products { get; set; }
 
     }
