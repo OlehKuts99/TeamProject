@@ -72,6 +72,7 @@ namespace NUnitTestStore.Repositories
                 //Act
                 context.Customers.Add(customer);
                 context.Reviews.Add(review);
+                context.SaveChanges();
                 var actualResult = await repo.Get(review.Id);
                 var expectedResult = review;
 

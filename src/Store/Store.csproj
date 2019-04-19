@@ -11,6 +11,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="wwwroot\Controllers\AccountController.cs" />
+    <Compile Include="wwwroot\Controllers\AdminController.cs" />
+    <Compile Include="wwwroot\Controllers\CartController.cs" />
+    <Compile Include="wwwroot\Controllers\CustomerController.cs" />
+    <Compile Include="wwwroot\Controllers\GoodController.cs" />
+    <Compile Include="wwwroot\Controllers\GoodPageController.cs" />
+    <Compile Include="wwwroot\Controllers\HomeController.cs" />
+    <Compile Include="wwwroot\Controllers\ManagerController.cs" />
+    <Compile Include="wwwroot\Controllers\OrderController.cs" />
+    <Compile Include="wwwroot\Controllers\ProducerController.cs" />
+    <Compile Include="wwwroot\Controllers\ReviewController.cs" />
+    <Compile Include="wwwroot\Controllers\StorageController.cs" />
+    <Compile Include="wwwroot\Controllers\UserController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="2.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />

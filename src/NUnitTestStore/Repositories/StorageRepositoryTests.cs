@@ -84,17 +84,18 @@ namespace NUnitTestStore.Repositories
             //Arrange
             using (var context = new AppDbContext(options))
             {
-                var reviews = new List<GoodReview> { new GoodReview { Id = 1, GoodId = 1 },
-                    new GoodReview { Id = 2, GoodId = 1 }, new GoodReview { Id = 3, GoodId = 1 } };
+                var storages = new List<Storage>{ new Storage{ Id = 1 } };
                 var repo = new StorageRepository(context);
 
                 //Act
-                foreach (var review in reviews)
+                foreach (var storage in storages)
                 {
-                    context.Reviews.Add(review);
+                    context.Add(storage);
                 }
+
+                context.SaveChanges();
                 var expectedResult = repo.GetAll();
-                var actualResult = context.Reviews;
+                var actualResult = storages;
 
                 //Assert
                 Assert.AreEqual(expectedResult, actualResult);
