@@ -25,7 +25,8 @@
             <input id="EndPointStreet" asp-for="EndPointStreet" class="form-control" type="text" />
         </div>
         <div>
-            <input type="button" value="Search" class="btn btn-warning center-button" onclick="setMarker()">
+            <input type="button" value="Search" class="btn btn-warning center-button" 
+                   onclick="setMarker(@Model.CommonPrice)">
         </div>
         <div class="row" style="margin-bottom: 2%;">
             <h3 class="col-lg-3">Goods price : <span id="goodPrice">@Model.CommonPrice</span></h3>

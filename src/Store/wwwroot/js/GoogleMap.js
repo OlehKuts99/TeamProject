@@ -7,7 +7,7 @@ function initMap() {
     });
 }
 
-function setMarker() {
+function setMarker(commonPrice) {
     var select = document.getElementById('EndPointCity');
     var city = select.options[select.selectedIndex].value;
 
@@ -31,16 +31,16 @@ function setMarker() {
     markers.push(marker);
     map.setZoom(17);
     map.panTo(new google.maps.LatLng(resultlat, resultlng));
-    setDeliveryPrice();
+    setDeliveryPrice(commonPrice);
 }
 
-function setDeliveryPrice() {
+function setDeliveryPrice(commonPrice) {
     var storages = document.getElementById('avaliableStorages');
     var additonalPrice = 120;
 
     if (storages.length == 0) {
         document.getElementById('deliveryPrice').textContent = additonalPrice;
-        document.getElementById('commonPrice').textContent = '@Model.CommonPrice';
+        document.getElementById('commonPrice').textContent = commonPrice;
         var price = Number(document.getElementById('commonPrice').value);
         document.getElementById('commonPrice').value = (price + additonalPrice).toString();
 
@@ -54,7 +54,7 @@ function setDeliveryPrice() {
     for (var i = 0; i < storages.length; i++) {
         if (storages[i].value == city) {
             document.getElementById('deliveryPrice').textContent = 15;
-            document.getElementById('commonPrice').value = '@Model.CommonPrice';
+            document.getElementById('commonPrice').textContent = commonPrice;
             var price = Number(document.getElementById('commonPrice').value);
             document.getElementById('commonPrice').value = (price + 15).toString();
             isTheSamePlace = true;
@@ -63,7 +63,7 @@ function setDeliveryPrice() {
 
     if (!isTheSamePlace) {
         document.getElementById('deliveryPrice').textContent = additonalPrice;
-        document.getElementById('commonPrice').value = '@Model.CommonPrice';
+        document.getElementById('commonPrice').value = commonPrice;
         var price = Number(document.getElementById('commonPrice').value);
         document.getElementById('commonPrice').value = (price + additonalPrice).toString();
     }
