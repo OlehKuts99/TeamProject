@@ -115,6 +115,7 @@ namespace NUnitTestStore.Repositories
                 Assert.AreEqual(expectedResult, actualResult);
             }
         }
+
         [Test]
         public void SetProducts()
         {
