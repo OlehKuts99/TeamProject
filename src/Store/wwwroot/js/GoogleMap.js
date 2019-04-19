@@ -1,8 +1,9 @@
 ﻿var map;
+var markers = [];
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 49.8397, lng: 24.0297 },
-        zoom: 8
+        zoom: 12
     });
 }
 
@@ -25,7 +26,10 @@ function setMarker() {
         }
     });
 
+    deleteMarkers();
     var marker = new google.maps.Marker({ position: { lat: resultlat, lng: resultlng }, map: map });
+    markers.push(marker);
+    map.setZoom(17);
     map.panTo(new google.maps.LatLng(resultlat, resultlng));
     setDeliveryPrice();
 }
@@ -64,3 +68,10 @@ function setDeliveryPrice() {
         document.getElementById('commonPrice').value = (price + additonalPrice).toString();
     }
 }
+
+function deleteMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+};
