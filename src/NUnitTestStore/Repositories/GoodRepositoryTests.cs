@@ -8,23 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using DAL.Classes.UnitOfWork.Interfaces;
 using System.Collections.Generic;
+using System;
 
 namespace NUnitTestStore.Repositories
 {
     [TestFixture]
     class GoodRepositoryTests
     {
-        private Mock<IRepository<Good>> repoMock;
         DbContextOptions<AppDbContext> options;
         [SetUp]
         public void Setup()
         {
             options= new DbContextOptionsBuilder<AppDbContext>()
                .UseInMemoryDatabase(databaseName: "InMemoryDatabase").Options;
-            repoMock = new Mock<IRepository<Good>>();
         }
         
-
         [Test]
         public async Task CreateTest()
         {
@@ -97,10 +95,11 @@ namespace NUnitTestStore.Repositories
                 {
                     context.Goods.Add(good);
                 }
-                var result = repo.GetAll();
+                var actualResult = repo.GetAll();
+                var expectedResult = context.Goods;
 
                 //Assert
-                Assert.AreEqual(context.Goods, result);
+                Assert.AreEqual(expectedResult, actualResult);
             }
         }
 
@@ -144,7 +143,31 @@ namespace NUnitTestStore.Repositories
                 Assert.AreEqual(expectedResult, actualResult);
             }
         }
-        
+
+        [Test]
+        public async Task GetReviews()
+        {
+            //Arrange
+            using (var context = new AppDbContext(options))
+            {
+                var reviews = new List<GoodReview> { new GoodReview { Id = 1, GoodId = 1 },
+                    new GoodReview { Id = 2, GoodId = 1 }, new GoodReview { Id = 3, GoodId = 1 } };
+                var good = new Good { Id = 1, Name = "Test" };
+                var repo = new GoodRepository(context);
+
+                //Act
+                await repo.Create(good);
+                foreach (var review in reviews)
+                {
+                    context.Reviews.Add(review);
+                }
+                var actualResult = repo.GetReviews(good.Id).Count();
+                var expectedResult = 3;
+
+                //Assert
+                Assert.AreEqual(expectedResult, actualResult);
+            }
+        }
 
         [Test]
         public async Task AddReview()
@@ -167,6 +190,12 @@ namespace NUnitTestStore.Repositories
                 Assert.AreEqual(expectedResult, actualResult);
                 Assert.AreEqual(good.Reviews, new List<GoodReview> { review });
             }
+        }
+
+        [Test]
+        public async Task GetGoodStoragesTest()
+        {
+            throw new NotImplementedException();
         }
     }
 }
