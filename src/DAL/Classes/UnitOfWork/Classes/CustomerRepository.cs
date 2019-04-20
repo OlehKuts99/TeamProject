@@ -34,7 +34,7 @@ namespace DAL.Classes.UnitOfWork.Classes
 
             if (customer != null)
             {
-                Cart cart = applicationContext.Carts.Where(c => c.CustomerId == customer.Id).First();
+                Cart cart = applicationContext.Carts.First(c => c.CustomerId == customer.Id);
                 applicationContext.Carts.Remove(cart);
                 applicationContext.Customers.Remove(customer);
             }
