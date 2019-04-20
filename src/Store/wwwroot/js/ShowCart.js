@@ -5,7 +5,7 @@
 
     price -= Number(pricePar);
     count -= 1;
-    if (value == 0)
+    if (value == 1)
         return;
 
     document.getElementById("goodCount" + id.toString()).value = value - 1;
