@@ -21,7 +21,7 @@ namespace Store.Controllers
 
         public IActionResult Index()
         {
-            return View(unitOfWork.Reviews.GetAll().Where(r => r.IsVisibleForAll == false));
+            return View(unitOfWork.Reviews.GetAll().Where(r => r.IsVisibleForAll == false).ToList());
         }
 
         [HttpPost]
