@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace NUnitTestStore.Controllers
 {
     public class MangerControllerTest
     {
@@ -114,6 +114,7 @@ namespace Tests
         {
             var context = new AppDbContext(options);
             context.Orders.RemoveRange(context.Orders);
+            context.Goods.RemoveRange(context.Goods);
             context.SaveChanges();
         }
     }

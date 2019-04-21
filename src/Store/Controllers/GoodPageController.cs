@@ -30,7 +30,8 @@ namespace Store.Controllers
         [HttpPost]
         public async Task<IActionResult> LeaveReview(int id, string reviewArea)
         {
-            Customer customer = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name).First();
+            Customer customer = unitOfWork.Customers.GetAll().Where(c => c.Email == User.Identity.Name)
+                .FirstOrDefault();
 
             if (customer != null)
             {
