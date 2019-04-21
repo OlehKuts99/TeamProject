@@ -78,7 +78,7 @@ namespace NUnitTestStore.Controllers
                 new Good {Id = 3, ProducerId = 1}
             };
 
-            var producer = new Producer { Id = 1 };
+            var producer = new Producer {Id = 1};
 
             foreach (var good in goods)
             {
@@ -94,5 +94,25 @@ namespace NUnitTestStore.Controllers
             //Assert
             Assert.IsAssignableFrom<CreateGoodView>(actualResult);
         }
+
+        [Test]
+        public async Task Delete_Takes_Invalid_Data_Result_Redirect()
+        {
+            //Arrange
+            var good = new Good {Id = 2};
+            var storage = new Storage();
+            var review = new GoodReview();
+
+            //Act
+            context.Add(good);
+            context.Add(storage);
+            context.Add(review);
+            context.SaveChanges();
+            var actualResult = (RedirectToActionResult) await controller.Delete(1);
+            var expectedResult = "Index";
+            //Assert
+            Assert.AreEqual(expectedResult,actualResult.ActionName);
+        }
     }
 }
+    
