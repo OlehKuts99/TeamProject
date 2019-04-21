@@ -50,7 +50,7 @@ namespace DAL.Classes.UnitOfWork.Classes
 
             foreach (var order in orders)
             {
-                order.Customer = _dbContext.Customers.Where(c => c.Id == order.CustomerId).First();
+                order.Customer = _dbContext.Customers.Where(c => c.Id == order.CustomerId).FirstOrDefault();
             }
 
             return orders;

@@ -108,7 +108,6 @@ namespace Tests
             // Arrange
             var good = new Good() { Id = 1, Name = "Iphone 7" };
             var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
-            var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
 
             // Act
             context.GoodStorage.Add(new GoodStorage { Good = good, Storage = storage });
