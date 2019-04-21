@@ -15,11 +15,16 @@ namespace Tests
     public class StorageControllerTest
     {
         DbContextOptions<AppDbContext> options;
+        private AppDbContext context;
+        private StorageController controller;
+
         [SetUp]
         public void Setup()
         {
             options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "Add_writes_to_database").Options;
+            context = new AppDbContext(options);
+            controller = new StorageController(context);
         }
 
         [Test]
@@ -28,88 +33,100 @@ namespace Tests
             // Arrange
             var storages = new List<Storage>
             {
-                new Storage { Id = 1 },
-                new Storage { Id = 2 },
-                new Storage { Id = 3 },
+                new Storage { City = "Lviv", },
+                new Storage { City = "Kiev", },
+                new Storage { City = "Kharkiv" },
             };
 
-            using (var context = new AppDbContext(options))
+            foreach (var storage in storages)
             {
-                var controller = new StorageController(context);
-                foreach (var storage in storages)
-                {
-                    context.Storages.Add(storage);
-                }
-                context.SaveChanges();
-
-                // Act
-                controller.Index();
-
-                // Assert
-                Assert.AreEqual(storages.Count, context.Storages.Count());
-                Assert.AreEqual(storages[0].Id, context.Storages.First().Id);
+                context.Storages.Add(storage);
             }
+            context.SaveChanges();
+
+            // Act
+            controller.Index();
+
+            // Assert
+            Assert.AreEqual(storages.Count, context.Storages.Count());
+            Assert.AreEqual(storages[0].Id, context.Storages.First().Id);
         }
 
         [Test]
         public async Task Add_Storage_To_DataBase()
         {
             // Arrange
-            using (var context = new AppDbContext(options))
-            {
-                var controller = new StorageController(context);
-                var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
-                var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
+            var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
+            var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
 
-                // Act
-                await controller.Create(model);
+            // Act
+            await controller.Create(model);
 
-                // Assert
-                Assert.AreEqual(1, context.Storages.Count());
-                Assert.AreEqual(model.City, context.Storages.Single().City);
-            }
+            // Assert
+            Assert.AreEqual(1, context.Storages.Count());
+            Assert.AreEqual(model.City, context.Storages.Single().City);
         }
 
         [Test]
         public async Task Delete_Storage_From_Database()
         {
-            using (var context = new AppDbContext(options))
-            {
-                // Arrange
-                var controller = new StorageController(context);
-                var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
-                var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
+            // Arrange
+            var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
+            var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
 
-                // Act
-                await controller.Create(model);
-                await controller.Delete(storage.Id);
+            // Act
+            await controller.Create(model);
+            await controller.Delete(context.Storages.First().Id);
 
-                // Assert
-                Assert.AreEqual(0, context.Storages.Count());
-            }
+            // Assert
+            Assert.AreEqual(0, context.Storages.Count());
         }
 
         [Test]
         public async Task Edit_Some_Storage()
         {
-            using (var context = new AppDbContext(options))
-            {
-                // Arrange
-                var controller = new StorageController(context);
-                var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
-                var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
-                var editModel = new EditSorageView() {  Id = storage.Id, City = "Kiev", Street = storage.Street };
+            // Arrange
+            var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
+            var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
+            var editModel = new EditSorageView() { City = "Kiev", Street = storage.Street };
 
-                // Act
-                await controller.Create(model);
-                await controller.Edit(editModel);
+            // Act
+            await controller.Create(model);
+            editModel.Id = context.Storages.First().Id;
+            await controller.Edit(editModel);
 
-                // Assert
-                Assert.AreEqual(1, context.Storages.Count());
-                Assert.AreEqual(model.Street, context.Storages.Single().Street);
-                Assert.AreNotEqual(editModel.City, model.City);
-                Assert.AreEqual(editModel.City, context.Storages.Single().City);
-            }
+            // Assert
+            Assert.AreEqual(1, context.Storages.Count());
+            Assert.AreEqual(model.Street, context.Storages.Single().Street);
+            Assert.AreNotEqual(editModel.City, model.City);
+            Assert.AreEqual(editModel.City, context.Storages.Single().City);
+        }
+
+        [Test]
+        public async Task Show_Goods_In_Specified_Storage()
+        {
+            // Arrange
+            var good = new Good() { Id = 1, Name = "Iphone 7" };
+            var storage = new Storage() { Id = 1, City = "Lviv", Street = "Rubchaka, 56" };
+            var model = new CreateStorageView() { City = storage.City, Street = storage.Street };
+
+            // Act
+            context.GoodStorage.Add(new GoodStorage { Good = good, Storage = storage });
+            context.SaveChanges();
+            var result = await controller.ShowGoods(storage.Id) as ViewResult;
+            var goods = (List<Good>)result.ViewData.Model;
+
+            // Assert
+            Assert.AreEqual(1, goods.Count);
+            Assert.AreEqual(good.Name, goods.First().Name);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var context = new AppDbContext(options);
+            context.Storages.RemoveRange(context.Storages);
+            context.SaveChanges();
         }
     }
 }
