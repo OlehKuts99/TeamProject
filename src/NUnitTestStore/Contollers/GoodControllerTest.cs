@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Store.Controllers;
 using Store.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,9 +46,9 @@ namespace NUnitTestStore.Controllers
             //Arrange
             var goods = new List<Good>
             {
-                new Good {Id = 1, ProducerId = 1},
-                new Good {Id = 2, ProducerId = 1},
-                new Good {Id = 3, ProducerId = 1}
+                new Good {Id = 1, ProducerId = 1, Count = 21},
+                new Good {Id = 2, ProducerId = 1, Count = 21},
+                new Good {Id = 3, ProducerId = 1, Count = 21}
             };
 
             var producer = new Producer {Id = 1};
@@ -65,6 +66,7 @@ namespace NUnitTestStore.Controllers
 
             //Assert
             Assert.IsAssignableFrom<List<Good>>(actualResult);
+            Assert.AreEqual(goods.Count, (actualResult as List<Good>).Count);
         }
 
         [Test]
@@ -93,25 +95,6 @@ namespace NUnitTestStore.Controllers
 
             //Assert
             Assert.IsAssignableFrom<CreateGoodView>(actualResult);
-        }
-
-        [Test]
-        public async Task Delete_Takes_Invalid_Data_Result_Redirect()
-        {
-            //Arrange
-            var good = new Good {Id = 2};
-            var storage = new Storage();
-            var review = new GoodReview();
-
-            //Act
-            context.Add(good);
-            context.Add(storage);
-            context.Add(review);
-            context.SaveChanges();
-            var actualResult = (RedirectToActionResult) await controller.Delete(1);
-            var expectedResult = "Index";
-            //Assert
-            Assert.AreEqual(expectedResult,actualResult.ActionName);
         }
     }
 }
