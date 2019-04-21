@@ -87,6 +87,7 @@ namespace NUnitTestStore.Controllers
         {
             var context = new AppDbContext(options);
             context.Reviews.RemoveRange(context.Reviews);
+            context.Producers.RemoveRange(context.Producers);
             context.SaveChanges();
         }
     }
