@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NUnitTestStore.Controllers
 {
+    [TestFixture]
     public class StorageControllerTest
     {
         DbContextOptions<AppDbContext> options;
@@ -125,6 +126,8 @@ namespace NUnitTestStore.Controllers
         {
             var context = new AppDbContext(options);
             context.Storages.RemoveRange(context.Storages);
+            context.Goods.RemoveRange(context.Goods);
+            context.Producers.RemoveRange(context.Producers);
             context.SaveChanges();
         }
     }

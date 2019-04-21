@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NUnitTestStore.Controllers
 {
-    class CustomerControllerTest
+    /*class CustomerControllerTest
     {
         DbContextOptions<AppDbContext> options;
         private AppDbContext context;
@@ -51,7 +51,10 @@ namespace NUnitTestStore.Controllers
         {
             var context = new AppDbContext(options);
             context.Storages.RemoveRange(context.Storages);
+            context.Customers.RemoveRange(context.Customers);
+            context.Goods.RemoveRange(context.Goods);
+            context.Producers.RemoveRange(context.Producers);
             context.SaveChanges();
         }
-    }
+    }*/
 }

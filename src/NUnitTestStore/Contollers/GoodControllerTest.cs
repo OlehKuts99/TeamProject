@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 using DAL.Classes.UnitOfWork;
 using Moq;
 
-namespace Tests
+namespace NUnitTestStore.Controllers
 {
+    [TestFixture]
     class GoodControllerTest
     {
         DbContextOptions<AppDbContext> options;
@@ -92,24 +93,6 @@ namespace Tests
 
             //Assert
             Assert.IsAssignableFrom<CreateGoodView>(actualResult);
-        }
-
-        [Test]
-        public async Task Edit_Submits_Valid_Data()
-        {
-            //Arrange
-            var good = new Good {Id = 1, ProducerId = 1};
-            var storages = new List<string>();
-            var producer = new Producer { Id = 1, Name = "TestProducer",};
-
-            //Act
-            context.Add(good);
-            context.Add(producer);
-            var actualResult = await controller.Edit(good.Id) as ViewResult;
-            var expectedResult = new Good { Name = "Test" };
-
-            //Assert
-            Assert.AreEqual(expectedResult, actualResult);
         }
     }
 }

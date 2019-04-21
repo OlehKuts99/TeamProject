@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NUnitTestStore.Repositories
 {
-    [TestFixture]
     public class CustomerRepositoryTests
     {
         DbContextOptions<AppDbContext> options;
@@ -20,6 +19,14 @@ namespace NUnitTestStore.Repositories
         {
             options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "Add_writes_to_database").Options;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var context = new AppDbContext(options);
+            context.Customers.RemoveRange(context.Customers);
+            context.SaveChanges();
         }
 
         [Test]
@@ -76,8 +83,8 @@ namespace NUnitTestStore.Repositories
 
                 //Act
                 var expectedResult = 0;
-                context.Add(customer);
-                context.Add(cart);
+                context.Customers.Add(customer);
+                context.Carts.Add(cart);
                 context.SaveChanges();
                 var countAfterAdding = context.Customers.Count();
                 await repo.Delete(customer.Id);
