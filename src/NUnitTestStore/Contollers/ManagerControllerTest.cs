@@ -30,7 +30,7 @@ namespace Tests
         }
 
         [Test]
-        public void Index_Change_Data()
+        public void Index_Valid_Data()
         {
             // Arrange
             var orders = new List<Order>
@@ -47,11 +47,10 @@ namespace Tests
             context.SaveChanges();
 
             // Act
-            controller.Index();
+            var actualResult = (controller.Index() as ViewResult).Model;
 
             // Assert
-            Assert.AreEqual(orders.Count, context.Orders.Count());
-            Assert.AreEqual(orders[0].Id, context.Orders.First().Id);
+            Assert.IsAssignableFrom<List<Order>>(actualResult);
         }
 
         [Test]

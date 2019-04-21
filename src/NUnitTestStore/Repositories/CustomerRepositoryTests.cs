@@ -69,7 +69,7 @@ namespace NUnitTestStore.Repositories
         {
             //Arrange
             var customer = new Customer { Id = 1 };
-            var cart = new Cart {Id = 1, CustomerId = 1 };
+            var cart = new Cart { CustomerId = customer.Id };
             using (var context = new AppDbContext(options))
             {
                 var repo = new CustomerRepository(context);
@@ -79,10 +79,12 @@ namespace NUnitTestStore.Repositories
                 context.Add(customer);
                 context.Add(cart);
                 context.SaveChanges();
+                var countAfterAdding = context.Customers.Count();
                 await repo.Delete(customer.Id);
 
                 //Assert
-                Assert.AreEqual(expectedResult, context.Customers.Count());
+                Assert.AreEqual(expectedResult, context.Customers.Local.Count());
+                Assert.AreEqual(1, countAfterAdding);
             }
         }
 
@@ -96,13 +98,12 @@ namespace NUnitTestStore.Repositories
                 var repo = new CustomerRepository(context);
                 //Act
                 var expectedResult = customer;
-                context.Add(customer);
-                context.SaveChanges();
-                
-                var result =  repo.Get(customer.Id);
+                await repo.Create(customer);
+
+                var result = repo.Get(customer.Id);
 
                 //Assert
-                Assert.AreEqual(expectedResult, result);
+                Assert.AreEqual(expectedResult.Id, result.Id);
             }
         }
 
