@@ -114,6 +114,7 @@ namespace NUnitTestStore.Controllers
         public void TearDown()
         {
             var context = new AppDbContext(options);
+            context.GoodOrder.RemoveRange(context.GoodOrder);
             context.Orders.RemoveRange(context.Orders);
             context.Goods.RemoveRange(context.Goods);
             context.Producers.RemoveRange(context.Producers);
