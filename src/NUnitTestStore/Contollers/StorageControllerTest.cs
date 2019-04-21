@@ -125,6 +125,7 @@ namespace NUnitTestStore.Controllers
         {
             var context = new AppDbContext(options);
             context.Storages.RemoveRange(context.Storages);
+            context.Goods.RemoveRange(context.Goods);
             context.SaveChanges();
         }
     }
