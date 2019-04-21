@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace NUnitTestStore.Controllers
 {
+    [TestFixture]
     public class MangerControllerTest
     {
         DbContextOptions<AppDbContext> options;
@@ -30,7 +31,7 @@ namespace NUnitTestStore.Controllers
         }
 
         [Test]
-        public void Index_Change_Data()
+        public void Index_Valid_Data()
         {
             // Arrange
             var orders = new List<Order>
@@ -47,11 +48,10 @@ namespace NUnitTestStore.Controllers
             context.SaveChanges();
 
             // Act
-            controller.Index();
+            var actualResult = (controller.Index() as ViewResult).Model;
 
             // Assert
-            Assert.AreEqual(orders.Count, context.Orders.Count());
-            Assert.AreEqual(orders[0].Id, context.Orders.First().Id);
+            Assert.IsAssignableFrom<List<Order>>(actualResult);
         }
 
         [Test]
@@ -116,6 +116,7 @@ namespace NUnitTestStore.Controllers
             var context = new AppDbContext(options);
             context.Orders.RemoveRange(context.Orders);
             context.Goods.RemoveRange(context.Goods);
+            context.Producers.RemoveRange(context.Producers);
             context.SaveChanges();
         }
     }

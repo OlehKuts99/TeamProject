@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace NUnitTestStore.Controllers
 {
+    [TestFixture]
     class GoodPageControllerTest
     {
         DbContextOptions<AppDbContext> options;
@@ -63,6 +64,7 @@ namespace NUnitTestStore.Controllers
         {
             var context = new AppDbContext(options);
             context.Goods.RemoveRange(context.Goods);
+            context.Producers.RemoveRange(context.Producers);
             context.SaveChanges();
         }
     }
