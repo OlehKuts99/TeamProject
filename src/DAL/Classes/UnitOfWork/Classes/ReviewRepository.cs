@@ -45,8 +45,8 @@ namespace DAL.Classes.UnitOfWork.Classes
 
             foreach (var review in reviews)
             {
-                review.Customer = appContext.Customers.Where(c => c.Id == review.CustomerId).First();
-                review.Good = appContext.Goods.Where(g => g.Id == review.GoodId).First();
+                review.Customer = appContext.Customers.Where(c => c.Id == review.CustomerId).FirstOrDefault();
+                review.Good = appContext.Goods.Where(g => g.Id == review.GoodId).FirstOrDefault();
             }
 
             return appContext.Reviews;

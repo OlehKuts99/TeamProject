@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NUnitTestStore.Repositories
 {
-    [TestFixture]
     public class CustomerRepositoryTests
     {
         DbContextOptions<AppDbContext> options;
@@ -20,6 +19,14 @@ namespace NUnitTestStore.Repositories
         {
             options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "Add_writes_to_database").Options;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var context = new AppDbContext(options);
+            context.Customers.RemoveRange(context.Customers);
+            context.SaveChanges();
         }
 
         [Test]
@@ -69,15 +76,24 @@ namespace NUnitTestStore.Repositories
         {
             //Arrange
             var customer = new Customer { Id = 1 };
+<<<<<<< HEAD
             var cart = new Cart{ CustomerId = customer.Id };
+=======
+            var cart = new Cart { CustomerId = customer.Id };
+>>>>>>> TestingControllers
             using (var context = new AppDbContext(options))
             {
                 var repo = new CustomerRepository(context);
 
                 //Act
                 var expectedResult = 0;
+<<<<<<< HEAD
                 context.Add(customer);
                 context.Add(cart);
+=======
+                context.Customers.Add(customer);
+                context.Carts.Add(cart);
+>>>>>>> TestingControllers
                 context.SaveChanges();
                 var countAfterAdding = context.Customers.Count();
                 await repo.Delete(customer.Id);
@@ -99,8 +115,8 @@ namespace NUnitTestStore.Repositories
                 //Act
                 var expectedResult = customer;
                 await repo.Create(customer);
-                
-                var result =  repo.Get(customer.Id);
+
+                var result = repo.Get(customer.Id);
 
                 //Assert
                 Assert.AreEqual(expectedResult.Id, result.Id);
