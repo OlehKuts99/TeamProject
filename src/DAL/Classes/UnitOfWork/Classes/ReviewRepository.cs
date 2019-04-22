@@ -34,7 +34,7 @@ namespace DAL.Classes.UnitOfWork.Classes
         public async Task<GoodReview> Get(int id)
         {
             GoodReview review = await appContext.Reviews.FindAsync(id);
-            review.Customer = appContext.Customers.First(c => c.Id == review.CustomerId);
+            review.Customer = appContext.Customers.FirstOrDefault(c => c.Id == review.CustomerId);
 
             return review;
         }

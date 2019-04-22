@@ -76,24 +76,15 @@ namespace NUnitTestStore.Repositories
         {
             //Arrange
             var customer = new Customer { Id = 1 };
-<<<<<<< HEAD
             var cart = new Cart{ CustomerId = customer.Id };
-=======
-            var cart = new Cart { CustomerId = customer.Id };
->>>>>>> TestingControllers
             using (var context = new AppDbContext(options))
             {
                 var repo = new CustomerRepository(context);
 
                 //Act
                 var expectedResult = 0;
-<<<<<<< HEAD
                 context.Add(customer);
                 context.Add(cart);
-=======
-                context.Customers.Add(customer);
-                context.Carts.Add(cart);
->>>>>>> TestingControllers
                 context.SaveChanges();
                 var countAfterAdding = context.Customers.Count();
                 await repo.Delete(customer.Id);
