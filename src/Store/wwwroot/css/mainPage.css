@@ -144,10 +144,12 @@
 
         }
     .pagination li {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2.2rem;
+        height: 2.2rem;
         background-color: white;
         border: 1px solid lightgray;
+        border-radius: 4px;
+        text-align: center; 
     }
 
     .pagination .active {

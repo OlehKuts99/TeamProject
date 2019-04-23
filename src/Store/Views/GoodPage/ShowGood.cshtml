@@ -129,8 +129,8 @@
                                     @if (User.Identity.Name == review.Customer.Email || User.IsInRole("admin"))
                                     {
                                         <div class="col-lg-4">
-                                            <button class="btn btn-primary" id=@string.Join("", "editButton", @review.Id.ToString()) onclick="Edit(@review.Id)">Edit</button>
-                                            <input class="btn btn-warning" type="submit" style="display: none;" id=@string.Join("", "saveButton", @review.Id.ToString())
+                                            <a class="btn btn-primary" style="color:white;" id=@string.Join("", "editButton", @review.Id.ToString()) onclick="Edit(@review.Id)">Edit</a>
+                                            <input class="btn btn-warning" type="submit" style="display: none;color:white;" id=@string.Join("", "saveButton", @review.Id.ToString())
                                                    value="Save">
                                             <a class="btn btn-danger" asp-action="DeleteReview"
                                                asp-controller="GoodPage" asp-route-id="@review.Id">Delete</a>

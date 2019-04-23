@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="~/css/site.css" />
 <link rel="stylesheet" href="~/css/cart.css"/>
 <link rel="stylesheet" href="~/css/footer.css"/>
+
 <table class="table table-hover" style="margin-top: 4%;">
     <tr>
         <th>Number of order</th>
@@ -33,7 +34,7 @@
                 @if (order.OrderStatus == DAL.Classes.OrderStatus.Processing ||
                  order.OrderStatus == DAL.Classes.OrderStatus.Ordered)
                 {
-                    <input value="Cancel" class="btn btn-basic" type="submit" />
+                    <input value="Cancel" class="btn btn-primary" type="submit" />
                 }
             </form>
         </td>
