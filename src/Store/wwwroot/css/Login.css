@@ -1,8 +1,4 @@
 ﻿#login-div {
-    width: 40%;
-    position: absolute;
-    left: 30%;
-    top: 18%;
     padding: 2% 4%;
     border: 2px solid #ccc;
     border-collapse: collapse;
@@ -10,7 +6,7 @@
 
 label{
     font-family: Arial; 
-    font-size: 1.0vw;
+    font-size: 1.0em;
     font-kerning:normal;
     font-style:normal;
     font-weight:normal;
@@ -20,7 +16,7 @@ h2 {
     top: 20%;
     text-align: center;
     font-style: normal;
-    font-size: 2.5vw;
+    font-size: 2.5em;
 }
 
 input {

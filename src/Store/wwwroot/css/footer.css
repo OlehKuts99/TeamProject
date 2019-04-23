@@ -14,7 +14,6 @@ html, body {
 footer {
     position: relative;
     background-color: #101010;
-    padding: 2rem;
 }
 
     footer .footer__link, .footer__text {
@@ -31,19 +30,19 @@ footer {
     }
 
         footer .icons div {
-            margin: 0 3rem;
+            margin: 0;
             margin-top: -0.3rem;
             width: 4rem;
             height: 4rem;
         }
 
             footer .icons div img {
-                border-radius: 3rem;
+                border-radius: 2rem;
                 border: 2px solid white;
                 background-color: white;
                 opacity: 0.5;
-                width: 4rem;
-                height: 4rem;
+                width: 3rem;
+                height: 3rem;
             }
 
                 footer .icons div img:hover {

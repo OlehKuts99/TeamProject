@@ -40,8 +40,7 @@
 
 .product-price {
     bottom: 15px;
-    left: 0;
-    position: absolute;
+
     width: 100%;
     color: #d51e08;
     font-size: 18px;
@@ -71,7 +70,6 @@
 
 .rate {
     margin: 0;
-    margin-left: 85px;
     padding: 0;
     font-size: 0;
 }
@@ -112,8 +110,8 @@
 }
 
 .cart-good-image {
-    height: 20rem;
-    width: 20rem;
+    height: 8rem;
+    width: 8rem;
 }
 
 .cart-item {
@@ -128,7 +126,7 @@
     }
 
     .cart-good-image {
-        height: 10rem;
+        height: 8rem;
         width: 8rem;
     }
 }

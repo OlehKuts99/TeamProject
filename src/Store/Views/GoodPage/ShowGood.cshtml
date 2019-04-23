@@ -6,9 +6,9 @@
 <script src="~/js/GoodPage.js"></script>
 
 <div class="container content">
-    <div class="row product-page">
-        <div class="col-lg-6 image">
-            <img src="../images/goods/@Model.PhotoUrl" />
+    <div class="row product-page justify-content-center">
+        <div class="col-lg-6 image align-content-center">
+            <div class="align-content-center"> <img class="img-fluid" src="../images/goods/@Model.PhotoUrl" /></div>
         </div>
         <div class="col-lg-6">
             <h2>@Model.Name</h2>
@@ -53,30 +53,43 @@
     <hr class="black-hr" />
     <form asp-action="LeaveReview" asp-controller="GoodPage" asp-route-id="@Model.Id">
         <div class="row product-review text-center">
-            <p class="visible-lg-inline visible-xs-inline">Rate product </p>
-            <div class="row">
-                <div class="col-lg-3 col-lg-offset-4 text-center">
-                    <ul class="rate">
-                        <li class="star" id="mark-one" onclick="Star(1)"></li>
-                        <li class="star" id="mark-two" onclick="Star(2)"></li>
-                        <li class="star" id="mark-three" onclick="Star(3)"></li>
-                        <li class="star" id="mark-four" onclick="Star(4)"></li>
-                        <li class="star" id="mark-five" onclick="Star(5)"></li>
-                    </ul>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col">
+                        <p>Rate product </p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <ul class="rate d-inline">
+                            <li class="star" id="mark-one" onclick="Star(1)"></li>
+                            <li class="star" id="mark-two" onclick="Star(2)"></li>
+                            <li class="star" id="mark-three" onclick="Star(3)"></li>
+                            <li class="star" id="mark-four" onclick="Star(4)"></li>
+                            <li class="star" id="mark-five" onclick="Star(5)"></li>
+                        </ul>
+                    </div>
+                </div>
+                <input id="mark" class="d-none" value="0" name="mark">
+                <div class="row form-group">
+                    <div class="col">
+                        <textarea class="form-control" id="FormControlTextarea1" rows="8" name="reviewArea"></textarea>
+                    </div>
                 </div>
             </div>
-            <input id="mark" style="display: none;" value="0" name="mark">
-            <div class="col-lg-6 col-lg-offset-3 form-group">
-                <textarea class="form-control" id="FormControlTextarea1" rows="8" name="reviewArea"></textarea>
-            </div>
+           
         </div>
         <div class="row text-center">
-            <button class="btn btn-primary">Live a review</button>
+            <div class="col">
+                <button class="btn btn-primary">Live a review</button>
+            </div>
         </div>
     </form>
     <hr class="black-hr" />
-    <div class="row text-center" style="margin-bottom: 3%;">
-        <a onclick="ShowReviews()" style="cursor: pointer;">Show reviews</a>
+    <div class="row text-center mb-3" >
+        <div class="col">
+            <a onclick="ShowReviews()" style="cursor: pointer;">Show reviews</a>
+        </div>
     </div>
     <div id="reviews">
         <hr class="black-hr" />

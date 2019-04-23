@@ -28,7 +28,7 @@
                     }
                 </div>
             </div>
-            <div class="card-body" style="margin-top: 10%;">
+            <div class="card-body mt-3 p-lg-0">
                 <form asp-action="Filter" asp-controller="Home">
                     <div class="form-group">
                         <label asp-for="FilterModel.GoodView.Name" class="control-label">Good name</label>
@@ -68,7 +68,7 @@
                         <input type="number" asp-for="FilterModel.GoodView.WarrantyTerm" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Filter" class="btn btn-primary" style="margin: 2% 32%; width: 35%;" />
+                        <input type="submit" value="Filter" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
@@ -98,14 +98,14 @@
             </form>
             @foreach (var good in Model.FilterModel.Goods)
             {
-                <div class="col-sm-4">
+                <div class="col-md-4 p-3">
                     <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id" class="good-link">
-                        <div class="product">
+                        <div class="product p-1">
                             <div class="product-img">
                                 <img src="../images/goods/@good.PhotoUrl" alt="">
                             </div>
                             <p class="product-title">
-                                <div>@good.Name</div>
+                                @good.Name
                             </p>
                             <p class="product-desc">@good.Specification</p>
                             <p class="product-price">Price: @good.Price</p>

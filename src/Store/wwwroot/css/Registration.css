@@ -1,8 +1,4 @@
 ﻿#login-div {
-    width: 40%;
-    position: absolute;
-    left: 30%;
-    top: 10%;
     padding: 2% 4%;
     border: 2px solid #ccc;
     border-collapse: collapse;
@@ -13,7 +9,7 @@ h2 {
     top: 20%;
     text-align: center;
     font-style: normal;
-    font-size: 2.5vw;
+    font-size: 2.5em;
 }
 
 .half {

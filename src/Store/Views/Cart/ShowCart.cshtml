@@ -11,36 +11,41 @@
 {
     <div class="cart-goods">
         <div class="row text-center">
-            <h3>Your cart is empty</h3>
+            <div class="col">
+                <h3>Your cart is empty</h3>
+            </div>
+            
         </div>
     </div>
 }
 else
 {
     <div class="row text-center">
-        <h3>Your Cart</h3>
+        <div class="col">
+            <h3>Your Cart</h3>
+        </div>
     </div>
     <form asp-action="ConfirmGoods" asp-controller="Cart">
         <div class=" cart-goods">
             @foreach (var part in Model)
             {
                 <div class="row cart-item text-center">
-                    <div class="col-lg-3 col-3">
+                    <div class="col-lg-4 col-12">
                         <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@part.Good.Id">
-                            <div class="cart-good-image"><img src="../images/goods/@part.Good.PhotoUrl" /></div>
+                            <div class="cart-good-image mx-auto"><img src="../images/goods/@part.Good.PhotoUrl" /></div>
                         </a>
                     </div>
-                    <div class="col-lg-3 col-3">
+                    <div class="col-lg-4 col-12">
                         <p>Name : <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@part.Good.Id">@part.Good.Name</a></p>
                         <p>Price : @part.Good.Price</p>
                     </div>
-                    <div class="col-xs-2 col-lg-2 col-2">
+                    <div class="col-lg-2 col-12">
                         <a class="btn btn-sm btn-warning" onclick="CountDecrease(@part.Good.Id, @part.Good.Price)">-</a>
                         <input name="goodCount" type="text" style="width: 25%;" id=@string.Join("", "goodCount", @part.Good.Id)
                                value="@part.Count" class="text-center transparent-input" readonly />
                         <a class="btn btn-sm btn-warning" onclick="CountIncrease(@part.Good.Id, @part.Good.Price)">+</a>
                     </div>
-                    <div class="col-lg-2 col-2">
+                    <div class="col-lg-2 col-12">
                         <a class="btn btn-sm btn-danger" method="post" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@part.Good.Id">
                             Delete
                         </a>
@@ -52,7 +57,7 @@ else
         </div>
 
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <h4>Common price : <input class="transparent-input" id="commonPrice" name="commonPrice" value="@ViewBag.CommonPrice" style="width: 40%;" readonly></h4>
             </div>
             <div class="col-lg-2">

@@ -11,8 +11,8 @@
 }
 
     .developers .developer .developer__img img{
-        height: 15rem;
-        width: 15rem;
+        height: 10rem;
+        width: 10rem;
         border-radius: 50%;
     }
     .developers .developer .developer__description{
