@@ -143,7 +143,12 @@ namespace Store.Controllers
 
             if (Request.Form["sortSelect"] == SortBy.Popularity.ToString())
             {
-                goods = goods.OrderBy(g => g.Reviews.Count).ToList();
+                foreach (var good in goods)
+                {
+                    good.Reviews = unitOfWork.Goods.GetReviews(good.Id).ToList();
+                }
+
+                goods = goods.OrderByDescending(g => g.Reviews.Count).ToList();
             }
 
             if (Request.Form["sortSelect"] == SortBy.PriceFromBigger.ToString())

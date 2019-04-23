@@ -93,7 +93,7 @@ namespace DAL.Classes.UnitOfWork.Classes
 
         public List<GoodReview> GetReviews(int id)
         {
-            List<GoodReview> reviews = applicationContext.Reviews.Local.Where(r => r.GoodId == id).ToList();
+            List<GoodReview> reviews = applicationContext.Reviews.Where(r => r.GoodId == id).ToList();
 
             return reviews;
         }

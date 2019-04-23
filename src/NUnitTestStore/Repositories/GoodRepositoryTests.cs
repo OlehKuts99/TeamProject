@@ -160,6 +160,7 @@ namespace NUnitTestStore.Repositories
                 foreach (var review in reviews)
                 {
                     context.Reviews.Add(review);
+                    context.SaveChanges();
                 }
                 var actualResult = repo.GetReviews(good.Id).Count();
                 var expectedResult = 3;
@@ -213,6 +214,16 @@ namespace NUnitTestStore.Repositories
 
                 //Assert
                 Assert.AreEqual(expectedResult.Count, actualResult.Count);
+            }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            using (var context = new AppDbContext(options))
+            {
+                context.Reviews.RemoveRange(context.Reviews);
+                context.SaveChanges();
             }
         }
     }
