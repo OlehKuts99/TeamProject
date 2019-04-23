@@ -48,8 +48,23 @@ namespace Store.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterView model)
         {
+            bool invalidPhone = false;
             if (ModelState.IsValid)
             {
+                foreach (var number in model.Phone)
+                {
+                    if (char.IsLetter(number))
+                    {
+                        invalidPhone = true;
+                    }
+                }
+
+                if (model.Phone.Length != 10 || model.Phone.First() != '0' || invalidPhone) 
+                {
+                    ViewBag.Message = "Phone number is invalid!";
+                    return View("ErrorPhonePage");
+                }
+
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
