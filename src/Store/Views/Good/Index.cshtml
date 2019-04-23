@@ -31,9 +31,9 @@
             <td>@good.Type</td>
             <td>@good.Count</td>
             <td>
-                <form asp-action="Delete" asp-route-id="@good.Id" method="post">
+                <form class="d-flex" asp-action="Delete" asp-route-id="@good.Id" method="post">
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@good.Id">Edit</a>
-                    <button type="submit" class="btn btn-sm btn-danger">
+                    <button type="submit" class="btn btn-sm btn-danger ml-1">
                         Delete
                     </button>
                 </form>
