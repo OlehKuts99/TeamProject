@@ -41,7 +41,7 @@ function setDeliveryPrice(commonPrice) {
     if (storages.length == 0) {
         document.getElementById('deliveryPrice').textContent = additonalPrice;
         document.getElementById('commonPrice').textContent = commonPrice;
-        var price = Number(document.getElementById('commonPrice').value);
+        var price = Number(document.getElementById('goodPrice').textContent);
         document.getElementById('commonPrice').value = (price + additonalPrice).toString();
 
         return;
@@ -55,7 +55,7 @@ function setDeliveryPrice(commonPrice) {
         if (storages[i].value == city) {
             document.getElementById('deliveryPrice').textContent = 15;
             document.getElementById('commonPrice').textContent = commonPrice;
-            var price = Number(document.getElementById('commonPrice').value);
+            var price = Number(document.getElementById('goodPrice').textContent);
             document.getElementById('commonPrice').value = (price + 15).toString();
             isTheSamePlace = true;
         }
@@ -64,7 +64,7 @@ function setDeliveryPrice(commonPrice) {
     if (!isTheSamePlace) {
         document.getElementById('deliveryPrice').textContent = additonalPrice;
         document.getElementById('commonPrice').value = commonPrice;
-        var price = Number(document.getElementById('commonPrice').value);
+        var price = Number(document.getElementById('goodPrice').textContent);
         document.getElementById('commonPrice').value = (price + additonalPrice).toString();
     }
 }

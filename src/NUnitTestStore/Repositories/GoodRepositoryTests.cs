@@ -206,6 +206,7 @@ namespace NUnitTestStore.Repositories
                 foreach (var storage in storages)
                 {
                     context.GoodStorage.Add(storage);
+                    context.SaveChanges();
                 }
                 var actualResult = await repo.GetGoodStorages(good.Id);
                 var expectedResult = new List<Storage> { new Storage { Products = storages } };

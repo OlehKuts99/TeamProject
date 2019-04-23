@@ -46,7 +46,7 @@
             </select>
         </div>
         <div>
-            <input type="submit" style="margin-top: 3%;" class="btn btn-success center-button" value="Confirm">
+            <input type="submit" style="margin-top: 3%;" class="btn btn-success center-button center-button" value="Confirm">
         </div>
     </form>
 </div>
@@ -58,7 +58,7 @@
         <div class="row cart-item">
             <div class="col-lg-3 col-3 text-center">
                 <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Good.Id">
-                    <div><img src="../images/goods/@good.Good.PhotoUrl" /></div>
+                    <div class="cart-good-image"><img src="../images/goods/@good.Good.PhotoUrl" /></div>
                 </a>
             </div>
             <div class="col-lg-3 col-3">

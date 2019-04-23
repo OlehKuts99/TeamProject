@@ -86,17 +86,17 @@
         text-shadow: 0 1px #000, 0 -1px #000, 1px 0 #000, -1px 0 #000;
     }
 
-        .star:visited {
-            color: aqua;
-        }
+.star:visited {
+    color: aqua;
+}
 
-        .rate .star:before {
-            content: '\2605';
-        }
+.rate .star:before {
+    content: '\2605';
+}
 
-        .rate .star:hover ~ .star {
-            color: #fff;
-        }
+.rate .star:hover ~ .star {
+    color: #fff;
+}
 
 .good-link {
     color: black;
@@ -107,17 +107,28 @@
     }
 
 
-.cart-goods{
+.cart-goods {
     margin-top: 4rem;
 }
 
-.cart-goods img{
-    height: 10rem;
-    width: 8rem;
+.cart-good-image {
+    height: 20rem;
+    width: 20rem;
 }
 
-    .cart-goods .cart-item {
-        font-size: 18px;
-        display: flex;
-        align-items: center;
+.cart-item {
+    font-size: 1.2vw;
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+    .cart-item {
+        font-size: 3vw;
     }
+
+    .cart-good-image {
+        height: 10rem;
+        width: 8rem;
+    }
+}

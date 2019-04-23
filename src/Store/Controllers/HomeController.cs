@@ -77,7 +77,7 @@ namespace Store.Controllers
             HttpContext.Session.Set("filter", model.FilterModel);
             HttpContext.Session.Set("goods", goods);
 
-            return RedirectToAction("Index", new { pageNumber = 1 });
+            return RedirectToAction("Index", new { page = 1 });
         }
 
         public IActionResult TypeSearch(string goodType)
@@ -93,7 +93,7 @@ namespace Store.Controllers
             HttpContext.Session.Set("filter", model);
             HttpContext.Session.Set("goods", goods);
 
-            return RedirectToAction("Index", new { pageNumber = 1 });
+            return RedirectToAction("Index", new { page = 1 });
         }
 
 
@@ -160,7 +160,7 @@ namespace Store.Controllers
             HttpContext.Session.Set("filter", model);
             HttpContext.Session.Set("goods", goods);
 
-            return RedirectToAction("Index", new { pageNumber = 1 });
+            return RedirectToAction("Index", new { page = 1 });
         }
 
         private bool AddToResult(IndexViewModel model, Good good)

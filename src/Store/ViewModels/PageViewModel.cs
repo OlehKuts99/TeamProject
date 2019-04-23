@@ -4,7 +4,7 @@ namespace Store.ViewModels
 {
     public class PageViewModel
     {
-        public const int PageSize = 2;
+        public const int PageSize = 6;
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }
 

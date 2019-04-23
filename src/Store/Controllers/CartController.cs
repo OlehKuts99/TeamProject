@@ -170,16 +170,19 @@ namespace Store.Controllers
         {
             List<Storage> storages = await unitOfWork.Goods.GetGoodStorages(orderParts[0].GoodId);
 
-            foreach (var part in orderParts)
+            if (storages.Count > 1)
             {
-                if (storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId)).Count() == 0)
+                foreach (var part in orderParts)
                 {
-                    return new List<Storage>();
-                }
-                else
-                {
-                    storages = storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId))
-                        .ToList();
+                    if (storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId)).Count() == 0)
+                    {
+                        return new List<Storage>();
+                    }
+                    else
+                    {
+                        storages = storages.Intersect(await unitOfWork.Goods.GetGoodStorages(part.GoodId))
+                            .ToList();
+                    }
                 }
             }
 
