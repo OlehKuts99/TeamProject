@@ -4,8 +4,10 @@
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 <link rel="stylesheet" href="~/css/site.css" />
-<link rel="stylesheet" href="~/css/cart.css"/>
-<link rel="stylesheet" href="~/css/footer.css"/>
+<link rel="stylesheet" href="~/css/cart.css" />
+<link rel="stylesheet" href="~/css/footer.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+
 <form asp-action="Edit" asp-controller="Good">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
@@ -30,7 +32,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Producers">Producer</label>
-        <select class="form-control" name="producerSelect" >
+        <select class="form-control" name="producerSelect">
             @foreach (var producer in Model.Producers)
             {
                 if (producer.Name == Model.Producer.Name)
@@ -66,10 +68,10 @@
                         <li style="margin-left: 4%">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="storagesParameter" value="@storage.Id"
+                                    <input class="dropdown-item" type="checkbox" name="storagesParameter" value="@storage.Id"
                                            @(Model.Storages.Contains(storage) ? "checked=\"checked\"" : "") />
                                     @string.Join(", ", @storage.City, @storage.Street)
-                                    </label>
+                                </label>
                             </div>
                         </li>
                     }
