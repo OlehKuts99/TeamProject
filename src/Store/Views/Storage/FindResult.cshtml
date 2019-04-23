@@ -4,14 +4,20 @@
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 <link rel="stylesheet" href="~/css/site.css" />
-<link rel="stylesheet" href="~/css/cart.css"/>
-<link rel="stylesheet" href="~/css/footer.css"/>
-<div class="input-group">
-    <h2 class="">Founded @Model.Count() records : </h2>
-    <span class="input-group-btn">
-        <a class="btn btn-sm btn-primary" asp-action="Index" style="float: right;">Back to Storages</a>
-    </span>
+<link rel="stylesheet" href="~/css/cart.css" />
+<link rel="stylesheet" href="~/css/footer.css" />
+<div class="input-group row mt-2">
+    <div class=" col">
+        <h2 class="">Founded @Model.Count() records : </h2>
+    </div>
+    <div class="col">
+        <span class="input-group-btn">
+            <a class="btn btn-sm btn-primary" asp-action="Index" style="float: right;">Back to Storages</a>
+        </span>
+    </div>
 </div>
+
+
 
 <table class="table table-hover">
     <tr>
