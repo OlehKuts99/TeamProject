@@ -130,3 +130,27 @@
         width: 8rem;
     }
 }
+
+.pagination {
+    position: relative;
+}
+    .pagination li a {
+        padding: 0 0.5rem;
+        color: black;
+
+    }
+        .pagination .active a {
+            color: white;
+
+        }
+    .pagination li {
+        width: 1.5rem;
+        height: 1.5rem;
+        background-color: white;
+        border: 1px solid lightgray;
+    }
+
+    .pagination .active {
+        background-color: #0069D9
+        ;
+    }

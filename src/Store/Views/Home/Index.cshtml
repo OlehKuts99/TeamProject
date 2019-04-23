@@ -96,25 +96,30 @@
                     </div>
                 </div>
             </form>
-            @foreach (var good in Model.FilterModel.Goods)
-            {
-                <div class="col-md-4 p-3">
-                    <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id" class="good-link">
-                        <div class="product p-1">
-                            <div class="product-img">
-                                <img src="../images/goods/@good.PhotoUrl" alt="">
+            <div class="row">
+                @foreach (var good in Model.FilterModel.Goods)
+                {
+                    <div class="col-md-4">
+                        <a asp-area="" asp-controller="GoodPage" asp-action="ShowGood" asp-route-goodId="@good.Id" class="good-link">
+                            <div class="product p-1">
+                                <div class="product-img">
+                                    <img src="../images/goods/@good.PhotoUrl" alt="">
+                                </div>
+                                <p class="product-title">
+                                    @good.Name
+                                </p>
+                                <p class="product-desc">@good.Specification</p>
+                                <p class="product-price">Price: @good.Price</p>
                             </div>
-                            <p class="product-title">
-                                @good.Name
-                            </p>
-                            <p class="product-desc">@good.Specification</p>
-                            <p class="product-price">Price: @good.Price</p>
-                        </div>
-                    </a>
-                </div>
-            }
+                        </a>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
-
-<page-link page-model="Model.PageViewModel" page-action="Index" style="float: right;"></page-link>
+<div class="row text-right">
+    <div class="col">
+        <page-link page-model="Model.PageViewModel" page-action="Index" style="float: right;"></page-link>
+    </div>
+</div>
