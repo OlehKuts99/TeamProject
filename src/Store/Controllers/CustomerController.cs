@@ -130,20 +130,6 @@ namespace Store.Controllers
             {
                 Customer customer = await unitOfWork.Customers.Get(model.Id);
                 ApplicationUser user = await userManager.FindByEmailAsync(customer.Email);
-                var invalidPhone = false;
-                foreach (var number in model.Phone)
-                {
-                    if (char.IsLetter(number))
-                    {
-                        invalidPhone = true;
-                    }
-                }
-
-                if (model.Phone.Length != 10 || model.Phone.First() != '0' || invalidPhone)
-                {
-                    ViewBag.Message = "Phone number is invalid!";
-                    return View("ErrorPhonePage");
-                }
                 if (user != null && customer != null)
                 {
                     user.Email = model.Email;
