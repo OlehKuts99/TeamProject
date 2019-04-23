@@ -20,15 +20,15 @@
     </environment>
 </head>
 <body class="pt-0">
-<nav class="navbar navbar-expand-lg my-0 mx-0 text-uppercase bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg my-0 mx-0 text-uppercase navbar-dark text-capitalize">
     <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="All" class="navbar-brand">PurchLand</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse " id="collapsibleNavbar">
+    <div class="collapse navbar-collapse text-capitalize" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item mx-0 mx-lg-1">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="All">Home</a>
+                <a class="nav-link " asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="All">Home</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
@@ -61,7 +61,7 @@
                          <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="ShowCart">
                              <div class="cart"><img src="~/images/menu-cart.svg"/></div></a></li>
                  }
-                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="CustomerSettingPage">@User.Identity.Name</a></li>
+                <li class="nav-item text-lowercase"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="CustomerSettingPage">@User.Identity.Name</a></li>
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a></li>
             }
         </ul>
