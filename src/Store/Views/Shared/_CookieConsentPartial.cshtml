@@ -5,7 +5,10 @@
     var showBanner = !consentFeature?.CanTrack ?? false;
     var cookieString = consentFeature?.CreateConsentCookie();
 }
-
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/cart.css"/>
+<link rel="stylesheet" href="~/css/footer.css"/>
 @if (showBanner)
 {
     <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert">
