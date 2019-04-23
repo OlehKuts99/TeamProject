@@ -104,34 +104,38 @@
                             <p>Name : @string.Join(" ", review.Customer.FirstName, review.Customer.SecondName)</p>
                             <p>Date : @review.Date</p>
                         </div>
-                        <form asp-action="EditReview" asp-controller="GoodPage" asp-route-goodId="@Model.Id">
-                            <input name="reviewId" value="@review.Id" style="display: none;" />
-                            <div class="col-lg-4">
-                                <p id=@string.Join("", "reviewMessage", @review.Id.ToString())>@review.Message</p>
-                                <textarea type="text" name="newMessage" id=@string.Join("", "hiddenInput", @review.Id.ToString()) style="display: none;">@review.Message</textarea>
-                            </div>
-                            <div class="col-lg-2">
-                                @if (review.StarCount != 0)
-                                {
-                                    <p id="@string.Join("", "starCount", @review.Id.ToString())">Mark : @review.StarCount / 5</p>
-                                    <input name="newStarCount" id=@string.Join("", "hiddenStarCount", @review.Id.ToString()) value="@review.StarCount" style="display: none;" />
-                                }
-                                else
-                                {
-                                    <p>Mark : None</p>
-                                }
-                            </div>
-                            @if (User.Identity.Name == review.Customer.Email || User.IsInRole("admin"))
-                            {
-                                <div class="col-lg-2">
-                                    <a class="btn btn-primary" id=@string.Join("", "editButton", @review.Id.ToString()) onclick="Edit(@review.Id)">Edit</a>
-                                    <input class="btn btn-warning" type="submit" style="display: none;" id=@string.Join("", "saveButton", @review.Id.ToString())
-                                           value="Save">
-                                    <a class="btn btn-danger" asp-action="DeleteReview"
-                                       asp-controller="GoodPage" asp-route-id="@review.Id">Delete</a>
+                        <div class ="col-lg-8">
+                            <form asp-action="EditReview" asp-controller="GoodPage" asp-route-goodId="@Model.Id">
+                                <input name="reviewId" value="@review.Id" style="display: none;" />
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p id=@string.Join("", "reviewMessage", @review.Id.ToString())>@review.Message</p>
+                                        <textarea type="text" name="newMessage" id=@string.Join("", "hiddenInput", @review.Id.ToString()) style="display: none;">@review.Message</textarea>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @if (review.StarCount != 0)
+                                        {
+                                            <p id="@string.Join("", "starCount", @review.Id.ToString())">Mark : @review.StarCount / 5</p>
+                                            <input name="newStarCount" id=@string.Join("", "hiddenStarCount", @review.Id.ToString()) value="@review.StarCount" style="display: none;" />
+                                        }
+                                        else
+                                        {
+                                            <p>Mark : None</p>
+                                        }
+                                    </div>
+                                    @if (User.Identity.Name == review.Customer.Email || User.IsInRole("admin"))
+                                    {
+                                        <div class="col-lg-4">
+                                            <button class="btn btn-primary" id=@string.Join("", "editButton", @review.Id.ToString()) onclick="Edit(@review.Id)">Edit</button>
+                                            <input class="btn btn-warning" type="submit" style="display: none;" id=@string.Join("", "saveButton", @review.Id.ToString())
+                                                   value="Save">
+                                            <a class="btn btn-danger" asp-action="DeleteReview"
+                                               asp-controller="GoodPage" asp-route-id="@review.Id">Delete</a>
+                                        </div>
+                                    }
                                 </div>
-                            }
-                        </form>
+                            </form>
+                        </div>
                     </div>
                     <hr class="black-hr" />
                 }

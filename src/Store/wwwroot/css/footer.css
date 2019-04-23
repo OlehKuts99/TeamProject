@@ -32,17 +32,19 @@ footer {
         footer .icons div {
             margin: 0;
             margin-top: -0.3rem;
-            width: 4rem;
-            height: 4rem;
+            width: 2.5rem;
+            height: 2.5rem;
         }
-
+footer .icons .nav-link {
+    padding: 0.2rem;
+}
             footer .icons div img {
                 border-radius: 2rem;
                 border: 2px solid white;
                 background-color: white;
                 opacity: 0.5;
-                width: 3rem;
-                height: 3rem;
+                width: 2rem;
+                height: 2rem;
             }
 
                 footer .icons div img:hover {
