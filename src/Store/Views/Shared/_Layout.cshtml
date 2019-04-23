@@ -22,6 +22,9 @@
 <body class="pt-0">
 <nav class="navbar navbar-expand-lg my-0 mx-0 text-uppercase bg-dark navbar-dark">
     <a asp-area="" asp-controller="Home" asp-action="TypeSearch" asp-route-goodType="All" class="navbar-brand">PurchLand</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse " id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item mx-0 mx-lg-1">
@@ -108,11 +111,11 @@
             crossorigin="anonymous"
             integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
     </script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/bootstrap.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
             crossorigin="anonymous"
-            integrity="">
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
     </script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>

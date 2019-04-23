@@ -65,10 +65,10 @@
                 <ul class="dropdown-menu">
                     @foreach (Storage storage in Model.AllStorages)
                     {
-                        <li style="margin-left: 4%">
+                        <li style="margin-left: 4%" class="dropdown-item">
                             <div class="checkbox">
                                 <label>
-                                    <input class="dropdown-item" type="checkbox" name="storagesParameter" value="@storage.Id"
+                                    <input type="checkbox" name="storagesParameter" value="@storage.Id"
                                            @(Model.Storages.Contains(storage) ? "checked=\"checked\"" : "") />
                                     @string.Join(", ", @storage.City, @storage.Street)
                                 </label>
