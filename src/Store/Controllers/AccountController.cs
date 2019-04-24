@@ -197,7 +197,7 @@ namespace Store.Controllers
                     if (!char.IsDigit(number))
                     {
                         ViewBag.Message = "Phone number is invalid!";
-                        return View("ErrorPhonePage");
+                        return View("EditPhoneError");
                     }
                 }
                 
