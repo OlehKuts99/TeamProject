@@ -14,6 +14,7 @@ namespace Store.Controllers
     public class HomeController : Controller
     {
         private readonly UnitOfWork unitOfWork;
+        private static bool firstTimeLogged = true;
 
         public HomeController(AppDbContext appDbContext)
         {
@@ -52,7 +53,7 @@ namespace Store.Controllers
                 FilterModel = filterModel
             };
 
-            return View(model);
+            return RedirectByRole(model);
         }
 
         public IActionResult Filter(IndexViewModel model)
@@ -211,6 +212,31 @@ namespace Store.Controllers
             }
 
             return addToResult;
+        }
+
+        private IActionResult RedirectByRole(IndexViewModel model)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                firstTimeLogged = true;
+            }
+
+            if (firstTimeLogged)
+            {
+                if (User.IsInRole("admin"))
+                {
+                    firstTimeLogged = false;
+                    return RedirectToAction("Index", "Admin");
+                }
+
+                if (User.IsInRole("manager"))
+                {
+                    firstTimeLogged = false;
+                    return RedirectToAction("Index", "Manager");
+                }
+            }
+
+            return View("Index", model);
         }
     }
 }

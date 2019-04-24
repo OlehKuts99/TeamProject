@@ -11,6 +11,13 @@ function setMarker(commonPrice) {
     var select = document.getElementById('EndPointCity');
     var city = select.options[select.selectedIndex].value;
 
+    if (document.getElementById('EndPointStreet').value == "") {
+        document.getElementById("confirmButton").style.display = "none";
+
+        return;
+    }
+
+    document.getElementById("confirmButton").style.display = "block";
     var adress = city + ", " +
         document.getElementById('EndPointStreet').value;
     var resultlat = ''; var resultlng = '';
