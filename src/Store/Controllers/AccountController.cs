@@ -52,7 +52,7 @@ namespace Store.Controllers
             {
                 foreach (var number in model.Phone)
                 {
-                    if (char.IsLetter(number))
+                    if (!char.IsDigit(number))
                     {
                         ViewBag.Message = "Phone number is invalid!";
                         return View("ErrorPhonePage");
@@ -194,7 +194,7 @@ namespace Store.Controllers
             {
                 foreach (var number in model.Phone)
                 {
-                    if (char.IsLetter(number))
+                    if (!char.IsDigit(number))
                     {
                         ViewBag.Message = "Phone number is invalid!";
                         return View("ErrorPhonePage");
